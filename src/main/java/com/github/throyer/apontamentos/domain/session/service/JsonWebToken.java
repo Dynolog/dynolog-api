@@ -15,6 +15,7 @@ import io.jsonwebtoken.Jwts;
 import static io.jsonwebtoken.SignatureAlgorithm.HS256;
 
 import java.time.LocalDateTime;
+import static java.util.Arrays.stream;
 import java.util.List;
 
 public class JsonWebToken {
@@ -54,9 +55,10 @@ public class JsonWebToken {
         var decoded = Jwts.parser().setSigningKey(secret).parseClaimsJws(token);
 
         var id = Long.parseLong(decoded.getBody().getSubject());
-        var authorities = Arrays.stream(decoded.getBody().get(ROLES_KEY_ON_JWT)
-            .toString().split(",")).map(Role::new)
-            .collect(Collectors.toList());
+        
+        var joinedRolesString = decoded.getBody().get(ROLES_KEY_ON_JWT).toString();
+        var roles = joinedRolesString.split(",");
+        var authorities = stream(roles).map(Role::new).toList();
 
         return new Authorized(id, authorities);
     }
