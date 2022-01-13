@@ -39,7 +39,7 @@ public class TimeEntriesController {
     }
     
     @PostMapping
-    public ResponseEntity<?> create(@RequestBody CreateTimeEntryData data) {
+    public ResponseEntity<TimeEntryDetails> create(@RequestBody CreateTimeEntryData data) {
         var timeEntry = createService.create(data);
         return created(timeEntry, "api/time_entries");
     }
