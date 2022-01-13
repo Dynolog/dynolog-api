@@ -14,7 +14,7 @@ public interface TimeEntryRepository extends JpaRepository<TimeEntry, Long> {
     
     @Query("""
         SELECT
-            new com.github.throyer.apontamentos.domain.timeentry.dto.TimeEntryDetails(
+            new com.github.throyer.appointments.domain.timeentry.dto.TimeEntryDetails(
               time_entry.id,
               time_entry.description,
               time_entry.start,

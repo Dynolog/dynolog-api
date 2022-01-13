@@ -1,10 +1,10 @@
-package com.github.throyer.apontamentos;
+package com.github.throyer.appointments;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class ApontamentosApplicationTests {
+class MainTests {
 
     @Test
 	void contextLoads() {

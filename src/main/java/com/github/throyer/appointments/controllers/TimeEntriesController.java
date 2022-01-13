@@ -42,6 +42,5 @@ public class TimeEntriesController {
     public ResponseEntity<?> create(@RequestBody CreateTimeEntryData data) {
         var timeEntry = createService.create(data);
         return created(timeEntry, "api/time_entries");
-//          return ok(data);
     }
 }
