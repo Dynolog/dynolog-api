@@ -9,7 +9,7 @@
             <goal>spring-boot:run</goal>
         </goals>
         <properties>
-            <spring-boot.run.jvmArguments>-noverify -XX:TieredStopAtLevel=1 </spring-boot.run.jvmArguments>
+            <spring-boot.run.jvmArguments>-noverify -XX:TieredStopAtLevel=1</spring-boot.run.jvmArguments>
             <spring-boot.run.mainClass>com.github.throyer.apontamentos.ApontamentosApplication</spring-boot.run.mainClass>
             <Env.SPRING_OUTPUT_ANSI_ENABLED>always</Env.SPRING_OUTPUT_ANSI_ENABLED>
         </properties>
@@ -23,10 +23,11 @@
             <goal>spring-boot:run</goal>
         </goals>
         <properties>
-            <spring-boot.run.jvmArguments>-Xdebug -Xrunjdwp:transport=dt_socket,server=n,address=${jpda.address} -noverify -XX:TieredStopAtLevel=1 </spring-boot.run.jvmArguments>
+            <spring-boot.run.jvmArguments>-Xdebug -Xrunjdwp:transport=dt_socket,server=n,address=${jpda.address} -noverify -XX:TieredStopAtLevel=1</spring-boot.run.jvmArguments>
             <spring-boot.run.mainClass>com.github.throyer.apontamentos.ApontamentosApplication</spring-boot.run.mainClass>
             <Env.SPRING_OUTPUT_ANSI_ENABLED>always</Env.SPRING_OUTPUT_ANSI_ENABLED>
             <jpda.listen>true</jpda.listen>
+            <jansi.passthrough>true</jansi.passthrough>
         </properties>
     </action>
     <action>

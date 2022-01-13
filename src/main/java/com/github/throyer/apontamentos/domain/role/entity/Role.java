@@ -1,4 +1,4 @@
-package com.github.throyer.apontamentos.models;
+package com.github.throyer.apontamentos.domain.role.entity;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
@@ -8,12 +8,12 @@ import javax.persistence.Id;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
-//import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.GrantedAuthority;
 
 @Data
 @Entity
 @NoArgsConstructor
-public class Role /*implements GrantedAuthority*/ {
+public class Role implements GrantedAuthority {
 
     @Id
     @GeneratedValue(strategy = IDENTITY)
@@ -25,8 +25,12 @@ public class Role /*implements GrantedAuthority*/ {
 
     private String description;
 
-//    @Override
-//    public String getAuthority() {
-//        return getInitials();
-//    }
+    @Override
+    public String getAuthority() {
+        return getInitials();
+    }
+
+    public Role(String initials) {
+        this.initials = initials;
+    }
 }

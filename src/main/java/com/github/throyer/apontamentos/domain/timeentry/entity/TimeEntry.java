@@ -1,13 +1,13 @@
 package com.github.throyer.apontamentos.domain.timeentry.entity;
 
 import com.github.throyer.apontamentos.domain.timeentry.dto.CreateTimeEntryData;
-import com.github.throyer.apontamentos.models.Project;
+import com.github.throyer.apontamentos.domain.project.entity.Project;
 import com.github.throyer.apontamentos.domain.user.entity.User;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Optional;
 import static java.util.Optional.ofNullable;
-import javax.persistence.Column;
+import static javax.persistence.CascadeType.DETACH;
 import javax.persistence.Entity;
 import static javax.persistence.FetchType.LAZY;
 import javax.persistence.GeneratedValue;
@@ -30,11 +30,11 @@ public class TimeEntry implements Serializable {
     private LocalDateTime start;    
     private LocalDateTime stop;
 
-    @ManyToOne(fetch = LAZY)
+    @ManyToOne(fetch = LAZY, cascade = DETACH)
     @JoinColumn(name = "user_id")
     private User user;    
     
-    @ManyToOne(fetch = LAZY)
+    @ManyToOne(fetch = LAZY, cascade = DETACH)
     @JoinColumn(name = "project_id")
     private Project project;
 
@@ -42,8 +42,14 @@ public class TimeEntry implements Serializable {
         this.description = data.getDescription();
         this.start = data.getStart();
         this.stop = data.getStop();
-        this.user = new User(data.getUserId());
-        this.project = new Project(data.getProjectId());
+        
+        this.user = data.getUserId()
+                .map(id -> new User(id))
+                    .orElseGet(() -> null);
+        
+        this.project = data.getProjectId()
+               .map(id -> new Project(id))
+                   .orElseGet(() -> null);
     }
 
     public Optional<User> getUser() {

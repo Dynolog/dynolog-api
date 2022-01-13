@@ -1,4 +1,4 @@
-package com.github.throyer.apontamentos.domain.pagination;
+package com.github.throyer.apontamentos.domain.shared.pagination;
 
 import java.util.Collection;
 
