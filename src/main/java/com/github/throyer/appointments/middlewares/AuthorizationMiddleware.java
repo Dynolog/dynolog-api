@@ -11,11 +11,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import static java.util.Objects.isNull;
+import org.springframework.core.annotation.Order;
 
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 @Component
+@Order(1)
 public class AuthorizationMiddleware extends OncePerRequestFilter {
     
     private static final String AUTHORIZATION_HEADER = "Authorization";
@@ -38,8 +40,13 @@ public class AuthorizationMiddleware extends OncePerRequestFilter {
     private static String authorization(HttpServletRequest request) {
         var token = request.getHeader(AUTHORIZATION_HEADER);
 
-        if (tokenIsNull(token))
+        if (tokenIsNull(token)) {
+            return null;            
+        }
+        
+        if (token.substring(7).equals("Bearer")) {
             return null;
+        }
 
         return token.substring(7, token.length());
     }

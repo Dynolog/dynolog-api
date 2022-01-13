@@ -27,9 +27,9 @@ public class SpringWebConfiguration implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry
-                .addMapping("/**")
-                .allowedOrigins("*")
-                .allowedHeaders("*");
+            .addMapping("/**")
+            .allowedOrigins("*")
+            .allowedHeaders("*");
     }
 
     @Bean
