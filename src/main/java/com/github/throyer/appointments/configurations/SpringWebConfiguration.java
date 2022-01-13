@@ -24,13 +24,6 @@ import io.swagger.v3.oas.annotations.security.SecurityScheme;
 )
 public class SpringWebConfiguration implements WebMvcConfigurer {
 
-    @Override
-    public void addCorsMappings(CorsRegistry registry) {
-        registry
-            .addMapping("/**")
-            .allowedOrigins("*")
-            .allowedHeaders("*");
-    }
 
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {

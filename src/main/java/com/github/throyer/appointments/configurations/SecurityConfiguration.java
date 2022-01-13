@@ -9,7 +9,6 @@ import static org.springframework.http.HttpMethod.GET;
 import static org.springframework.http.HttpMethod.POST;
 import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,6 +21,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.stereotype.Component;
+import org.springframework.web.cors.CorsConfiguration;
 
 @Component
 @Configuration
@@ -45,7 +45,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     private SessionService sessionService;
 
     @Autowired
-    private AuthorizationMiddleware filter;
+    private AuthorizationMiddleware authorizationMiddleware;
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -78,7 +78,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .sessionManagement()
                     .sessionCreationPolicy(STATELESS)
             .and()
-                .addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class);        
+                .addFilterBefore(authorizationMiddleware, UsernamePasswordAuthenticationFilter.class)
+            .cors()
+                .configurationSource(request -> new CorsConfiguration().applyPermitDefaultValues());      
             
     }
 
