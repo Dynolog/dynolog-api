@@ -8,6 +8,7 @@ import com.github.throyer.appointments.domain.timeentry.service.CreateTimeEntryS
 import com.github.throyer.appointments.domain.timeentry.service.FindTimeEntryService;
 import static com.github.throyer.appointments.utils.Response.created;
 import static com.github.throyer.appointments.utils.Response.ok;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("api/time-entries")
+@SecurityRequirement(name = "token")
 public class TimeEntriesController {
     
     @Autowired
