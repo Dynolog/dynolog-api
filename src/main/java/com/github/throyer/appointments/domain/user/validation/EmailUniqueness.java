@@ -10,7 +10,7 @@ import org.springframework.web.server.ResponseStatusException;
 @Service
 public class EmailUniqueness {
 
-    private static final String MESSAGE = "Este email já foi utilizado por outro usuário. Por favor utilize um email diferente.";
+    private static final String MESSAGE = "This email has already been used by another user. Please use a different email.";
 
     private static UserRepository repository;
   

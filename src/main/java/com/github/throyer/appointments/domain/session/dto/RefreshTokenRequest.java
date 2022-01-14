@@ -7,8 +7,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class RefreshTokenRequest {
 
-    @NotNull(message = "refresh_token não pode NULO.")
-    @NotEmpty(message = "refresh_token invalido.")
+    @NotNull(message = "refresh_token is a required field.")
+    @NotEmpty(message = "refresh_token invalid.")
     @JsonProperty("refresh_token")
     private String refresh;
 

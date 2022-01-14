@@ -1,5 +1,6 @@
-package com.github.throyer.appointments.domain.shared.errors;
+package com.github.throyer.appointments.errors;
 
+import com.github.throyer.appointments.domain.shared.errors.SimpleError;
 import java.util.List;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.UNAUTHORIZED;

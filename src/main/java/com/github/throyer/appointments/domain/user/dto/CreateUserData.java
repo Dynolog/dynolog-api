@@ -11,19 +11,16 @@ import static com.github.throyer.appointments.domain.user.validation.EmailUnique
 @Data
 @NoArgsConstructor
 public class CreateUserData implements Addressable {
-
-    public static final String DEFAULT_PASSWORD = "mudar123";
-
-    @NotEmpty(message = "Por favor, forneça um nome.")
+    @NotEmpty(message = "email is a required field.")
     private String name;
 
-    @NotEmpty(message = "Por favor, forneça um e-mail.")
-    @Email(message = "Por favor, forneça um e-mail valido.")
+    @NotEmpty(message = "email is a required field.")
+    @Email(message = "invalid email.")
     private String email;
 
-    @NotEmpty(message = "Por favor, forneça uma senha.")
-    @Size(min = 8, max = 155, message = "A senha deve conter no minimo {min} caracteres.")
-    private String password = DEFAULT_PASSWORD;
+    @NotEmpty(message = "password is a required field.")
+    @Size(min = 8, max = 155, message = "The password must contain at least {min} characters.")
+    private String password;
 
     public void validate() {
         validateEmailUniqueness(this);

@@ -1,7 +1,6 @@
 package com.github.throyer.appointments.domain.session.dto;
 
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Data;
 
@@ -9,11 +8,9 @@ import lombok.Data;
 @Builder
 public class TokenRequest {
 
-    @NotNull(message = "O Email não pode ser NULO.")
-    @NotEmpty(message = "Email invalido.")
+    @NotEmpty(message = "email is a required field.")
     private String email;
 
-    @NotNull(message = "A Senha não pode ser NULA.")
-    @NotEmpty(message = "Senha invalida.")
+    @NotEmpty(message = "password is a required field.")
     private String password;
 }
