@@ -13,6 +13,7 @@
     <version>0.0.1-SNAPSHOT</version>
     <name>apontamentos</name>
     <description>apontamento.io</description>
+    
     <properties>
         <java.version>17</java.version>
     </properties>
@@ -136,9 +137,18 @@
                             <artifactId>lombok</artifactId>
                         </exclude>
                     </excludes>
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>build-info</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                    <jvmArguments>
+                        -agentlib:jdwp=transport=dt_socket,server=y,address=*:8000,suspend=n
+                    </jvmArguments>
                 </configuration>
             </plugin>
         </plugins>
     </build>
-
 </project>
