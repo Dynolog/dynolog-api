@@ -1,9 +1,12 @@
-package com.github.throyer.appointments.domain.shared.errors;
+package com.github.throyer.appointments.domain.error.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
+
+import java.util.List;
 
 public class SimpleError {
 
@@ -62,5 +65,13 @@ public class SimpleError {
 
     public void setStatus(Integer status) {
         this.status = status;
+    }
+
+    public static final List<SimpleError> of(MethodArgumentNotValidException exception) {
+        return exception.getBindingResult()
+                .getAllErrors()
+                .stream()
+                .map((error) -> (new SimpleError((FieldError) error)))
+                .toList();
     }
 }

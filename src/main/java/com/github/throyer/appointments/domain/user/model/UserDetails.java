@@ -1,4 +1,4 @@
-package com.github.throyer.appointments.domain.user.dto;
+package com.github.throyer.appointments.domain.user.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.github.throyer.appointments.domain.user.entity.User;
@@ -6,6 +6,8 @@ import java.util.List;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import com.github.throyer.appointments.domain.shared.Addressable;
+
+import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
 
 @Data
 @NoArgsConstructor
@@ -15,7 +17,7 @@ public class UserDetails implements Addressable {
     private String name;
     private String email;
 
-    @JsonInclude(JsonInclude.Include.NON_NULL)
+    @JsonInclude(NON_NULL)
     private List<String> roles;
 
     public UserDetails(User user) {

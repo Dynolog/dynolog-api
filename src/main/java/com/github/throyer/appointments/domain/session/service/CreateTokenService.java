@@ -4,7 +4,7 @@ import com.github.throyer.appointments.domain.session.dto.TokenRequest;
 import com.github.throyer.appointments.domain.session.entity.RefreshToken;
 import com.github.throyer.appointments.domain.session.repository.RefreshTokenRepository;
 import com.github.throyer.appointments.domain.session.dto.TokenResponse;
-import com.github.throyer.appointments.domain.user.dto.UserDetails;
+import com.github.throyer.appointments.domain.user.model.UserDetails;
 import com.github.throyer.appointments.domain.user.repository.UserRepository;
 import static com.github.throyer.appointments.utils.Constraints.JWT;
 import static com.github.throyer.appointments.utils.Response.forbidden;
@@ -18,7 +18,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class CreateTokenService {
     
-    public static final String CREATE_SESSION_ERROR_MESSAGE = "Senha ou Usuário inválidos.";
+    public static final String CREATE_SESSION_ERROR_MESSAGE = "Invalid Password or Username.";
 
     @Value("${token.secret}")
     private String TOKEN_SECRET;

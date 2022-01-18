@@ -1,4 +1,4 @@
-package com.github.throyer.appointments.domain.user.dto;
+package com.github.throyer.appointments.domain.user.model;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;

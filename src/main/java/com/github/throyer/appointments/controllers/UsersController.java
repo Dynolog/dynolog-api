@@ -1,7 +1,7 @@
 package com.github.throyer.appointments.controllers;
 
 import com.github.throyer.appointments.domain.session.dto.TokenResponse;
-import com.github.throyer.appointments.domain.user.dto.CreateUserData;
+import com.github.throyer.appointments.domain.user.model.CreateUserData;
 import com.github.throyer.appointments.domain.user.service.CreateUserService;
 import static com.github.throyer.appointments.utils.Response.created;
 

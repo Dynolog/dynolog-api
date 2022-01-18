@@ -2,9 +2,9 @@ package com.github.throyer.appointments.domain.user.service;
 
 import com.github.throyer.appointments.domain.role.repository.RoleRepository;
 import com.github.throyer.appointments.domain.session.service.CreateTokenService;
-import com.github.throyer.appointments.domain.user.dto.CreateUserData;
+import com.github.throyer.appointments.domain.user.model.CreateUserData;
 import com.github.throyer.appointments.domain.session.dto.TokenResponse;
-import com.github.throyer.appointments.domain.user.dto.UserDetails;
+import com.github.throyer.appointments.domain.user.model.UserDetails;
 import com.github.throyer.appointments.domain.user.entity.User;
 import com.github.throyer.appointments.domain.user.repository.UserRepository;
 import java.util.List;

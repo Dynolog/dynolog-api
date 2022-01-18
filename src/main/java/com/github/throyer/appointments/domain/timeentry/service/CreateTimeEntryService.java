@@ -1,7 +1,7 @@
 package com.github.throyer.appointments.domain.timeentry.service;
 
-import com.github.throyer.appointments.domain.timeentry.dto.CreateTimeEntryData;
-import com.github.throyer.appointments.domain.timeentry.dto.TimeEntryDetails;
+import com.github.throyer.appointments.domain.timeentry.model.CreateTimeEntryProps;
+import com.github.throyer.appointments.domain.timeentry.model.TimeEntryDetails;
 import com.github.throyer.appointments.domain.timeentry.entity.TimeEntry;
 import com.github.throyer.appointments.domain.timeentry.repository.TimeEntryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,8 +13,8 @@ public class CreateTimeEntryService {
     @Autowired
     private TimeEntryRepository repository;
     
-    public TimeEntryDetails create(CreateTimeEntryData data) {
-        var created = repository.save(new TimeEntry(data));
+    public TimeEntryDetails create(CreateTimeEntryProps props) {
+        var created = repository.save(new TimeEntry(props));
         return new TimeEntryDetails(created);
     }
 }

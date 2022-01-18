@@ -1,4 +1,4 @@
-package com.github.throyer.appointments.domain.timeentry.dto;
+package com.github.throyer.appointments.domain.timeentry.model;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
@@ -8,9 +8,8 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class CreateTimeEntryData {
-
-    private String description;    
+public class CreateTimeEntryProps {
+    private String description;
     private LocalDateTime start;    
     private LocalDateTime stop;    
     private Long userId;    

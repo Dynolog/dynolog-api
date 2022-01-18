@@ -12,23 +12,19 @@ import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
 import io.swagger.v3.oas.annotations.info.Info;
 import io.swagger.v3.oas.annotations.security.SecurityScheme;
 
+import static io.swagger.v3.oas.annotations.enums.SecuritySchemeIn.HEADER;
+import static io.swagger.v3.oas.annotations.enums.SecuritySchemeType.HTTP;
+
 @Configuration
 @OpenAPIDefinition(info = @Info(title = "Appointments.io", version = "v1.0.0"))
 @SecurityScheme(
     name = "token",
-    type = SecuritySchemeType.HTTP,
+    type = HTTP,
     bearerFormat = "JWT",
-    in = SecuritySchemeIn.HEADER,
+    in = HEADER,
     scheme = "bearer"
 )
 public class SpringWebConfiguration implements WebMvcConfigurer {
-
-
-    @Bean
-    public BCryptPasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-
     @Bean
     public SecurityEvaluationContextExtension securityEvaluationContextExtension() {
         return new SecurityEvaluationContextExtension();

@@ -2,11 +2,10 @@ package com.github.throyer.appointments.domain.session.service;
 
 import com.github.throyer.appointments.domain.role.entity.Role;
 import com.github.throyer.appointments.domain.session.model.Authorized;
-import com.github.throyer.appointments.domain.user.dto.UserDetails;
+import com.github.throyer.appointments.domain.user.model.UserDetails;
 import com.github.throyer.appointments.domain.user.entity.User;
 
 import java.time.ZoneId;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.stream.Collectors;
 

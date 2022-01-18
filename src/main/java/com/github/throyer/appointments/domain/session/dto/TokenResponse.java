@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonFormat.Shape;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.github.throyer.appointments.domain.session.entity.RefreshToken;
-import com.github.throyer.appointments.domain.user.dto.UserDetails;
+import com.github.throyer.appointments.domain.user.model.UserDetails;
 import com.github.throyer.appointments.domain.user.entity.User;
 import java.time.LocalDateTime;
 

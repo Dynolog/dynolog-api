@@ -6,6 +6,8 @@ import com.github.throyer.appointments.domain.session.entity.RefreshToken;
 import com.github.throyer.appointments.domain.session.repository.RefreshTokenRepository;
 import static com.github.throyer.appointments.utils.Constraints.JWT;
 import static com.github.throyer.appointments.utils.Response.forbidden;
+import static java.time.LocalDateTime.now;
+
 import java.time.LocalDateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -30,10 +32,10 @@ public class RefreshTokenService {
 
     public RefreshTokenResponse refresh(RefreshTokenRequest request) {
         var old = refreshTokenRepository.findOptionalByCodeAndAvailableIsTrue(request.getRefresh())
-            .filter(token -> token.nonExpired())
+            .filter(RefreshToken::nonExpired)
                 .orElseThrow(() -> forbidden(REFRESH_SESSION_ERROR_MESSAGE));
 
-        var now = LocalDateTime.now();
+        var now = now();
         var expiresIn = now.plusHours(TOKEN_EXPIRATION_IN_HOURS);
         var token = JWT.encode(old.getUser(), expiresIn, TOKEN_SECRET);
 

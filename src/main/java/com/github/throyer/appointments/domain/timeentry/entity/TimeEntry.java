@@ -1,7 +1,8 @@
 package com.github.throyer.appointments.domain.timeentry.entity;
 
-import com.github.throyer.appointments.domain.timeentry.dto.CreateTimeEntryData;
+import com.github.throyer.appointments.domain.timeentry.model.CreateTimeEntryProps;
 import com.github.throyer.appointments.domain.project.entity.Project;
+import com.github.throyer.appointments.domain.timeentry.model.UpdateTimeEntryProps;
 import com.github.throyer.appointments.domain.user.entity.User;
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -38,18 +39,28 @@ public class TimeEntry implements Serializable {
     @JoinColumn(name = "project_id")
     private Project project;
 
-    public TimeEntry(CreateTimeEntryData data) {
-        this.description = data.getDescription();
-        this.start = data.getStart();
-        this.stop = data.getStop();
+    public TimeEntry(CreateTimeEntryProps props) {
+        this.description = props.getDescription();
+        this.start = props.getStart();
+        this.stop = props.getStop();
         
-        this.user = data.getUserId()
-                .map(id -> new User(id))
+        this.user = props.getUserId()
+                .map(User::new)
                     .orElseGet(() -> null);
         
-        this.project = data.getProjectId()
-               .map(id -> new Project(id))
+        this.project = props.getProjectId()
+               .map(Project::new)
                    .orElseGet(() -> null);
+    }
+
+    public void update(UpdateTimeEntryProps props) {
+        this.start = props.getStart();
+        this.stop = props.getStop();
+        this.description = props.getDescription();
+
+        this.project = props.getProjectId()
+                .map(Project::new)
+                .orElseGet(() -> null);
     }
 
     public Optional<User> getUser() {

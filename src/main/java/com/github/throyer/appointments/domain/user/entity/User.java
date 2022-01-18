@@ -21,7 +21,7 @@ import com.github.throyer.appointments.domain.role.entity.Role;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import com.github.throyer.appointments.domain.shared.Addressable;
-import com.github.throyer.appointments.domain.user.dto.CreateUserData;
+import com.github.throyer.appointments.domain.user.model.CreateUserData;
 import static com.github.throyer.appointments.utils.Constraints.PASSWORD_ENCODER;
 import java.util.Optional;
 import javax.persistence.PrePersist;

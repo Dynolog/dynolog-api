@@ -1,9 +1,9 @@
 package com.github.throyer.appointments.domain.timeentry.service;
 
-import com.github.throyer.appointments.domain.shared.pagination.Page;
-import static com.github.throyer.appointments.domain.shared.pagination.Page.of;
-import com.github.throyer.appointments.domain.shared.pagination.Pagination;
-import com.github.throyer.appointments.domain.timeentry.dto.TimeEntryDetails;
+import com.github.throyer.appointments.domain.pagination.Page;
+import static com.github.throyer.appointments.domain.pagination.Page.of;
+import com.github.throyer.appointments.domain.pagination.Pagination;
+import com.github.throyer.appointments.domain.timeentry.model.TimeEntryDetails;
 import com.github.throyer.appointments.domain.timeentry.repository.TimeEntryRepository;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,13 +16,18 @@ public class FindTimeEntryService {
     @Autowired
     public TimeEntryRepository repository;
 
-    public Page<TimeEntryDetails> findAll(Pagination pagination, Optional<Long> userId) {
+    public Page<TimeEntryDetails> findAll(
+        Optional<Integer> pageNumber,
+        Optional<Integer> pageSize,
+        Optional<Long> userId
+    ) {
+        var pageable = Pagination.of(pageNumber, pageSize);
         if (userId.isPresent()) {
-            var page = repository.findByUserId(pagination.build(Sort.by("id")), userId.get());
+            var page = repository.findByUserIdFetchUserAndProject(pageable, userId.get());
             return of(page);
         }
         
-        var page = repository.findAll(pagination.build(Sort.by("id")));
-        return of(page.map(TimeEntryDetails::new));
+        var page = repository.findAllFetchUserAndProject(pageable);
+        return of(page);
     }
 }

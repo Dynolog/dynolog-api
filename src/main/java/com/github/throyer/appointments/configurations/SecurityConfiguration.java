@@ -58,24 +58,28 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http
             .antMatcher("/**")
                 .authorizeRequests()
-                    .antMatchers(GET,
+                    .antMatchers(
+                        GET,
                         "/",
                         "/api",
                         "/documentation/**",
-                        "/swagger-ui/**")
-                    .permitAll()
-                    .antMatchers(POST,
+                        "/swagger-ui/**"
+                    )
+                        .permitAll()
+                    .antMatchers(
+                        POST,
                         "/api/sessions",
                         "/api/sessions/refresh",
-                        "/api/users")
-                    .permitAll()
+                        "/api/users"
+                    )
+                        .permitAll()
                     .anyRequest()
-                    .authenticated()
+                        .authenticated()
             .and()
                 .csrf()
                     .disable()
-                .exceptionHandling()
-                    .authenticationEntryPoint((request, response, exception) -> forbidden(response))
+                        .exceptionHandling()
+                            .authenticationEntryPoint((request, response, exception) -> forbidden(response))
             .and()
                 .sessionManagement()
                     .sessionCreationPolicy(STATELESS)
@@ -88,9 +92,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(WebSecurity web) throws Exception {
-        web
-            .ignoring()
-                .antMatchers(STATIC_FILES);
+        web.ignoring().antMatchers(STATIC_FILES);
     }
 
     @Bean

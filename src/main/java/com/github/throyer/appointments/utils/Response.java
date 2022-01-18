@@ -1,13 +1,14 @@
 package com.github.throyer.appointments.utils;
 
 import com.github.throyer.appointments.domain.shared.Identity;
-import com.github.throyer.appointments.domain.shared.errors.SimpleError;
+import com.github.throyer.appointments.domain.error.model.SimpleError;
 import static com.github.throyer.appointments.utils.JsonUtils.toJson;
 import java.io.IOException;
 
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.net.URI;
@@ -33,6 +34,12 @@ public class Response {
         } catch (IOException exception) {
             LOGGER.log(Level.SEVERE, "can't write response error on token expired or invalid exception", exception);
         }
+    }
+
+    public static final ResponseEntity<SimpleError> fromException(ResponseStatusException exception) {
+        return ResponseEntity
+                .status(exception.getStatus())
+                    .body(new SimpleError(exception.getReason(), exception.getStatus()));
     }
 
     public static final <T> ResponseEntity<T> forbidden(T body) {
