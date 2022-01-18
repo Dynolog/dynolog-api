@@ -8,6 +8,9 @@ import com.github.throyer.appointments.domain.session.service.CreateTokenService
 import com.github.throyer.appointments.domain.session.service.RefreshTokenService;
 import static com.github.throyer.appointments.utils.Response.ok;
 import javax.validation.Valid;
+
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@Tag(name = "Authentication")
 @RequestMapping("/api/sessions")
 public class SessionsController {
 
@@ -26,6 +30,7 @@ public class SessionsController {
     private RefreshTokenService refreshService;
 
     @PostMapping
+    @Operation(summary = "Create a jwt token")
     public ResponseEntity<TokenResponse> create(
         @RequestBody @Valid TokenRequest request
     ) {
@@ -34,6 +39,7 @@ public class SessionsController {
     }
 
     @PostMapping("/refresh")
+    @Operation(summary = "Create a new jwt token from refresh code")
     public ResponseEntity<RefreshTokenResponse> refresh(
         @RequestBody @Valid RefreshTokenRequest request
     ) {

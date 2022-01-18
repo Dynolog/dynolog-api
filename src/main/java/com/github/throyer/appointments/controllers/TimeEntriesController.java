@@ -22,7 +22,7 @@ import static com.github.throyer.appointments.utils.Response.ok;
 @RestController
 @SecurityRequirement(name = "token")
 @RequestMapping("api/time-entries")
-@Tag(name = "time-entries", description = "Time entries API")
+@Tag(name = "Time entries")
 public class TimeEntriesController {
 
     private final CreateTimeEntryService createService;
@@ -58,7 +58,7 @@ public class TimeEntriesController {
         return created(timeEntry, "api/time_entries");
     }
 
-    @PostMapping("{id}")
+    @PutMapping("{id}")
     @Operation(summary = "Update a time entry")
     public ResponseEntity<TimeEntryDetails> update(@PathVariable Long id, @RequestBody UpdateTimeEntryProps body) {
         var timeEntry = updateService.update(id, body);
