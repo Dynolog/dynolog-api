@@ -1,14 +1,13 @@
 package com.github.throyer.appointments.utils;
 
 import com.github.throyer.appointments.domain.shared.Identity;
-import com.github.throyer.appointments.domain.error.model.SimpleError;
+import com.github.throyer.appointments.errors.Error;
 import static com.github.throyer.appointments.utils.JsonUtils.toJson;
 import java.io.IOException;
 
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.net.URI;
@@ -29,17 +28,17 @@ public class Response {
             response.setStatus(FORBIDDEN.value());
             response.setContentType("application/json");
             response.getWriter().write(toJson(
-                    new SimpleError("Can't find token on Authorization header.", FORBIDDEN)
+                    new Error("Can't find token on Authorization header.", FORBIDDEN)
             ));
         } catch (IOException exception) {
             LOGGER.log(Level.SEVERE, "can't write response error on token expired or invalid exception", exception);
         }
     }
 
-    public static final ResponseEntity<SimpleError> fromException(ResponseStatusException exception) {
+    public static final ResponseEntity<Error> fromException(ResponseStatusException exception) {
         return ResponseEntity
                 .status(exception.getStatus())
-                    .body(new SimpleError(exception.getReason(), exception.getStatus()));
+                    .body(new Error(exception.getReason(), exception.getStatus()));
     }
 
     public static final <T> ResponseEntity<T> forbidden(T body) {

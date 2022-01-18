@@ -1,4 +1,4 @@
-package com.github.throyer.appointments.domain.error.model;
+package com.github.throyer.appointments.errors;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.springframework.http.HttpStatus;
@@ -8,37 +8,39 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 
 import java.util.List;
 
-public class SimpleError {
+import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
 
-    @JsonInclude(JsonInclude.Include.NON_NULL)
+public class Error {
+
+    @JsonInclude(NON_NULL)
     private String field;
 
-    @JsonInclude(JsonInclude.Include.NON_NULL)
+    @JsonInclude(NON_NULL)
     private String message;
 
-    @JsonInclude(JsonInclude.Include.NON_NULL)
+    @JsonInclude(NON_NULL)
     private Integer status;
 
-    public SimpleError(FieldError error) {
+    public Error(FieldError error) {
         this.field = error.getField();
         this.message = error.getDefaultMessage();
     }
 
-    public SimpleError(ObjectError error) {
+    public Error(ObjectError error) {
         this.message = error.getDefaultMessage();
     }
 
-    public SimpleError(String filed, String message) {
+    public Error(String filed, String message) {
         this.field = filed;
         this.message = message;
     }
 
-    public SimpleError(String message, Integer status) {
+    public Error(String message, Integer status) {
         this.message = message;
         this.status = status;
     }
 
-    public SimpleError(String message, HttpStatus status) {
+    public Error(String message, HttpStatus status) {
         this.message = message;
         this.status = status.value();
     }
@@ -67,11 +69,11 @@ public class SimpleError {
         this.status = status;
     }
 
-    public static final List<SimpleError> of(MethodArgumentNotValidException exception) {
+    public static final List<Error> of(MethodArgumentNotValidException exception) {
         return exception.getBindingResult()
                 .getAllErrors()
                 .stream()
-                .map((error) -> (new SimpleError((FieldError) error)))
+                .map((error) -> (new Error((FieldError) error)))
                 .toList();
     }
 }
