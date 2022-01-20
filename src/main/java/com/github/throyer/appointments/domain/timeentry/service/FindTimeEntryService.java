@@ -53,12 +53,20 @@ public class FindTimeEntryService {
         }
 
         var pageable = Pagination.of(pageNumber, pageSize);
-        var page = authorized()
-            .map(authorized -> userId
-                .filter(authorized::canRead)
-                    .map(id -> repository.findAllByUserIdFetchUserAndProject(pageable, start, end, id))
-                        .orElseThrow(() -> unauthorized("Unauthorized")))
+
+        var authorized = authorized()
             .orElseThrow(() -> unauthorized("Unauthorized"));
-        return of(page);
+
+        if (userId.isPresent()) {
+            if (authorized.canRead(userId.get())) {
+                return of(repository.findAllByUserIdFetchUserAndProject(pageable, start, end, userId.get()));
+            }
+        }
+
+        if (authorized.isAdmin()) {
+            return of(repository.findAllFetchUserAndProject(pageable, start, end));
+        }
+
+        throw unauthorized("Unauthorized");
     }
 }

@@ -7,6 +7,8 @@ import static java.util.Objects.nonNull;
 import java.util.Optional;
 import static java.util.Optional.empty;
 import static java.util.Optional.of;
+import static java.util.logging.Level.WARNING;
+
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,7 +49,7 @@ public class SessionService implements UserDetailsService {
                     .getContext()
                     .setAuthentication(authorized.getAuthentication());
         } catch (Exception exception) {
-            LOGGER.log(Level.WARNING, "Token expired or invalid");
+            LOGGER.log(WARNING, "Token expired or invalid");
         }
     }
 

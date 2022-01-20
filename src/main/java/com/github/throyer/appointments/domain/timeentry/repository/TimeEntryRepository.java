@@ -25,6 +25,13 @@ public interface TimeEntryRepository extends JpaRepository<TimeEntry, Long> {
         @Param("user_id") Long userId
     );
 
+    @Query(FIND_ALL_TIME_ENTRIES_FETCH_USER_AND_PROJECT)
+    public Page<TimeEntryDetails> findAllFetchUserAndProject(
+            Pageable pageable,
+            @Param("start_date") LocalDateTime start,
+            @Param("end_date") LocalDateTime end
+    );
+
     @Query(FIND_TIME_ENTRY_BY_ID)
     public TimeEntryDetails findByIdFetchUserAndProject(@Param("id") Long id);
 
