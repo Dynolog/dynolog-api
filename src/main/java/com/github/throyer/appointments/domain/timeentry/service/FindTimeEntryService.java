@@ -7,7 +7,6 @@ import com.github.throyer.appointments.domain.timeentry.model.TimeEntryDetails;
 import com.github.throyer.appointments.domain.timeentry.repository.TimeEntryRepository;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -23,7 +22,7 @@ public class FindTimeEntryService {
     ) {
         var pageable = Pagination.of(pageNumber, pageSize);
         if (userId.isPresent()) {
-            var page = repository.findByUserIdFetchUserAndProject(pageable, userId.get());
+            var page = repository.findAllByUserIdFetchUserAndProject(pageable, userId.get());
             return of(page);
         }
         

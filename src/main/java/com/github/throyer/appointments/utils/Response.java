@@ -3,6 +3,10 @@ package com.github.throyer.appointments.utils;
 import com.github.throyer.appointments.domain.shared.Identity;
 import com.github.throyer.appointments.errors.Error;
 import static com.github.throyer.appointments.utils.JsonUtils.toJson;
+import static java.lang.String.format;
+import static java.net.URI.create;
+import static org.springframework.http.HttpStatus.*;
+
 import java.io.IOException;
 
 import org.springframework.data.repository.CrudRepository;
@@ -15,7 +19,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.servlet.http.HttpServletResponse;
-import static org.springframework.http.HttpStatus.FORBIDDEN;
 
 public class Response {
 
@@ -93,33 +96,33 @@ public class Response {
     }
 
     public static final <T extends Identity> ResponseEntity<T> created(T entity, String location) {
-        return ResponseEntity.created(URI.create(String.format("/%s/%s", location, entity.getId())))
+        return ResponseEntity.created(create(format("/%s/%s", location, entity.getId())))
                 .body(entity);
     }
 
     public static final <T> ResponseEntity<T> created(T body, String location, Long id) {
-        return ResponseEntity.created(URI.create(String.format("/%s/%s", location, id)))
+        return ResponseEntity.created(create(format("/%s/%s", location, id)))
                 .body(body);
     }
 
     public static final <T> ResponseEntity<T> created(T body) {
-        return ResponseEntity.status(HttpStatus.CREATED)
+        return ResponseEntity.status(CREATED)
                 .body(body);
     }
 
     public static final ResponseStatusException forbidden(String reason) {
-        return new ResponseStatusException(HttpStatus.FORBIDDEN, reason);
+        return new ResponseStatusException(FORBIDDEN, reason);
     }
 
     public static final ResponseStatusException unauthorized(String reason) {
-        return new ResponseStatusException(HttpStatus.UNAUTHORIZED, reason);
+        return new ResponseStatusException(UNAUTHORIZED, reason);
     }
 
     public static final ResponseStatusException notFound(String reason) {
-        return new ResponseStatusException(HttpStatus.NOT_FOUND, reason);
+        return new ResponseStatusException(NOT_FOUND, reason);
     }
 
     public static final ResponseStatusException InternalServerError(String reason) {
-        return new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, reason);
+        return new ResponseStatusException(INTERNAL_SERVER_ERROR, reason);
     }
 }

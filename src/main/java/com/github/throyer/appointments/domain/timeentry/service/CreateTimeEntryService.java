@@ -15,6 +15,6 @@ public class CreateTimeEntryService {
     
     public TimeEntryDetails create(CreateTimeEntryProps props) {
         var created = repository.save(new TimeEntry(props));
-        return new TimeEntryDetails(created);
+        return repository.findByIdFetchUserAndProject(created.getId());
     }
 }

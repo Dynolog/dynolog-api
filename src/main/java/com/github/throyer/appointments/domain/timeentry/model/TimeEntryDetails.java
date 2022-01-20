@@ -4,11 +4,13 @@ import com.github.throyer.appointments.domain.project.model.ProjectDetails;
 import com.github.throyer.appointments.domain.shared.Identity;
 import com.github.throyer.appointments.domain.timeentry.entity.TimeEntry;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 
 import com.github.throyer.appointments.domain.user.model.UserDetails;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import static java.time.temporal.ChronoUnit.MILLIS;
 import static java.util.Optional.ofNullable;
 
 @Data
@@ -52,6 +54,10 @@ public class TimeEntryDetails implements Identity {
         this.project = ofNullable(projectId)
             .map(value -> new TimeEntryRelationship(value, projectName))
                 .orElse(null);
+    }
+
+    public Long totalTimeInMillis() {
+        return  MILLIS.between(start, stop);
     }
 
     @Data

@@ -1,6 +1,5 @@
 package com.github.throyer.appointments.domain.timeentry.service;
 
-import com.github.throyer.appointments.domain.timeentry.entity.TimeEntry;
 import com.github.throyer.appointments.domain.timeentry.model.TimeEntryDetails;
 import com.github.throyer.appointments.domain.timeentry.model.UpdateTimeEntryProps;
 import com.github.throyer.appointments.domain.timeentry.repository.TimeEntryRepository;
@@ -12,15 +11,21 @@ import static com.github.throyer.appointments.utils.Response.notFound;
 @Service
 public class UpdateTimeEntryService {
 
+    private final  TimeEntryRepository repository;
+
     @Autowired
-    private TimeEntryRepository repository;
+    public UpdateTimeEntryService(TimeEntryRepository repository) {
+        this.repository = repository;
+    }
+
 
     public TimeEntryDetails update(Long id, UpdateTimeEntryProps props) {
         var entry = repository.findById(id)
                 .orElseThrow(() -> notFound("time entry not found"));
 
         entry.update(props);
+        repository.save(entry);
 
-        return new TimeEntryDetails(repository.save(entry));
+        return repository.findByIdFetchUserAndProject(id);
     }
 }
