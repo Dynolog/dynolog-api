@@ -11,13 +11,16 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 import static com.github.throyer.appointments.utils.Response.created;
 import static com.github.throyer.appointments.utils.Response.ok;
+import static org.springframework.format.annotation.DateTimeFormat.ISO.DATE_TIME;
 
 @RestController
 @SecurityRequirement(name = "token")
@@ -43,11 +46,13 @@ public class TimeEntriesController {
     @GetMapping
     @Operation(summary = "Returns a paginated list of time entries")
     public ResponseEntity<Page<TimeEntryDetails>> index(
+        @RequestParam("start_date") @DateTimeFormat(iso = DATE_TIME) Optional<LocalDateTime> start,
+        @RequestParam("end_date") @DateTimeFormat(iso = DATE_TIME) Optional<LocalDateTime> end,
         @RequestParam("page") Optional<Integer> page,
         @RequestParam("size") Optional<Integer> size,
         @RequestParam("user_id") Optional<Long> userId
     ) {
-        var result = findService.findAll(page, size, userId);
+        var result = findService.findAll(start, end, page, size, userId);
         return ok(result);
     }
     

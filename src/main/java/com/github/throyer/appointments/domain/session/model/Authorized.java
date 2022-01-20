@@ -3,8 +3,11 @@ package com.github.throyer.appointments.domain.session.model;
 import com.github.throyer.appointments.domain.role.entity.Role;
 import org.springframework.security.core.userdetails.User;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+
+import static com.github.throyer.appointments.utils.JsonUtils.toJson;
 
 public class Authorized extends User {
 
@@ -51,7 +54,7 @@ public class Authorized extends User {
                 .anyMatch((role) -> role.getAuthority().equals("ADM"));
     }
 
-    public Boolean cantModify(Long id) {
+    public Boolean canModify(Long id) {
         var admin = isAdmin();
         var equals = getId().equals(id);
         if (admin) {
@@ -60,7 +63,7 @@ public class Authorized extends User {
         return equals;
     }
 
-    public Boolean cantRead(Long id) {
+    public Boolean canRead(Long id) {
         var admin = isAdmin();
         var equals = getId().equals(id);
         if (admin) {
@@ -71,7 +74,6 @@ public class Authorized extends User {
 
     @Override
     public String toString() {
-        return getId()
-            .toString();
+        return toJson(Map.of("id", this.id, "roles", this.getAuthorities()));
     }
 }

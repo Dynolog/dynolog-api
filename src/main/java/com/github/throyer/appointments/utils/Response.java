@@ -10,11 +10,9 @@ import static org.springframework.http.HttpStatus.*;
 import java.io.IOException;
 
 import org.springframework.data.repository.CrudRepository;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.net.URI;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -122,7 +120,7 @@ public class Response {
         return new ResponseStatusException(NOT_FOUND, reason);
     }
 
-    public static final ResponseStatusException InternalServerError(String reason) {
+    public static final ResponseStatusException internalServerError(String reason) {
         return new ResponseStatusException(INTERNAL_SERVER_ERROR, reason);
     }
 }
