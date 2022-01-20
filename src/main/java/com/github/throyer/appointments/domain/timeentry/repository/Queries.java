@@ -19,7 +19,7 @@ public final class Queries {
                 FROM TimeEntry AS time_entry
                 LEFT JOIN time_entry.user AS user
                 LEFT JOIN time_entry.project AS project
-                WHERE user.id = :user_id
+                WHERE time_entry.start >= :start_date AND time_entry.stop <= :end_date AND user.id = :user_id
                 ORDER BY time_entry.start DESC
             """;
 

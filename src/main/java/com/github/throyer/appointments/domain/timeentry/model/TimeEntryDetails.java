@@ -1,14 +1,11 @@
 package com.github.throyer.appointments.domain.timeentry.model;
 
-import com.github.throyer.appointments.domain.project.model.ProjectDetails;
 import com.github.throyer.appointments.domain.shared.Identity;
 import com.github.throyer.appointments.domain.timeentry.entity.TimeEntry;
-import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
-
-import com.github.throyer.appointments.domain.user.model.UserDetails;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.time.LocalDateTime;
 
 import static java.time.temporal.ChronoUnit.MILLIS;
 import static java.util.Optional.ofNullable;

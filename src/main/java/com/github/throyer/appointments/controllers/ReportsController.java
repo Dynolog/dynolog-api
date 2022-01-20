@@ -2,6 +2,7 @@ package com.github.throyer.appointments.controllers;
 
 import com.github.throyer.appointments.domain.timeentry.model.Summary;
 import com.github.throyer.appointments.domain.timeentry.service.FindTotalInHoursService;
+import com.github.throyer.appointments.errors.Error;
 import com.github.throyer.appointments.utils.Response;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -15,10 +16,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 
 import static com.github.throyer.appointments.domain.session.service.SessionService.authorized;
 import static com.github.throyer.appointments.utils.Response.ok;
-import static com.github.throyer.appointments.utils.Response.unauthorized;
 import static org.springframework.format.annotation.DateTimeFormat.ISO.DATE_TIME;
 
 @RestController
