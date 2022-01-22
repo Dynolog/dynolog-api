@@ -11,14 +11,13 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Optional;
 
 import static com.github.throyer.appointments.domain.pagination.Page.of;
-import static com.github.throyer.appointments.domain.session.service.SessionService.authorized;
+import static com.github.throyer.appointments.domain.session.service.SessionService.authorizedOrThrow;
 import static com.github.throyer.appointments.utils.Response.unauthorized;
 import static java.time.LocalDateTime.now;
-import static java.time.temporal.ChronoUnit.*;
+import static java.time.temporal.ChronoUnit.MONTHS;
 import static java.time.temporal.TemporalAdjusters.firstDayOfMonth;
 import static java.time.temporal.TemporalAdjusters.lastDayOfMonth;
 
@@ -33,8 +32,14 @@ public class FindTimeEntryService {
         Optional<LocalDateTime> optionalEnd,
         Optional<Integer> pageNumber,
         Optional<Integer> pageSize,
-        Optional<Long> userId
+        Long userId
     ) {
+        var authorized = authorizedOrThrow();
+
+        if (!authorized.canRead(userId)) {
+            throw unauthorized("Not authorized to list this user's time entries");
+        }
+
         var start = optionalStart.orElse(now().with(firstDayOfMonth()));
         var end = optionalEnd.orElse(now().with(lastDayOfMonth()));
 
@@ -44,7 +49,7 @@ public class FindTimeEntryService {
             errors.add(new Error("start_date or end_date", "start_date or end_date interval invalid"));
         }
 
-        if (MONTHS.between(start, end) > 1) {
+        if (MONTHS.between(start, end) > 6) {
             errors.add(new Error("interval", "The interval cannot be longer than 6 months"));
         }
 
@@ -54,19 +59,8 @@ public class FindTimeEntryService {
 
         var pageable = Pagination.of(pageNumber, pageSize);
 
-        var authorized = authorized()
-            .orElseThrow(() -> unauthorized("Unauthorized"));
+        var page = repository.findAllByUserIdFetchUserAndProject(pageable, start, end, userId);
 
-        if (userId.isPresent()) {
-            if (authorized.canRead(userId.get())) {
-                return of(repository.findAllByUserIdFetchUserAndProject(pageable, start, end, userId.get()));
-            }
-        }
-
-        if (authorized.isAdmin()) {
-            return of(repository.findAllFetchUserAndProject(pageable, start, end));
-        }
-
-        throw unauthorized("Unauthorized");
+        return of(page);
     }
 }

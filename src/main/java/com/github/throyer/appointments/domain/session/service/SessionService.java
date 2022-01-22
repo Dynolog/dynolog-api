@@ -3,6 +3,7 @@ package com.github.throyer.appointments.domain.session.service;
 import com.github.throyer.appointments.domain.session.model.Authorized;
 import com.github.throyer.appointments.domain.user.repository.UserRepository;
 import static com.github.throyer.appointments.utils.Constraints.JWT;
+import static com.github.throyer.appointments.utils.Response.forbidden;
 import static java.util.Objects.nonNull;
 import java.util.Optional;
 import static java.util.Optional.empty;
@@ -53,6 +54,11 @@ public class SessionService implements UserDetailsService {
         }
     }
 
+    public static Authorized authorizedOrThrow() {
+        return authorized()
+            .orElseThrow(() -> forbidden("Forbidden"));
+    }
+
     public static Optional<Authorized> authorized() {
         try {
             var principal = getPrincipal();
@@ -64,7 +70,6 @@ public class SessionService implements UserDetailsService {
         } catch (Exception exception) {
             return empty();
         }
-
     }
 
     private static Object getPrincipal() {

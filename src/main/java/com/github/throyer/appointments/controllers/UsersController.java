@@ -1,7 +1,7 @@
 package com.github.throyer.appointments.controllers;
 
 import com.github.throyer.appointments.domain.session.dto.TokenResponse;
-import com.github.throyer.appointments.domain.user.model.CreateUserData;
+import com.github.throyer.appointments.domain.user.model.CreateUserProps;
 import com.github.throyer.appointments.domain.user.service.CreateUserService;
 import static com.github.throyer.appointments.utils.Response.created;
 
@@ -29,7 +29,7 @@ public class UsersController {
     @ResponseStatus(CREATED)
     @Operation(summary = "Register a new user", description = "Returns the new user along with their JWT session information")
     public ResponseEntity<TokenResponse> save(
-        @Validated @RequestBody CreateUserData body
+        @Validated @RequestBody CreateUserProps body
     ) {
         var token = createService.createWithSession(body);
         return created(token, "api/users", token.getUser().getId());

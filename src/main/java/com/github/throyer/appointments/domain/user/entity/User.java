@@ -1,33 +1,29 @@
 package com.github.throyer.appointments.domain.user.entity;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.github.throyer.appointments.domain.role.entity.Role;
+import com.github.throyer.appointments.domain.shared.Addressable;
+import com.github.throyer.appointments.domain.user.model.CreateUserProps;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.hibernate.Hibernate;
+
+import javax.persistence.*;
+import java.io.Serializable;
+import java.util.List;
+import java.util.Objects;
+
 import static com.fasterxml.jackson.annotation.JsonProperty.Access.WRITE_ONLY;
+import static com.github.throyer.appointments.utils.Constraints.PASSWORD_ENCODER;
+import static java.util.Optional.ofNullable;
 import static javax.persistence.CascadeType.DETACH;
 import static javax.persistence.FetchType.LAZY;
 import static javax.persistence.GenerationType.IDENTITY;
 
-import java.io.Serializable;
-import java.util.List;
-
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.github.throyer.appointments.domain.role.entity.Role;
-
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import com.github.throyer.appointments.domain.shared.Addressable;
-import com.github.throyer.appointments.domain.user.model.CreateUserData;
-import static com.github.throyer.appointments.utils.Constraints.PASSWORD_ENCODER;
-import java.util.Optional;
-import javax.persistence.PrePersist;
-
-@Data
 @Entity
+@Getter
+@Setter
 @NoArgsConstructor
 public class User implements Serializable, Addressable {
 
@@ -44,13 +40,15 @@ public class User implements Serializable, Addressable {
 
     private Boolean active = true;
 
+    private String timezone;
+    private String dateFormat;
+    private String timeFormat;
+
     @ManyToMany(cascade = DETACH, fetch = LAZY)
     @JoinTable(
-            name = "user_role",
-            joinColumns = {
-                @JoinColumn(name = "user_id")},
-            inverseJoinColumns = {
-                @JoinColumn(name = "role_id")}
+        name = "user_role",
+        joinColumns = {@JoinColumn(name = "user_id")},
+        inverseJoinColumns = {@JoinColumn(name = "role_id")}
     )
     private List<Role> roles;
 
@@ -58,17 +56,17 @@ public class User implements Serializable, Addressable {
         this.id = id;
     }
 
-    public User(CreateUserData data, List<Role> roles) {
-        this.name = data.getName();
-        this.email = data.getEmail();
-        this.password = data.getPassword();
+    public User(CreateUserProps props, List<Role> roles) {
+        this.name = props.getName();
+        this.email = props.getEmail();
+        this.password = props.getPassword();
         this.roles = roles;
     }
 
     public List<String> getRoleInitials() {
-        return Optional.ofNullable(this.roles).map(roles -> roles.stream()
-                .map(role -> role.getInitials())
-                .toList()).orElseGet(() -> List.of());
+        return ofNullable(this.roles).map(roles -> roles.stream()
+                .map(Role::getInitials)
+                    .toList()).orElseGet(List::of);
     }
 
     @Override
@@ -91,5 +89,23 @@ public class User implements Serializable, Addressable {
     @PrePersist
     private void created() {
         this.password = PASSWORD_ENCODER.encode(password);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        User user = (User) o;
+        return id != null && Objects.equals(id, user.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return ofNullable(this.name).orElse("");
     }
 }
