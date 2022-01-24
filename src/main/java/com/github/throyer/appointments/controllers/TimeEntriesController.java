@@ -50,7 +50,7 @@ public class TimeEntriesController {
         @RequestParam("end_date") @DateTimeFormat(iso = DATE_TIME) Optional<LocalDateTime> end,
         @RequestParam("page") Optional<Integer> page,
         @RequestParam("size") Optional<Integer> size,
-        @RequestParam("user_id") Optional<Long> userId
+        @RequestParam("user_id") Long userId
     ) {
         var result = findService.findAll(start, end, page, size, userId);
         return ok(result);

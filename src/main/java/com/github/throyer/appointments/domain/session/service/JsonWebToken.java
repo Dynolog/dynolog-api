@@ -39,9 +39,7 @@ public class JsonWebToken {
     ) {
         return Jwts.builder()
             .setSubject(id.toString())
-            .claim(ROLES_KEY_ON_JWT, authorities
-                .stream()                
-                .collect(Collectors.joining(",")))
+            .claim(ROLES_KEY_ON_JWT, String.join(",", authorities))
             .setExpiration(Date.from(expiration
                 .atZone(ZoneId.systemDefault())
                 .toInstant()))

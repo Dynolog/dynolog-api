@@ -18,21 +18,25 @@ import static com.github.throyer.appointments.domain.timeentry.repository.Querie
 public interface TimeEntryRepository extends JpaRepository<TimeEntry, Long> {
 
     @Query(FIND_TIME_ENTRIES_BY_USER_ID_FETCH_USER_AND_PROJECT)
-    public Page<TimeEntryDetails> findAllByUserIdFetchUserAndProject(
+    Page<TimeEntryDetails> findAllByUserIdFetchUserAndProject(
         Pageable pageable,
         @Param("start_date") LocalDateTime start,
         @Param("end_date") LocalDateTime end,
         @Param("user_id") Long userId
     );
 
-    @Query(FIND_TIME_ENTRY_BY_ID)
-    public TimeEntryDetails findByIdFetchUserAndProject(@Param("id") Long id);
+    @Query(FIND_ALL_TIME_ENTRIES_FETCH_USER_AND_PROJECT)
+    Page<TimeEntryDetails> findAllFetchUserAndProject(
+            Pageable pageable,
+            @Param("start_date") LocalDateTime start,
+            @Param("end_date") LocalDateTime end
+    );
 
-    @Query(FIND_TIME_ENTRIES_OF_ALL_USERS_FETCH_USER_AND_PROJECT)
-    public Page<TimeEntryDetails> findAllFetchUserAndProject(Pageable pageable);
+    @Query(FIND_TIME_ENTRY_BY_ID)
+    TimeEntryDetails findByIdFetchUserAndProject(@Param("id") Long id);
 
     @Query(FIND_TIME_ENTRIES_BY_USER_ID_BETWEEN_START_AND_END_DATE)
-    public List<TimeEntryDetails> findTimeEntriesByUserIdAndBetweenStartAndEndDate(
+    List<TimeEntryDetails> findTimeEntriesByUserIdAndBetweenStartAndEndDate(
         @Param("start_date") LocalDateTime start,
         @Param("end_date") LocalDateTime end,
         @Param("user_id") Long userId

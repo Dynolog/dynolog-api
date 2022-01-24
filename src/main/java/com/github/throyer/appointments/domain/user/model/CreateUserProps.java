@@ -10,7 +10,7 @@ import static com.github.throyer.appointments.domain.user.validation.EmailUnique
 
 @Data
 @NoArgsConstructor
-public class CreateUserData implements Addressable {
+public class CreateUserProps implements Addressable {
     @NotEmpty(message = "email is a required field.")
     private String name;
 

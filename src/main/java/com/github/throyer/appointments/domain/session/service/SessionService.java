@@ -2,11 +2,15 @@ package com.github.throyer.appointments.domain.session.service;
 
 import com.github.throyer.appointments.domain.session.model.Authorized;
 import com.github.throyer.appointments.domain.user.repository.UserRepository;
-import static com.github.throyer.appointments.utils.Constraints.JWT;
+
+import static com.github.throyer.appointments.utils.Constraints.SECURITY.JWT;
+import static com.github.throyer.appointments.utils.Response.forbidden;
 import static java.util.Objects.nonNull;
 import java.util.Optional;
 import static java.util.Optional.empty;
 import static java.util.Optional.of;
+import static java.util.logging.Level.WARNING;
+
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,11 +48,16 @@ public class SessionService implements UserDetailsService {
         try {
             var authorized = JWT.decode(token, SECRET);
             SecurityContextHolder
-                    .getContext()
+                .getContext()
                     .setAuthentication(authorized.getAuthentication());
         } catch (Exception exception) {
-            LOGGER.log(Level.WARNING, "Token expired or invalid");
+            LOGGER.log(WARNING, "Token expired or invalid");
         }
+    }
+
+    public static Authorized authorizedOrThrow() {
+        return authorized()
+            .orElseThrow(() -> forbidden("Forbidden"));
     }
 
     public static Optional<Authorized> authorized() {
@@ -62,7 +71,6 @@ public class SessionService implements UserDetailsService {
         } catch (Exception exception) {
             return empty();
         }
-
     }
 
     private static Object getPrincipal() {

@@ -137,13 +137,6 @@
                             <artifactId>lombok</artifactId>
                         </exclude>
                     </excludes>
-                    <executions>
-                        <execution>
-                            <goals>
-                                <goal>build-info</goal>
-                            </goals>
-                        </execution>
-                    </executions>
                     <jvmArguments>
                         -agentlib:jdwp=transport=dt_socket,server=y,address=*:8000,suspend=n
                     </jvmArguments>

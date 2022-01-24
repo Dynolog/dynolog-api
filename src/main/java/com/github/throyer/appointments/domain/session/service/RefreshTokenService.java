@@ -4,28 +4,15 @@ import com.github.throyer.appointments.domain.session.dto.RefreshTokenRequest;
 import com.github.throyer.appointments.domain.session.dto.RefreshTokenResponse;
 import com.github.throyer.appointments.domain.session.entity.RefreshToken;
 import com.github.throyer.appointments.domain.session.repository.RefreshTokenRepository;
-import static com.github.throyer.appointments.utils.Constraints.JWT;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import static com.github.throyer.appointments.utils.Constraints.SECURITY.*;
 import static com.github.throyer.appointments.utils.Response.forbidden;
 import static java.time.LocalDateTime.now;
 
-import java.time.LocalDateTime;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
-
 @Service
 public class RefreshTokenService {
-
-    public static final String REFRESH_SESSION_ERROR_MESSAGE = "Refresh token expirado ou inválido.";
-
-    @Value("${token.secret}")
-    private String TOKEN_SECRET;
-
-    @Value("${token.expiration-in-hours}")
-    private Integer TOKEN_EXPIRATION_IN_HOURS;
-
-    @Value("${token.refresh.expiration-in-days}")
-    private Integer REFRESH_TOKEN_EXPIRATION_IN_DAYS;
 
     @Autowired
     private RefreshTokenRepository refreshTokenRepository;
