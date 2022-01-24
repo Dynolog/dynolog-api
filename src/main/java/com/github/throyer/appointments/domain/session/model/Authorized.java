@@ -79,6 +79,6 @@ public class Authorized extends User {
     @Override
     public String toString() {
         var roles = this.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(joining(","));
-        return toJson(Map.of("id", this.id, "roles", roles);
+        return toJson(Map.of("id", this.id, "roles", roles));
     }
 }
