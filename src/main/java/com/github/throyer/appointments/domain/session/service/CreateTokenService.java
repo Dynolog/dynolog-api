@@ -1,38 +1,33 @@
 package com.github.throyer.appointments.domain.session.service;
 
 import com.github.throyer.appointments.domain.session.dto.TokenRequest;
+import com.github.throyer.appointments.domain.session.dto.TokenResponse;
 import com.github.throyer.appointments.domain.session.entity.RefreshToken;
 import com.github.throyer.appointments.domain.session.repository.RefreshTokenRepository;
-import com.github.throyer.appointments.domain.session.dto.TokenResponse;
 import com.github.throyer.appointments.domain.user.model.UserDetails;
 import com.github.throyer.appointments.domain.user.repository.UserRepository;
-import static com.github.throyer.appointments.utils.Constraints.JWT;
-import static com.github.throyer.appointments.utils.Response.forbidden;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
+import static com.github.throyer.appointments.utils.Constraints.SECURITY.*;
+import static com.github.throyer.appointments.utils.Response.forbidden;
 
 @Service
 public class CreateTokenService {
-    
-    public static final String CREATE_SESSION_ERROR_MESSAGE = "Invalid Password or Username.";
 
-    @Value("${token.secret}")
-    private String TOKEN_SECRET;
-
-    @Value("${token.expiration-in-hours}")
-    private Integer TOKEN_EXPIRATION_IN_HOURS;
-
-    @Value("${token.refresh.expiration-in-days}")
-    private Integer REFRESH_TOKEN_EXPIRATION_IN_DAYS;
-    
     @Autowired
-    private RefreshTokenRepository refreshTokenRepository;
-    @Autowired
-    private UserRepository userRepository;
+    public CreateTokenService(
+        RefreshTokenRepository refreshTokenRepository,
+        UserRepository userRepository
+    ) {
+        this.refreshTokenRepository = refreshTokenRepository;
+        this.userRepository = userRepository;
+    }
+
+    private final RefreshTokenRepository refreshTokenRepository;
+    private final UserRepository userRepository;
     
     public TokenResponse create(TokenRequest request) {
         var user = userRepository.findOptionalByEmailFetchRoles(request.getEmail())

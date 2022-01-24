@@ -7,8 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import static com.github.throyer.appointments.domain.session.service.SessionService.authorizedOrThrow;
-import static com.github.throyer.appointments.utils.Response.notFound;
-import static com.github.throyer.appointments.utils.Response.unauthorized;
+import static com.github.throyer.appointments.utils.Response.*;
 
 @Service
 public class UpdateProjectService {
@@ -26,7 +25,7 @@ public class UpdateProjectService {
 
         var authorized = authorizedOrThrow();
 
-        var project = repository.findByIdFetchUser(id)
+        var project = repository.findOptionalByIdFetchUser(id)
                 .orElseThrow(() -> notFound("Project not found"));
 
         if (!authorized.canModify(project.getUser().getId())) {
@@ -37,6 +36,8 @@ public class UpdateProjectService {
 
         repository.save(project);
 
-        return new ProjectDetails(project);
+        var updated = repository.findByIdFetchUser(id);
+
+        return new ProjectDetails(updated);
     }
 }

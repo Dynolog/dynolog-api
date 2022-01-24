@@ -1,16 +1,20 @@
 package com.github.throyer.appointments.domain.session.model;
 
 import com.github.throyer.appointments.domain.role.entity.Role;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
+
+import java.io.Serial;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-
 import static com.github.throyer.appointments.utils.JsonUtils.toJson;
+import static java.util.stream.Collectors.joining;
 
 public class Authorized extends User {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     private final Long id;
@@ -65,7 +69,7 @@ public class Authorized extends User {
 
     public Boolean canRead(Long id) {
         var admin = isAdmin();
-        var equals = getId().equals(id);
+        var equals = this.id.equals(id);
         if (admin) {
             return true;
         }
@@ -74,6 +78,7 @@ public class Authorized extends User {
 
     @Override
     public String toString() {
-        return toJson(Map.of("id", this.id, "roles", this.getAuthorities()));
+        var roles = this.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(joining(","));
+        return toJson(Map.of("id", this.id, "roles", roles);
     }
 }

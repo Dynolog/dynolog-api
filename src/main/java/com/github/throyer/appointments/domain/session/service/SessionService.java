@@ -2,7 +2,8 @@ package com.github.throyer.appointments.domain.session.service;
 
 import com.github.throyer.appointments.domain.session.model.Authorized;
 import com.github.throyer.appointments.domain.user.repository.UserRepository;
-import static com.github.throyer.appointments.utils.Constraints.JWT;
+
+import static com.github.throyer.appointments.utils.Constraints.SECURITY.JWT;
 import static com.github.throyer.appointments.utils.Response.forbidden;
 import static java.util.Objects.nonNull;
 import java.util.Optional;
@@ -47,7 +48,7 @@ public class SessionService implements UserDetailsService {
         try {
             var authorized = JWT.decode(token, SECRET);
             SecurityContextHolder
-                    .getContext()
+                .getContext()
                     .setAuthentication(authorized.getAuthentication());
         } catch (Exception exception) {
             LOGGER.log(WARNING, "Token expired or invalid");

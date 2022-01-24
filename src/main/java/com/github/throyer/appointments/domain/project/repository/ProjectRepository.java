@@ -14,5 +14,8 @@ import static com.github.throyer.appointments.domain.project.repository.Queries.
 public interface ProjectRepository extends JpaRepository<Project, Long> {
 
     @Query(FIND_PROJECT_BY_ID_FETCH_USER)
-    Optional<Project> findByIdFetchUser(@Param("id") Long id);
+    Optional<Project> findOptionalByIdFetchUser(@Param("id") Long id);
+
+    @Query(FIND_PROJECT_BY_ID_FETCH_USER)
+    Project findByIdFetchUser(@Param("id") Long id);
 }

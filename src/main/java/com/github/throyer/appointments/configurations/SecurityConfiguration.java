@@ -2,7 +2,8 @@ package com.github.throyer.appointments.configurations;
 
 import com.github.throyer.appointments.domain.session.service.SessionService;
 import com.github.throyer.appointments.middlewares.AuthorizationMiddleware;
-import static com.github.throyer.appointments.utils.Constraints.PASSWORD_ENCODER;
+
+import static com.github.throyer.appointments.utils.Constraints.SECURITY.PASSWORD_ENCODER;
 import static com.github.throyer.appointments.utils.Response.forbidden;
 
 import static org.springframework.http.HttpMethod.GET;

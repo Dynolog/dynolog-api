@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonProperty.Access.WRITE_ONLY;
-import static com.github.throyer.appointments.utils.Constraints.PASSWORD_ENCODER;
+import static com.github.throyer.appointments.utils.Constraints.SECURITY.PASSWORD_ENCODER;
 import static java.util.Optional.ofNullable;
 import static javax.persistence.CascadeType.DETACH;
 import static javax.persistence.FetchType.LAZY;
