@@ -1,27 +1,37 @@
 package com.github.throyer.appointments.domain.timeentry.model;
 
+import com.github.throyer.appointments.domain.project.entity.Project;
+import com.github.throyer.appointments.domain.timeentry.entity.TimeEntry;
 import lombok.Data;
 
-import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
-import static java.lang.String.format;
+import static com.github.throyer.appointments.utils.TimeUtils.millisToTime;
+import static java.util.stream.Collectors.groupingBy;
 
 @Data
 public class Summary {
     private final String totalTime;
-    private final BigDecimal billableHoursAmount;
+    private NonBillableHours nonBillableHours = new NonBillableHours(List.of());
 
-    public Summary(List<TimeEntryDetails> entries) {
-        long totalMillis = entries.stream()
-            .map(TimeEntryDetails::totalTimeInMillis)
-                .reduce(0L, Long::sum);
+    private final List<ProjectSummary> projects = new ArrayList<>();
 
-        var secs = totalMillis / 1000;
-        this.totalTime = format("%02d:%02d:%02d", secs / 3600, (secs % 3600) / 60, secs % 60);
+    public Summary(List<TimeEntry> timeEntries) {
+        this.totalTime = millisToTime(TimeEntry.sum(timeEntries));
 
-        var hours = totalMillis / 3.6e+6;
-        var billableHours = hours * 60;
-        this.billableHoursAmount = BigDecimal.valueOf(billableHours);
+        var groupedTimeEntries = timeEntries.stream()
+            .collect(groupingBy(TimeEntry::getProject));
+
+        groupedTimeEntries.forEach(this::toBillable);
+    }
+
+    private void toBillable(Optional<Project> project, List<TimeEntry> timeEntries) {
+        if (project.isPresent()) {
+            this.projects.add(new ProjectSummary(project.get(), timeEntries));
+        } else {
+            this.nonBillableHours = new NonBillableHours(timeEntries);
+        }
     }
 }

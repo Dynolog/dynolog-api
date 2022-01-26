@@ -1,15 +1,17 @@
 package com.github.throyer.appointments.domain.user.service;
 
 import com.github.throyer.appointments.domain.role.repository.RoleRepository;
-import com.github.throyer.appointments.domain.session.service.CreateTokenService;
-import com.github.throyer.appointments.domain.user.model.CreateUserProps;
 import com.github.throyer.appointments.domain.session.dto.TokenResponse;
-import com.github.throyer.appointments.domain.user.model.UserDetails;
+import com.github.throyer.appointments.domain.session.service.CreateTokenService;
 import com.github.throyer.appointments.domain.user.entity.User;
+import com.github.throyer.appointments.domain.user.model.CreateUserProps;
+import com.github.throyer.appointments.domain.user.model.SimplifiedUser;
 import com.github.throyer.appointments.domain.user.repository.UserRepository;
-import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import javax.validation.Valid;
+import java.util.List;
 
 @Service
 public class CreateUserService {
@@ -30,7 +32,7 @@ public class CreateUserService {
         this.userRepository = userRepository;
     }
 
-    public UserDetails create(CreateUserProps data) {
+    public SimplifiedUser create(CreateUserProps data) {
         
         data.validate();
 
@@ -40,7 +42,7 @@ public class CreateUserService {
         
         var user = userRepository.save(new User(data, roles));
 
-        return new UserDetails(user);
+        return new SimplifiedUser(user);
     }
     
     public TokenResponse createWithSession(CreateUserProps data) {

@@ -11,6 +11,11 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Objects;
 
+import static com.github.throyer.appointments.utils.Constraints.CURRENCY.CURRENCY_SCALE;
+import static com.github.throyer.appointments.utils.Constraints.CURRENCY.HOURS_IN_MILLISECONDS;
+import static java.math.BigDecimal.valueOf;
+import static java.math.RoundingMode.HALF_EVEN;
+import static java.util.Objects.nonNull;
 import static java.util.Optional.ofNullable;
 import static javax.persistence.CascadeType.DETACH;
 import static javax.persistence.FetchType.LAZY;
@@ -40,13 +45,34 @@ public class Project implements Serializable {
 
     public Project(CreateProjectProps props) {
         this.name = props.getName();
-        this.hourlyHate = props.getHourlyHate();
         this.user = new User(props.getUserId());
+        this.hourlyHate = props.getHourlyHate();
+    }
+
+    public Project(Long id, String name, BigDecimal hourlyHate) {
+        this.id = id;
+        this.name = name;
+        this.hourlyHate = hourlyHate;
+    }
+
+    public Project(Long id, String name, BigDecimal hourlyHate, Long userId, String userName) {
+        this.id = id;
+        this.name = name;
+        this.hourlyHate = hourlyHate;
+        if (nonNull(userId)) {
+            this.user = new User(userId, userName);
+        }
     }
 
     public void update(UpdateProjectProps props) {
         this.name = props.getName();
         this.hourlyHate = props.getHourlyHate();
+    }
+
+    public BigDecimal calcBillableValue(Long millis) {
+        var hours = millis / HOURS_IN_MILLISECONDS;
+        return this.hourlyHate.multiply(valueOf(hours))
+            .setScale(CURRENCY_SCALE, HALF_EVEN);
     }
 
     @Override

@@ -4,11 +4,12 @@ import com.github.throyer.appointments.domain.session.dto.TokenRequest;
 import com.github.throyer.appointments.domain.session.dto.TokenResponse;
 import com.github.throyer.appointments.domain.session.entity.RefreshToken;
 import com.github.throyer.appointments.domain.session.repository.RefreshTokenRepository;
-import com.github.throyer.appointments.domain.user.model.UserDetails;
-import com.github.throyer.appointments.domain.user.repository.UserRepository;
+import com.github.throyer.appointments.domain.user.model.SimplifiedUser;
+import com.github.throyer.appointments.domain.user.service.FindUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.validation.Valid;
 import java.time.LocalDateTime;
 
 import static com.github.throyer.appointments.utils.Constraints.SECURITY.*;
@@ -20,23 +21,23 @@ public class CreateTokenService {
     @Autowired
     public CreateTokenService(
         RefreshTokenRepository refreshTokenRepository,
-        UserRepository userRepository
+        FindUserService findUserService
     ) {
         this.refreshTokenRepository = refreshTokenRepository;
-        this.userRepository = userRepository;
+        this.findUserService = findUserService;
     }
 
     private final RefreshTokenRepository refreshTokenRepository;
-    private final UserRepository userRepository;
+    private final FindUserService findUserService;
     
     public TokenResponse create(TokenRequest request) {
-        var user = userRepository.findOptionalByEmailFetchRoles(request.getEmail())
-            .filter(session -> session.validatePassword(request.getPassword()))
+        var userFound = findUserService.findByEmail(request.getEmail())
+            .filter(user -> user.validatePassword(request.getPassword()))
                 .orElseThrow(() -> forbidden(CREATE_SESSION_ERROR_MESSAGE));
-        return create(new UserDetails(user));
+        return create(new SimplifiedUser(userFound));
     }
 
-    public TokenResponse create(UserDetails user) {
+    public TokenResponse create(SimplifiedUser user) {
 
         var now = LocalDateTime.now();
         var expiresIn = now.plusHours(TOKEN_EXPIRATION_IN_HOURS);

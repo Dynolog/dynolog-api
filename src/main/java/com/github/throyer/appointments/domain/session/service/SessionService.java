@@ -3,7 +3,7 @@ package com.github.throyer.appointments.domain.session.service;
 import com.github.throyer.appointments.domain.session.model.Authorized;
 import com.github.throyer.appointments.domain.user.repository.UserRepository;
 
-import static com.github.throyer.appointments.utils.Constraints.SECURITY.JWT;
+import static com.github.throyer.appointments.utils.Constraints.SECURITY.*;
 import static com.github.throyer.appointments.utils.Response.forbidden;
 import static java.util.Objects.nonNull;
 import java.util.Optional;
@@ -26,27 +26,20 @@ public class SessionService implements UserDetailsService {
 
     @Autowired
     UserRepository repository;
+
     private static final Logger LOGGER = Logger.getLogger(SessionService.class.getName());
-    
-    public static final String INVALID_USERNAME = "Nome de usuário invalido.";
-
-    private static String SECRET;
-
-    public SessionService(@Value("${token.secret}") String secret) {
-        SessionService.SECRET = secret;
-    }
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         var user = repository.findOptionalByEmailFetchRoles(email)
-                .orElseThrow(() -> new UsernameNotFoundException(INVALID_USERNAME));
+            .orElseThrow(() -> new UsernameNotFoundException(INVALID_USERNAME));
         
         return new Authorized(user);
     }
 
     public static void authorize(String token) {
         try {
-            var authorized = JWT.decode(token, SECRET);
+            var authorized = JWT.decode(token, TOKEN_SECRET);
             SecurityContextHolder
                 .getContext()
                     .setAuthentication(authorized.getAuthentication());

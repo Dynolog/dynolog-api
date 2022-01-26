@@ -34,7 +34,7 @@ public class Authorized extends User {
             true,
             true,
             true,
-            user.getRoles()
+            user.getAuthorities()
         );
         this.id = user.getId();
         this.name = user.getName();

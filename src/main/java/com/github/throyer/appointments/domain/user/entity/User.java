@@ -8,9 +8,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.Hibernate;
+import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 
@@ -63,10 +66,29 @@ public class User implements Serializable, Addressable {
         this.roles = roles;
     }
 
-    public List<String> getRoleInitials() {
+    public User(Long id, String name, String email, String password, String joinedRoles) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.password = password;
+        this.roles = ofNullable(joinedRoles)
+            .map(roles -> Arrays.stream(roles.split(",")).map(Role::new).toList())
+                .orElse(List.of());
+    }
+
+    public User(Long id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
+    public List<String> getRoles() {
         return ofNullable(this.roles).map(roles -> roles.stream()
                 .map(Role::getInitials)
                     .toList()).orElseGet(List::of);
+    }
+
+    public List<Role> getAuthorities() {
+        return this.roles;
     }
 
     @Override

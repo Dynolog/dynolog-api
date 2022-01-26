@@ -2,7 +2,8 @@ package com.github.throyer.appointments.domain.timeentry.service;
 
 import com.github.throyer.appointments.domain.pagination.Page;
 import com.github.throyer.appointments.domain.pagination.Pagination;
-import com.github.throyer.appointments.domain.timeentry.model.TimeEntryDetails;
+import com.github.throyer.appointments.domain.timeentry.model.SimplifiedTimeEntry;
+import com.github.throyer.appointments.domain.timeentry.model.TimeEntryInfo;
 import com.github.throyer.appointments.domain.timeentry.repository.TimeEntryRepository;
 import com.github.throyer.appointments.errors.Error;
 import com.github.throyer.appointments.errors.exception.BadRequestException;
@@ -10,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.Optional;
 
 import static com.github.throyer.appointments.domain.pagination.Page.of;
@@ -27,7 +27,7 @@ public class FindTimeEntryService {
     @Autowired
     public TimeEntryRepository repository;
 
-    public Page<TimeEntryDetails> findAll(
+    public Page<TimeEntryInfo> findAll(
         Optional<LocalDateTime> optionalStart,
         Optional<LocalDateTime> optionalEnd,
         Optional<Integer> pageNumber,
@@ -43,23 +43,23 @@ public class FindTimeEntryService {
         var start = optionalStart.orElse(now().with(firstDayOfMonth()));
         var end = optionalEnd.orElse(now().with(lastDayOfMonth()));
 
-        var errors = new ArrayList<Error>();
+        var exception = new BadRequestException();
 
         if (start.isAfter(end) || end.isBefore(start)) {
-            errors.add(new Error("start_date or end_date", "start_date or end_date interval invalid"));
+            exception.add(new Error("start_date or end_date", "start_date or end_date interval invalid"));
         }
 
         if (MONTHS.between(start, end) > 6) {
-            errors.add(new Error("interval", "The interval cannot be longer than 6 months"));
+            exception.add(new Error("interval", "The interval cannot be longer than 6 months"));
         }
 
-        if (!errors.isEmpty()) {
-            throw new BadRequestException(errors);
+        if (exception.hasError()) {
+            throw exception;
         }
 
         var pageable = Pagination.of(pageNumber, pageSize);
 
-        var page = repository.findAllByUserIdFetchUserAndProject(pageable, start, end, userId);
+        var page = repository.findAllByUserIdFetchUserAndProject(pageable, start, end, userId).map(TimeEntryInfo::new);
 
         return of(page);
     }

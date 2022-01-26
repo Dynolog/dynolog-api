@@ -2,19 +2,24 @@ package com.github.throyer.appointments.controllers;
 
 import com.github.throyer.appointments.domain.pagination.Page;
 import com.github.throyer.appointments.domain.timeentry.model.CreateTimeEntryProps;
-import com.github.throyer.appointments.domain.timeentry.model.TimeEntryDetails;
+import com.github.throyer.appointments.domain.timeentry.model.SimplifiedTimeEntry;
+import com.github.throyer.appointments.domain.timeentry.model.TimeEntryInfo;
 import com.github.throyer.appointments.domain.timeentry.model.UpdateTimeEntryProps;
 import com.github.throyer.appointments.domain.timeentry.service.CreateTimeEntryService;
 import com.github.throyer.appointments.domain.timeentry.service.FindTimeEntryService;
 import com.github.throyer.appointments.domain.timeentry.service.UpdateTimeEntryService;
+
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
@@ -23,9 +28,10 @@ import static com.github.throyer.appointments.utils.Response.ok;
 import static org.springframework.format.annotation.DateTimeFormat.ISO.DATE_TIME;
 
 @RestController
-@SecurityRequirement(name = "token")
-@RequestMapping("api/time-entries")
 @Tag(name = "Time entries")
+@RequestMapping("api/time-entries")
+@SecurityRequirement(name = "token")
+@PreAuthorize("hasAnyAuthority('USER')")
 public class TimeEntriesController {
 
     private final CreateTimeEntryService createService;
@@ -45,7 +51,7 @@ public class TimeEntriesController {
 
     @GetMapping
     @Operation(summary = "Returns a paginated list of time entries")
-    public ResponseEntity<Page<TimeEntryDetails>> index(
+    public ResponseEntity<Page<TimeEntryInfo>> index(
         @RequestParam("start_date") @DateTimeFormat(iso = DATE_TIME) Optional<LocalDateTime> start,
         @RequestParam("end_date") @DateTimeFormat(iso = DATE_TIME) Optional<LocalDateTime> end,
         @RequestParam("page") Optional<Integer> page,
@@ -58,14 +64,19 @@ public class TimeEntriesController {
     
     @PostMapping
     @Operation(summary = "Register a new time entry")
-    public ResponseEntity<TimeEntryDetails> create(@RequestBody CreateTimeEntryProps body) {
+    public ResponseEntity<TimeEntryInfo> create(
+        @RequestBody @Valid CreateTimeEntryProps body
+    ) {
         var timeEntry = createService.create(body);
         return created(timeEntry, "api/time_entries");
     }
 
     @PutMapping("{id}")
     @Operation(summary = "Update a time entry")
-    public ResponseEntity<TimeEntryDetails> update(@PathVariable Long id, @RequestBody UpdateTimeEntryProps body) {
+    public ResponseEntity<TimeEntryInfo> update(
+        @PathVariable Long id,
+        @RequestBody @Valid UpdateTimeEntryProps body
+    ) {
         var timeEntry = updateService.update(id, body);
         return ok(timeEntry);
     }

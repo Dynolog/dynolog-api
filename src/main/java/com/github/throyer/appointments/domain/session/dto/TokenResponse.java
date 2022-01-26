@@ -4,13 +4,13 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonFormat.Shape;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.github.throyer.appointments.domain.session.entity.RefreshToken;
-import com.github.throyer.appointments.domain.user.model.UserDetails;
+import com.github.throyer.appointments.domain.user.model.SimplifiedUser;
 import com.github.throyer.appointments.domain.user.entity.User;
 import java.time.LocalDateTime;
 
 public class TokenResponse {
 
-    private final UserDetails user;
+    private final SimplifiedUser user;
     private final String token;
     private final RefreshToken refreshToken;
     private final LocalDateTime expiresIn;
@@ -22,14 +22,14 @@ public class TokenResponse {
         RefreshToken refreshToken,
         LocalDateTime expiresIn
     ) {
-        this.user = new UserDetails(user);
+        this.user = new SimplifiedUser(user);
         this.token = token;
         this.refreshToken = refreshToken;
         this.expiresIn = expiresIn;
     }
     
     public TokenResponse(
-        UserDetails user,
+        SimplifiedUser user,
         String token,
         RefreshToken refreshToken,
         LocalDateTime expiresIn
@@ -40,7 +40,7 @@ public class TokenResponse {
         this.expiresIn = expiresIn;
     }
 
-    public UserDetails getUser() {
+    public SimplifiedUser getUser() {
         return user;
     }
 

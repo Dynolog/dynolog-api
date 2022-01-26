@@ -6,7 +6,7 @@ public final class Queries {
 
     public static final String FIND_TIME_ENTRIES_BY_USER_ID_FETCH_USER_AND_PROJECT = """
                 SELECT
-                    new com.github.throyer.appointments.domain.timeentry.model.TimeEntryDetails(
+                    new com.github.throyer.appointments.domain.timeentry.entity.TimeEntry(
                         time_entry.id,
                         time_entry.description,
                         time_entry.start,
@@ -14,7 +14,8 @@ public final class Queries {
                         user.id,
                         user.name,
                         project.id,
-                        project.name
+                        project.name,
+                        project.hourlyHate
                     )
                 FROM TimeEntry AS time_entry
                 LEFT JOIN time_entry.user AS user
@@ -25,7 +26,7 @@ public final class Queries {
 
     public static final String FIND_ALL_TIME_ENTRIES_FETCH_USER_AND_PROJECT = """
                 SELECT
-                    new com.github.throyer.appointments.domain.timeentry.model.TimeEntryDetails(
+                    new com.github.throyer.appointments.domain.timeentry.entity.TimeEntry(
                         time_entry.id,
                         time_entry.description,
                         time_entry.start,
@@ -33,7 +34,8 @@ public final class Queries {
                         user.id,
                         user.name,
                         project.id,
-                        project.name
+                        project.name,
+                        project.hourlyHate
                     )
                 FROM TimeEntry AS time_entry
                 LEFT JOIN time_entry.user AS user
@@ -44,7 +46,7 @@ public final class Queries {
 
     public static final String FIND_TIME_ENTRIES_BY_USER_ID_BETWEEN_START_AND_END_DATE = """
                 SELECT
-                    new com.github.throyer.appointments.domain.timeentry.model.TimeEntryDetails(
+                    new com.github.throyer.appointments.domain.timeentry.entity.TimeEntry(
                         time_entry.id,
                         time_entry.description,
                         time_entry.start,
@@ -52,7 +54,8 @@ public final class Queries {
                         user.id,
                         user.name,
                         project.id,
-                        project.name
+                        project.name,
+                        project.hourlyHate
                     )
                 FROM TimeEntry AS time_entry
                 LEFT JOIN time_entry.user AS user
@@ -63,7 +66,7 @@ public final class Queries {
 
     public static final String FIND_TIME_ENTRY_BY_ID = """
                 SELECT
-                    new com.github.throyer.appointments.domain.timeentry.model.TimeEntryDetails(
+                    new com.github.throyer.appointments.domain.timeentry.entity.TimeEntry(
                         time_entry.id,
                         time_entry.description,
                         time_entry.start,
@@ -71,7 +74,8 @@ public final class Queries {
                         user.id,
                         user.name,
                         project.id,
-                        project.name
+                        project.name,
+                        project.hourlyHate
                     )
                 FROM TimeEntry AS time_entry
                 LEFT JOIN time_entry.user AS user

@@ -7,6 +7,8 @@ import com.github.throyer.appointments.domain.session.repository.RefreshTokenRep
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.validation.Valid;
+
 import static com.github.throyer.appointments.utils.Constraints.SECURITY.*;
 import static com.github.throyer.appointments.utils.Response.forbidden;
 import static java.time.LocalDateTime.now;

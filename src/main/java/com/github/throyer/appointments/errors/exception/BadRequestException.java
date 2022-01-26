@@ -2,10 +2,15 @@ package com.github.throyer.appointments.errors.exception;
 
 import com.github.throyer.appointments.errors.Error;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 public class BadRequestException extends RuntimeException {
     Collection<Error> errors;
+
+    public BadRequestException() {
+        this.errors = new ArrayList<>();
+    }
 
     public BadRequestException(Collection<Error> errors) {
         this.errors = errors;
@@ -33,5 +38,13 @@ public class BadRequestException extends RuntimeException {
 
     public Collection<Error> getErrors() {
         return errors;
+    }
+
+    public void add(Error error) {
+        this.errors.add(error);
+    }
+
+    public Boolean hasError() {
+        return !this.errors.isEmpty();
     }
 }

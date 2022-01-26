@@ -10,6 +10,6 @@ public class UserTests {
     @Test
     public void user_should_be_have_empty_list_of_roles() {
         var user = new User();
-        assertTrue(user.getRoleInitials().isEmpty());
+        assertTrue(user.getRoles().isEmpty());
     }
 }

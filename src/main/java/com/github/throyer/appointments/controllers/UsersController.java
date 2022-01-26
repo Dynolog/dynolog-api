@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
+
 @RestController
 @Tag(name = "Users")
 @RequestMapping("api/users")
@@ -29,7 +31,7 @@ public class UsersController {
     @ResponseStatus(CREATED)
     @Operation(summary = "Register a new user", description = "Returns the new user along with their JWT session information")
     public ResponseEntity<TokenResponse> save(
-        @Validated @RequestBody CreateUserProps body
+        @Valid @RequestBody CreateUserProps body
     ) {
         var token = createService.createWithSession(body);
         return created(token, "api/users", token.getUser().getId());

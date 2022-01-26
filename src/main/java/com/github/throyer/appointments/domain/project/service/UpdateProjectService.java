@@ -1,13 +1,17 @@
 package com.github.throyer.appointments.domain.project.service;
 
-import com.github.throyer.appointments.domain.project.model.ProjectDetails;
+import com.github.throyer.appointments.domain.project.model.ProjectInfo;
+import com.github.throyer.appointments.domain.project.model.SimplifiedProject;
 import com.github.throyer.appointments.domain.project.model.UpdateProjectProps;
 import com.github.throyer.appointments.domain.project.repository.ProjectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.validation.Valid;
+
 import static com.github.throyer.appointments.domain.session.service.SessionService.authorizedOrThrow;
-import static com.github.throyer.appointments.utils.Response.*;
+import static com.github.throyer.appointments.utils.Response.notFound;
+import static com.github.throyer.appointments.utils.Response.unauthorized;
 
 @Service
 public class UpdateProjectService {
@@ -21,7 +25,7 @@ public class UpdateProjectService {
         this.repository = repository;
     }
 
-    public ProjectDetails update(Long id, UpdateProjectProps props) {
+    public ProjectInfo update(Long id, UpdateProjectProps props) {
 
         var authorized = authorizedOrThrow();
 
@@ -38,6 +42,6 @@ public class UpdateProjectService {
 
         var updated = repository.findByIdFetchUser(id);
 
-        return new ProjectDetails(updated);
+        return new ProjectInfo(updated);
     }
 }

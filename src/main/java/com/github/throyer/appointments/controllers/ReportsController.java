@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -24,6 +25,7 @@ import static org.springframework.format.annotation.DateTimeFormat.ISO.DATE_TIME
 @Tag(name = "Reports")
 @RequestMapping("api/reports")
 @SecurityRequirement(name = "token")
+@PreAuthorize("hasAnyAuthority('USER')")
 public class ReportsController {
 
     @Autowired
@@ -36,12 +38,8 @@ public class ReportsController {
     @GetMapping("/summary")
     @Operation(summary = "Returns a summary of all time entries for a user")
     public ResponseEntity<Summary> summary(
-        @RequestParam("start_date")
-        @DateTimeFormat(iso = DATE_TIME)
-        LocalDateTime start,
-        @RequestParam("end_date")
-        @DateTimeFormat(iso = DATE_TIME)
-        LocalDateTime end,
+        @RequestParam("start_date") @DateTimeFormat(iso = DATE_TIME) LocalDateTime start,
+        @RequestParam("end_date") @DateTimeFormat(iso = DATE_TIME) LocalDateTime end,
         @RequestParam("user_id") Long userId
     ) {
         return authorized()

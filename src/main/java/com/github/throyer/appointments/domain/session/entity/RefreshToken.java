@@ -1,6 +1,6 @@
 package com.github.throyer.appointments.domain.session.entity;
 
-import com.github.throyer.appointments.domain.user.model.UserDetails;
+import com.github.throyer.appointments.domain.user.model.SimplifiedUser;
 import com.github.throyer.appointments.domain.user.entity.User;
 import lombok.*;
 import org.hibernate.Hibernate;
@@ -42,7 +42,7 @@ public class RefreshToken implements Serializable {
         this.code = randomUUID().toString();
     }
 
-    public RefreshToken(UserDetails user, Integer daysToExpire) {
+    public RefreshToken(SimplifiedUser user, Integer daysToExpire) {
         this.expiresIn = now().plusDays(daysToExpire);
         this.code = randomUUID().toString();
         this.user = Optional.ofNullable(user.getId()).map(User::new).orElse(null);
