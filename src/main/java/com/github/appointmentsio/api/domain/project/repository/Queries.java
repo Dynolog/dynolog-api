@@ -12,7 +12,7 @@ public class Queries {
                     new com.github.appointmentsio.api.domain.project.entity.Project(
                         project.id,
                         project.name,
-                        project.hourlyHate,
+                        project.hourlyRate,
                         user.id,
                         user.name
                     )

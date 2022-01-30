@@ -15,7 +15,7 @@ public final class Queries {
                         user.name,
                         project.id,
                         project.name,
-                        project.hourlyHate
+                        project.hourlyRate
                     )
                 FROM TimeEntry AS time_entry
                 LEFT JOIN time_entry.user AS user
@@ -35,7 +35,7 @@ public final class Queries {
                         user.name,
                         project.id,
                         project.name,
-                        project.hourlyHate
+                        project.hourlyRate
                     )
                 FROM TimeEntry AS time_entry
                 LEFT JOIN time_entry.user AS user
@@ -55,7 +55,7 @@ public final class Queries {
                         user.name,
                         project.id,
                         project.name,
-                        project.hourlyHate
+                        project.hourlyRate
                     )
                 FROM TimeEntry AS time_entry
                 LEFT JOIN time_entry.user AS user
@@ -75,7 +75,7 @@ public final class Queries {
                         user.name,
                         project.id,
                         project.name,
-                        project.hourlyHate
+                        project.hourlyRate
                     )
                 FROM TimeEntry AS time_entry
                 LEFT JOIN time_entry.user AS user

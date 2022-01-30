@@ -32,7 +32,7 @@ public class Project implements Serializable {
     private Long id;
 
     private String name;
-    private BigDecimal hourlyHate;
+    private BigDecimal hourlyRate;
 
     @ManyToOne(fetch = LAZY, cascade = DETACH)
     @JoinColumn(name = "user_id")
@@ -46,19 +46,19 @@ public class Project implements Serializable {
     public Project(CreateProjectProps props) {
         this.name = props.getName();
         this.user = new User(props.getUserId());
-        this.hourlyHate = props.getHourlyHate();
+        this.hourlyRate = props.getHourlyRate();
     }
 
-    public Project(Long id, String name, BigDecimal hourlyHate) {
+    public Project(Long id, String name, BigDecimal hourlyRate) {
         this.id = id;
         this.name = name;
-        this.hourlyHate = hourlyHate;
+        this.hourlyRate = hourlyRate;
     }
 
-    public Project(Long id, String name, BigDecimal hourlyHate, Long userId, String userName) {
+    public Project(Long id, String name, BigDecimal hourlyRate, Long userId, String userName) {
         this.id = id;
         this.name = name;
-        this.hourlyHate = hourlyHate;
+        this.hourlyRate = hourlyRate;
         if (nonNull(userId)) {
             this.user = new User(userId, userName);
         }
@@ -66,12 +66,12 @@ public class Project implements Serializable {
 
     public void update(UpdateProjectProps props) {
         this.name = props.getName();
-        this.hourlyHate = props.getHourlyHate();
+        this.hourlyRate = props.getHourlyRate();
     }
 
     public BigDecimal calcBillableValue(Long millis) {
         var hours = millis / HOURS_IN_MILLISECONDS;
-        return this.hourlyHate.multiply(valueOf(hours))
+        return this.hourlyRate.multiply(valueOf(hours))
             .setScale(CURRENCY_SCALE, HALF_EVEN);
     }
 

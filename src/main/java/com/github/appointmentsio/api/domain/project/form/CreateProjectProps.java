@@ -16,8 +16,8 @@ public class CreateProjectProps {
 
     @DecimalMin(value = "0.1", inclusive = false, message = "{project.hourly-hate.decimalmin}")
     @Digits(integer = 10, fraction = 2)
-    @NotNull(message = "{project.hourly-hate.notnull}")
-    private BigDecimal hourlyHate;
+    @NotNull(message = "{project.hourly-rate.notnull}")
+    private BigDecimal hourlyRate;
 
     @NotNull(message = "{project.user-id.notnull}")
     private Long userId;
