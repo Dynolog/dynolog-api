@@ -84,6 +84,11 @@ $ mvn test
 $ mvn clean package
 ```
 
+## Swagger
+Once the application is up, it is available at: [localhost:8080/documentation](localhost:8080/documentation)
+
+> [development server](https://appointments-io.herokuapp.com)
+
 ## Database Migrations
 Creating database migration files
 
