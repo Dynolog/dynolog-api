@@ -9,10 +9,10 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.github.throyer</groupId>
-    <artifactId>apontamentos</artifactId>
+    <artifactId>appointments-io</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>apontamentos</name>
-    <description>apontamento.io</description>
+    <name>Appointments.io</name>
+    <description>Appointments.io</description>
     
     <properties>
         <java.version>17</java.version>
@@ -68,17 +68,17 @@
         <dependency>
             <groupId>org.springdoc</groupId>
             <artifactId>springdoc-openapi-ui</artifactId>
-            <version>1.6.3</version>
+            <version>1.6.4</version>
         </dependency>
         <dependency>
             <groupId>org.springdoc</groupId>
             <artifactId>springdoc-openapi-webmvc-core</artifactId>
-            <version>1.6.3</version>
+            <version>1.6.4</version>
         </dependency>
         <dependency>
             <groupId>org.springdoc</groupId>
             <artifactId>springdoc-openapi-security</artifactId>
-            <version>1.6.3</version>
+            <version>1.6.4</version>
         </dependency>
 
         <dependency>
