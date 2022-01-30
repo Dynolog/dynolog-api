@@ -51,10 +51,11 @@ public class Project implements Serializable {
         this.currency = props.getCurrency();
     }
 
-    public Project(Long id, String name, BigDecimal hourlyRate) {
+    public Project(Long id, String name, BigDecimal hourlyRate, String currency) {
         this.id = id;
         this.name = name;
         this.hourlyRate = hourlyRate;
+        this.currency = currency;
     }
 
     public Project(Long id, String name, BigDecimal hourlyRate, Long userId, String userName) {

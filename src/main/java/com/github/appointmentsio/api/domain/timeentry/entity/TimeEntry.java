@@ -53,7 +53,8 @@ public class TimeEntry implements Serializable {
             String userName,
             Long projectId,
             String projectName,
-            BigDecimal hourlyHate
+            BigDecimal hourlyHate,
+            String currency
     ) {
         this.id = id;
         this.description = description;
@@ -65,7 +66,7 @@ public class TimeEntry implements Serializable {
         }
 
         if (nonNull(projectId)) {
-            this.project = new Project(projectId, projectName, hourlyHate);
+            this.project = new Project(projectId, projectName, hourlyHate, currency);
         }
     }
 
@@ -123,6 +124,7 @@ public class TimeEntry implements Serializable {
 
     /**
      * Sum total millis from time entries list
+     *
      * @param timeEntries
      * @return total millis
      */
