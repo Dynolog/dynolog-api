@@ -42,9 +42,9 @@ public class User implements Serializable, Addressable, Identity {
 
     private Boolean active = true;
 
-    private String timezone;
-    private String dateFormat;
-    private String timeFormat;
+    private String timezone = "UTC";
+    private String dateFormat = "dd/MM/yyyy";
+    private String timeFormat = "HH:mm:ss";
 
     @ManyToMany(cascade = DETACH, fetch = LAZY)
     @JoinTable(
