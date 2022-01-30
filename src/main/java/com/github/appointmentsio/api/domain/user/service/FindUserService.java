@@ -48,6 +48,9 @@ public class FindUserService {
                 tuple.get("name", String.class),
                 tuple.get("email", String.class),
                 tuple.get("password", String.class),
+                tuple.get("timezone", String.class),
+                tuple.get("date_format", String.class),
+                tuple.get("time_format", String.class),
                 tuple.get("roles", String.class)
             ));
         } catch (NoResultException exception) {

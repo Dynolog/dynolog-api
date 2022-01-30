@@ -65,11 +65,25 @@ public class User implements Serializable, Addressable, Identity {
         this.roles = roles;
     }
 
-    public User(Long id, String name, String email, String password, String joinedRoles) {
+    public User(
+        Long id,
+        String name,
+        String email,
+        String password,
+        String timezone,
+        String dateFormat,
+        String timeFormat,
+        String joinedRoles
+    ) {
         this.id = id;
         this.name = name;
         this.email = email;
         this.password = password;
+
+        this.timezone = timezone;
+        this.dateFormat = dateFormat;
+        this.timeFormat = timeFormat;
+
         this.roles = ofNullable(joinedRoles)
             .map(roles -> Arrays.stream(roles.split(",")).map(Role::new).toList())
                 .orElse(List.of());
