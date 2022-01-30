@@ -13,7 +13,7 @@ import static java.util.TimeZone.getAvailableIDs;
 
 
 @RestController
-@Tag(name = "Projects")
+@Tag(name = "Timezones")
 @RequestMapping("api/timezones")
 @SecurityRequirement(name = "token")
 @PreAuthorize("hasAnyAuthority('USER')")
