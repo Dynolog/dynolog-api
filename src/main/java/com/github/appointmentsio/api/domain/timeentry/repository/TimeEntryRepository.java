@@ -10,7 +10,9 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
+import static com.github.appointmentsio.api.domain.shared.repository.Queries.FIND_ID_BY_NANOID;
 import static com.github.appointmentsio.api.domain.timeentry.repository.Queries.*;
 
 @Repository
@@ -40,4 +42,7 @@ public interface TimeEntryRepository extends JpaRepository<TimeEntry, Long> {
         @Param("end_date") LocalDateTime end,
         @Param("user_id") Long userId
     );
+
+    @Query(FIND_ID_BY_NANOID)
+    Optional<Long> findOptionalIdByNanoid(byte[] nanoid);
 }

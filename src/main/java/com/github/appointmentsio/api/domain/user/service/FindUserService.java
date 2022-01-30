@@ -45,6 +45,7 @@ public class FindUserService {
             var tuple = (Tuple) query.getSingleResult();
             return of(new User(
                 tuple.get("id", BigInteger.class).longValue(),
+                tuple.get("nanoid", byte[].class),
                 tuple.get("name", String.class),
                 tuple.get("email", String.class),
                 tuple.get("password", String.class),

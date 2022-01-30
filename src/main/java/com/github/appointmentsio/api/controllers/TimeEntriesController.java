@@ -55,9 +55,9 @@ public class TimeEntriesController {
         @RequestParam("end_date") @DateTimeFormat(iso = DATE_TIME) Optional<LocalDateTime> end,
         @RequestParam("page") Optional<Integer> page,
         @RequestParam("size") Optional<Integer> size,
-        @RequestParam("user_id") Long userId
+        @RequestParam("user_id") String userNanoid
     ) {
-        var result = findService.findAll(start, end, page, size, userId);
+        var result = findService.findAll(start, end, page, size, userNanoid);
         return ok(result);
     }
     
@@ -67,13 +67,13 @@ public class TimeEntriesController {
         @RequestBody @Valid CreateTimeEntryProps body
     ) {
         var timeEntry = createService.create(body);
-        return created(timeEntry, "api/time_entries");
+        return created(timeEntry, "api/time_entries", timeEntry.getId());
     }
 
     @PutMapping("{id}")
     @Operation(summary = "Update a time entry")
     public ResponseEntity<TimeEntryInfo> update(
-        @PathVariable Long id,
+        @PathVariable String id,
         @RequestBody @Valid UpdateTimeEntryProps body
     ) {
         var timeEntry = updateService.update(id, body);

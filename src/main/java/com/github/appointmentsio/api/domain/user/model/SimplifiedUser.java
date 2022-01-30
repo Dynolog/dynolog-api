@@ -1,6 +1,6 @@
 package com.github.appointmentsio.api.domain.user.model;
 
-import com.github.appointmentsio.api.domain.shared.Addressable;
+import com.github.appointmentsio.api.domain.shared.model.Addressable;
 import com.github.appointmentsio.api.domain.user.entity.User;
 import lombok.Getter;
 
@@ -8,7 +8,7 @@ import java.util.List;
 
 @Getter
 public class SimplifiedUser implements Addressable {
-    private final Long id;
+    private final String id;
     private final String name;
     private final String email;
 
@@ -24,7 +24,7 @@ public class SimplifiedUser implements Addressable {
     }
 
     public SimplifiedUser(User user) {
-        this.id = user.getId();
+        this.id = user.getNanoid();
         this.name = user.getName();
         this.email = user.getEmail();
 

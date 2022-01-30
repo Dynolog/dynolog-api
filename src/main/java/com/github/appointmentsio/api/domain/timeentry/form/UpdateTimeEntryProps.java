@@ -6,6 +6,7 @@ import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.util.Optional.ofNullable;
 
 @Data
@@ -18,9 +19,9 @@ public class UpdateTimeEntryProps {
     @NotNull(message = "{timeentry.stop.notnull}")
     private LocalDateTime stop;
 
-    private Long projectId;
+    private String projectId;
 
-    public Optional<Long> getProjectId() {
-        return ofNullable(projectId);
+    public Optional<byte[]> getProjectId() {
+        return ofNullable(projectId).map(id -> id.getBytes(UTF_8));
     }
 }

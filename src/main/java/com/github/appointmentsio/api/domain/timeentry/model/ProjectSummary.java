@@ -11,7 +11,7 @@ import static com.github.appointmentsio.api.utils.TimeUtils.millisToTime;
 
 @Data
 public class ProjectSummary {
-    private Long id;
+    private String id;
     private String totalTime;
     private String currency;
     private BigDecimal billableHoursAmount;
@@ -21,7 +21,7 @@ public class ProjectSummary {
         Project project,
         List<TimeEntry> timeEntries
     ) {
-        this.id = project.getId();
+        this.id = project.getNanoid();
         this.name = project.getName();
 
         var totalMillis = TimeEntry.sum(timeEntries);

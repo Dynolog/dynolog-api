@@ -1,7 +1,7 @@
 package com.github.appointmentsio.api.domain.session.model;
 
 import com.github.appointmentsio.api.domain.role.entity.Role;
-import com.github.appointmentsio.api.domain.shared.Identity;
+import com.github.appointmentsio.api.domain.shared.model.Identity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;

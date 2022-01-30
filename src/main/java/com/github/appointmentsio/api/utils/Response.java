@@ -1,6 +1,5 @@
 package com.github.appointmentsio.api.utils;
 
-import com.github.appointmentsio.api.domain.shared.Identity;
 import com.github.appointmentsio.api.errors.Error;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.http.ResponseEntity;
@@ -93,12 +92,7 @@ public class Response {
                 .build();
     }
 
-    public static <T extends Identity> ResponseEntity<T> created(T entity, String location) {
-        return ResponseEntity.created(create(format("/%s/%s", location, entity.getId())))
-                .body(entity);
-    }
-
-    public static <T> ResponseEntity<T> created(T body, String location, Long id) {
+    public static <T> ResponseEntity<T> created(T body, String location, Object id) {
         return ResponseEntity.created(create(format("/%s/%s", location, id)))
                 .body(body);
     }

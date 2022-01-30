@@ -2,27 +2,42 @@ package com.github.appointmentsio.api.domain.timeentry.service;
 
 import com.github.appointmentsio.api.domain.timeentry.model.Summary;
 import com.github.appointmentsio.api.domain.timeentry.repository.TimeEntryRepository;
+import com.github.appointmentsio.api.domain.user.repository.UserRepository;
 import com.github.appointmentsio.api.errors.Error;
 import com.github.appointmentsio.api.errors.exception.BadRequestException;
 import org.springframework.stereotype.Service;
 
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 import static com.github.appointmentsio.api.domain.session.service.SessionService.authorizedOrThrow;
 import static com.github.appointmentsio.api.utils.Constraints.MESSAGES.*;
 import static com.github.appointmentsio.api.utils.Messages.message;
+import static com.github.appointmentsio.api.utils.Response.notFound;
 import static com.github.appointmentsio.api.utils.Response.unauthorized;
+import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.time.temporal.ChronoUnit.YEARS;
 
 @Service
 public class findSummaryService {
 
-    public findSummaryService(TimeEntryRepository repository) {
-        this.repository = repository;
+    public findSummaryService(
+            TimeEntryRepository timeEntryRepository,
+            UserRepository userRepository
+    ) {
+        this.timeEntryRepository = timeEntryRepository;
+        this.userRepository = userRepository;
     }
 
-    private final TimeEntryRepository repository;
+    private final TimeEntryRepository timeEntryRepository;
+    private final UserRepository userRepository;
+
+    public Summary findSummaryByUserId(LocalDateTime start, LocalDateTime end, String userNanoid) {
+        var optional = userRepository.findOptionalIdByNanoid(userNanoid.getBytes(UTF_8));
+        return optional.map(id -> findSummaryByUserId(start, end, id))
+                .orElseThrow(() -> notFound("user not found"));
+    }
 
     public Summary findSummaryByUserId(LocalDateTime start, LocalDateTime end, Long userId) {
 
@@ -46,8 +61,8 @@ public class findSummaryService {
             throw new BadRequestException(errors);
         }
 
-        var entries = repository
-            .findTimeEntriesByUserIdAndBetweenStartAndEndDate(start, end, userId);
+        var entries = timeEntryRepository
+                .findTimeEntriesByUserIdAndBetweenStartAndEndDate(start, end, userId);
 
         return new Summary(entries);
     }

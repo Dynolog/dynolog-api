@@ -11,9 +11,11 @@ public class Queries {
                 select
                     new com.github.appointmentsio.api.domain.project.entity.Project(
                         project.id,
+                        project.nanoid,
                         project.name,
                         project.hourlyRate,
                         user.id,
+                        user.nanoid,
                         user.name
                     )
                 from Project project

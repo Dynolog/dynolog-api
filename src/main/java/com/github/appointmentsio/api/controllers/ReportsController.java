@@ -40,8 +40,8 @@ public class ReportsController {
     public ResponseEntity<Summary> summary(
         @RequestParam("start_date") @DateTimeFormat(iso = DATE_TIME) LocalDateTime start,
         @RequestParam("end_date") @DateTimeFormat(iso = DATE_TIME) LocalDateTime end,
-        @RequestParam("user_id") Long userId
+        @RequestParam("user_id") String userNanoid
     ) {
-        return ok(service.findSummaryByUserId(start, end, userId));
+        return ok(service.findSummaryByUserId(start, end, userNanoid));
     }
 }

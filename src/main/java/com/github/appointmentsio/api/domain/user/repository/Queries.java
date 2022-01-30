@@ -17,6 +17,7 @@ public class Queries {
         )
         select
             u.id,
+            u.nanoid,
             u."name",
             u.email,
             u.password,
@@ -40,6 +41,7 @@ public class Queries {
         )
         select
             u.id,
+            u.nanoid,
             u."name",
             u.email,
             u.password,

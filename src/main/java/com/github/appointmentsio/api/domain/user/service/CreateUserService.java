@@ -31,17 +31,15 @@ public class CreateUserService {
         this.userRepository = userRepository;
     }
 
-    public SimplifiedUser create(CreateUserProps data) {
+    public User create(CreateUserProps data) {
         
         data.validate();
 
         var roles = roleRepository.findOptionalByInitials("USER")
             .map(List::of)
                 .orElseGet(List::of);
-        
-        var user = userRepository.save(new User(data, roles));
 
-        return new SimplifiedUser(user);
+        return userRepository.save(new User(data, roles));
     }
     
     public TokenResponse createWithSession(CreateUserProps data) {

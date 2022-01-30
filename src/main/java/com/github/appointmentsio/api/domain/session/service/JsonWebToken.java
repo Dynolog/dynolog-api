@@ -13,13 +13,14 @@ import java.util.Date;
 
 import static com.github.appointmentsio.api.utils.Constraints.SECURITY.ROLES_KEY_ON_JWT;
 import static io.jsonwebtoken.SignatureAlgorithm.HS256;
+import static java.lang.String.join;
 import static java.util.Arrays.stream;
 
 public class JsonWebToken {
 
     public String encode(User user, LocalDateTime expiration, String secret) {
         var roles = user.getRoles();
-        return encode(user.getId(), roles, expiration, secret);
+        return encode(user.getNanoid(), roles, expiration, secret);
     }
     
     public String encode(SimplifiedUser user, LocalDateTime expiration, String secret) {
@@ -27,14 +28,14 @@ public class JsonWebToken {
     }
 
     public String encode(
-        Long id,
+        String id,
         Collection<String> authorities,
         LocalDateTime expiration,
         String secret
     ) {
         return Jwts.builder()
-            .setSubject(id.toString())
-            .claim(ROLES_KEY_ON_JWT, String.join(",", authorities))
+            .setSubject(id)
+            .claim(ROLES_KEY_ON_JWT, join(",", authorities))
             .setExpiration(Date.from(expiration
                 .atZone(ZoneId.systemDefault())
                 .toInstant()))
