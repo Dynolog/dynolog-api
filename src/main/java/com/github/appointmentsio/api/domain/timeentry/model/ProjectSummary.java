@@ -13,6 +13,7 @@ import static com.github.appointmentsio.api.utils.TimeUtils.millisToTime;
 public class ProjectSummary {
     private Long id;
     private String totalTime;
+    private String currency;
     private BigDecimal billableHoursAmount;
     private String name;
 
@@ -27,5 +28,6 @@ public class ProjectSummary {
 
         this.totalTime = millisToTime(totalMillis);
         this.billableHoursAmount = project.calcBillableValue(totalMillis);
+        this.currency = project.getCurrency();
     }
 }

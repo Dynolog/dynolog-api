@@ -19,6 +19,9 @@ public class CreateProjectProps {
     @NotNull(message = "{project.hourly-rate.notnull}")
     private BigDecimal hourlyRate;
 
+    @NotNull(message = "{project.currency.notnull}")
+    private String currency;
+
     @NotNull(message = "{project.user-id.notnull}")
     private Long userId;
 }

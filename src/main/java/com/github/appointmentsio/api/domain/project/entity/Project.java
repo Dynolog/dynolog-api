@@ -33,6 +33,7 @@ public class Project implements Serializable {
 
     private String name;
     private BigDecimal hourlyRate;
+    private String currency;
 
     @ManyToOne(fetch = LAZY, cascade = DETACH)
     @JoinColumn(name = "user_id")
@@ -47,6 +48,7 @@ public class Project implements Serializable {
         this.name = props.getName();
         this.user = new User(props.getUserId());
         this.hourlyRate = props.getHourlyRate();
+        this.currency = props.getCurrency();
     }
 
     public Project(Long id, String name, BigDecimal hourlyRate) {
@@ -67,6 +69,7 @@ public class Project implements Serializable {
     public void update(UpdateProjectProps props) {
         this.name = props.getName();
         this.hourlyRate = props.getHourlyRate();
+        this.currency = props.getCurrency();
     }
 
     public BigDecimal calcBillableValue(Long millis) {

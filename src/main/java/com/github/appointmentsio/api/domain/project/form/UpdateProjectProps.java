@@ -17,4 +17,7 @@ public class UpdateProjectProps {
     @Digits(integer = 10, fraction = 2)
     @NotNull(message = "{project.hourly-rate.notnull}")
     private BigDecimal hourlyRate;
+
+    @NotNull(message = "{project.currency.notnull}")
+    private String currency;
 }
