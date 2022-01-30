@@ -19,6 +19,10 @@ public class Constraints {
     }
 
     public static class SECURITY {
+        public static final String SECURITY_TYPE = "Bearer";
+        public static final String AUTHORIZATION_HEADER = "Authorization";
+        public static final String ACCEPTABLE_TOKEN_TYPE = SECURITY_TYPE + " ";
+
         public static String TOKEN_SECRET;
         public static Integer TOKEN_EXPIRATION_IN_HOURS;
         public static Integer REFRESH_TOKEN_EXPIRATION_IN_DAYS;
