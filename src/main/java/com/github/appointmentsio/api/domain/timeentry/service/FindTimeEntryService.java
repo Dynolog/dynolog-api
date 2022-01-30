@@ -14,8 +14,7 @@ import java.util.Optional;
 
 import static com.github.appointmentsio.api.domain.pagination.Page.of;
 import static com.github.appointmentsio.api.domain.session.service.SessionService.authorizedOrThrow;
-import static com.github.appointmentsio.api.utils.Constraints.MESSAGES.DATES_INTERVAL_CANNOT_LONGER_THAN_MONTHS;
-import static com.github.appointmentsio.api.utils.Constraints.MESSAGES.SEARCH_DATE_INTERVAL_INVALID;
+import static com.github.appointmentsio.api.utils.Constraints.MESSAGES.*;
 import static com.github.appointmentsio.api.utils.Messages.message;
 import static com.github.appointmentsio.api.utils.Response.unauthorized;
 import static java.time.LocalDateTime.now;
@@ -39,7 +38,7 @@ public class FindTimeEntryService {
         var authorized = authorizedOrThrow();
 
         if (!authorized.canRead(userId)) {
-            throw unauthorized("Not authorized to list this user's time entries");
+            throw unauthorized(message(NOT_AUTHORIZED_TO_LIST, "'time entries"));
         }
 
         var start = optionalStart.orElse(now().with(firstDayOfMonth()));

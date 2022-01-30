@@ -60,6 +60,17 @@ public class Authorized extends User {
                 .anyMatch((role) -> role.getAuthority().equals("ADM"));
     }
 
+    public <T extends Identity> Boolean canModify(Optional<T> identity) {
+        if (identity.isEmpty()) {
+            return false;
+        }
+        return canRead(identity.get());
+    }
+
+    public Boolean canModify(Identity identity) {
+        return canRead(identity.getId());
+    }
+
     public Boolean canModify(Long id) {
         var admin = isAdmin();
         var equals = getId().equals(id);

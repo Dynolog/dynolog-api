@@ -64,7 +64,8 @@ public class TimeEntriesController {
     @PostMapping
     @Operation(summary = "Register a new time entry")
     public ResponseEntity<TimeEntryInfo> create(
-        @RequestBody @Valid CreateTimeEntryProps body
+        @RequestBody @Valid CreateTimeEntryProps body,
+        @RequestHeader(value = "Accept-Language", required = false) String locale
     ) {
         var timeEntry = createService.create(body);
         return created(timeEntry, "api/time_entries");
@@ -74,7 +75,8 @@ public class TimeEntriesController {
     @Operation(summary = "Update a time entry")
     public ResponseEntity<TimeEntryInfo> update(
         @PathVariable Long id,
-        @RequestBody @Valid UpdateTimeEntryProps body
+        @RequestBody @Valid UpdateTimeEntryProps body,
+        @RequestHeader(value = "Accept-Language", required = false) String locale
     ) {
         var timeEntry = updateService.update(id, body);
         return ok(timeEntry);

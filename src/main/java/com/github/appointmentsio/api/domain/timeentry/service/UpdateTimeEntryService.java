@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import static com.github.appointmentsio.api.domain.session.service.SessionService.authorizedOrThrow;
+import static com.github.appointmentsio.api.utils.Constraints.MESSAGES.NOT_AUTHORIZED_TO_MODIFY;
 import static com.github.appointmentsio.api.utils.Constraints.MESSAGES.TIMEENTRY_DATE_INTERVAL_INVALID;
 import static com.github.appointmentsio.api.utils.Messages.message;
 import static com.github.appointmentsio.api.utils.Response.*;
@@ -56,7 +57,7 @@ public class UpdateTimeEntryService {
         var authorized = authorizedOrThrow();
 
         if (!authorized.canRead(entry.getUser())) {
-            throw unauthorized("No editing permission for this time entry");
+            throw unauthorized(message(NOT_AUTHORIZED_TO_MODIFY, "'time entries'"));
         }
 
         entry.update(props);

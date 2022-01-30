@@ -9,6 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import static com.github.appointmentsio.api.domain.session.service.SessionService.authorizedOrThrow;
+import static com.github.appointmentsio.api.utils.Constraints.MESSAGES.NOT_AUTHORIZED_TO_CREATE;
+import static com.github.appointmentsio.api.utils.Constraints.MESSAGES.NOT_AUTHORIZED_TO_LIST;
+import static com.github.appointmentsio.api.utils.Messages.message;
 import static com.github.appointmentsio.api.utils.Response.notFound;
 import static com.github.appointmentsio.api.utils.Response.unauthorized;
 
@@ -31,7 +34,7 @@ public class CreateProjectService {
         var authorized = authorizedOrThrow();
 
         if (!authorized.canModify(props.getUserId())) {
-            throw unauthorized("Not authorized to register projects for this user");
+            throw unauthorized(message(NOT_AUTHORIZED_TO_CREATE, "'projects'"));
         }
 
         var user = findService.findById(props.getUserId())

@@ -1,9 +1,15 @@
 package com.github.appointmentsio.api.configurations;
 
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.info.Contact;
+import io.swagger.v3.oas.models.Operation;
+import io.swagger.v3.oas.models.media.StringSchema;
+import io.swagger.v3.oas.models.parameters.Parameter;
+import org.springdoc.core.customizers.OperationCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.data.repository.query.SecurityEvaluationContextExtension;
+import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
@@ -34,5 +40,20 @@ public class SpringWebConfiguration implements WebMvcConfigurer {
     @Bean
     public SecurityEvaluationContextExtension securityEvaluationContextExtension() {
         return new SecurityEvaluationContextExtension();
+    }
+
+    @Bean
+    public OperationCustomizer customGlobalHeaders() {
+        return (Operation operation, HandlerMethod handlerMethod) -> {
+            var acceptLanguage = new Parameter()
+                    .in(ParameterIn.HEADER.toString())
+                    .schema(new StringSchema())
+                    .name("Accept-Language")
+                    .description("Informs the client's language")
+                    .required(false);
+
+            operation.addParametersItem(acceptLanguage);
+            return operation;
+        };
     }
 }

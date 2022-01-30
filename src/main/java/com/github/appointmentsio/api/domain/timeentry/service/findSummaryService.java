@@ -10,8 +10,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 import static com.github.appointmentsio.api.domain.session.service.SessionService.authorizedOrThrow;
-import static com.github.appointmentsio.api.utils.Constraints.MESSAGES.DATES_INTERVAL_CANNOT_LONGER_THAN_YEARS;
-import static com.github.appointmentsio.api.utils.Constraints.MESSAGES.SEARCH_DATE_INTERVAL_INVALID;
+import static com.github.appointmentsio.api.utils.Constraints.MESSAGES.*;
 import static com.github.appointmentsio.api.utils.Messages.message;
 import static com.github.appointmentsio.api.utils.Response.unauthorized;
 import static java.time.temporal.ChronoUnit.YEARS;
@@ -30,7 +29,7 @@ public class findSummaryService {
         var authorized = authorizedOrThrow();
 
         if (!authorized.canRead(userId)) {
-            throw unauthorized("Not authorized to read summary for this user");
+            throw unauthorized(message(NOT_AUTHORIZED_TO_READ, "'summaries'"));
         }
 
         var errors = new ArrayList<Error>();

@@ -1,6 +1,7 @@
 package com.github.appointmentsio.api.domain.timeentry.service;
 
 import com.github.appointmentsio.api.domain.project.repository.ProjectRepository;
+import com.github.appointmentsio.api.domain.session.service.SessionService;
 import com.github.appointmentsio.api.domain.timeentry.entity.TimeEntry;
 import com.github.appointmentsio.api.domain.timeentry.form.CreateTimeEntryProps;
 import com.github.appointmentsio.api.domain.timeentry.model.TimeEntryInfo;
@@ -11,9 +12,12 @@ import com.github.appointmentsio.api.errors.exception.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import static com.github.appointmentsio.api.domain.session.service.SessionService.authorizedOrThrow;
+import static com.github.appointmentsio.api.utils.Constraints.MESSAGES.NOT_AUTHORIZED_TO_CREATE;
 import static com.github.appointmentsio.api.utils.Constraints.MESSAGES.TIMEENTRY_DATE_INTERVAL_INVALID;
 import static com.github.appointmentsio.api.utils.Messages.message;
 import static com.github.appointmentsio.api.utils.Response.notFound;
+import static com.github.appointmentsio.api.utils.Response.unauthorized;
 
 @Service
 public class CreateTimeEntryService {
@@ -33,6 +37,13 @@ public class CreateTimeEntryService {
     }
 
     public TimeEntryInfo create(CreateTimeEntryProps props) {
+
+        var authorized = authorizedOrThrow();
+
+        if (!authorized.canModify(props.getUserId())) {
+            throw unauthorized(message(NOT_AUTHORIZED_TO_CREATE, "'time entries'"));
+        }
+
         var exception = new BadRequestException();
 
         var start = props.getStart();

@@ -7,6 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import static com.github.appointmentsio.api.domain.session.service.SessionService.authorizedOrThrow;
+import static com.github.appointmentsio.api.utils.Constraints.MESSAGES.NOT_AUTHORIZED_TO_CREATE;
+import static com.github.appointmentsio.api.utils.Constraints.MESSAGES.NOT_AUTHORIZED_TO_MODIFY;
+import static com.github.appointmentsio.api.utils.Messages.message;
 import static com.github.appointmentsio.api.utils.Response.notFound;
 import static com.github.appointmentsio.api.utils.Response.unauthorized;
 
@@ -29,8 +32,8 @@ public class UpdateProjectService {
         var project = repository.findOptionalByIdFetchUser(id)
                 .orElseThrow(() -> notFound("Project not found"));
 
-        if (!authorized.canModify(project.getUser().getId())) {
-            throw unauthorized("Not authorized to update projects for this user");
+        if (!authorized.canModify(project.getUser())) {
+            throw unauthorized(message(NOT_AUTHORIZED_TO_MODIFY, "'projects'"));
         }
 
         project.update(props);

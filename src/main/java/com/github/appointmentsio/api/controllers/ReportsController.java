@@ -42,9 +42,6 @@ public class ReportsController {
         @RequestParam("end_date") @DateTimeFormat(iso = DATE_TIME) LocalDateTime end,
         @RequestParam("user_id") Long userId
     ) {
-        return authorized()
-            .filter(authorized -> authorized.canRead(userId))
-                .map(id -> ok(service.findSummaryByUserId(start, end, userId)))
-                    .orElseGet(Response::unauthorized);
+        return ok(service.findSummaryByUserId(start, end, userId));
     }
 }

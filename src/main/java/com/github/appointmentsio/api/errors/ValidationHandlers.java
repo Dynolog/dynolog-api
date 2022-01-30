@@ -17,6 +17,8 @@ import java.time.format.DateTimeParseException;
 import java.util.Collection;
 import java.util.List;
 
+import static com.github.appointmentsio.api.utils.Constraints.MESSAGES.TYPE_MISMATCH_ERROR_MESSAGE;
+import static com.github.appointmentsio.api.utils.Messages.message;
 import static org.springframework.http.HttpStatus.*;
 
 @RestControllerAdvice
@@ -48,20 +50,20 @@ public class ValidationHandlers {
 
     @ResponseStatus(code = BAD_REQUEST)
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
-    public Error badRequest(MethodArgumentTypeMismatchException exception) {
-        return new Error(exception.getName(), "Invalid value");
+    public List<Error> badRequest(MethodArgumentTypeMismatchException exception) {
+        return List.of(new Error(exception.getParameter().getParameterName(), message(TYPE_MISMATCH_ERROR_MESSAGE)));
     }
 
     @ResponseStatus(code = BAD_REQUEST)
     @ExceptionHandler(MissingServletRequestParameterException.class)
-    public Error badRequest(MissingServletRequestParameterException exception) {
-        return new Error(exception.getParameterName(), exception.getMessage());
+    public List<Error> badRequest(MissingServletRequestParameterException exception) {
+        return List.of(new Error(exception.getParameterName(), exception.getMessage()));
     }
 
     @ResponseStatus(code = UNAUTHORIZED)
     @ExceptionHandler(AccessDeniedException.class)
-    public Error unauthorized(AccessDeniedException exception) {
-        return new Error(exception.getMessage(), UNAUTHORIZED);
+    public List<Error> unauthorized(AccessDeniedException exception) {
+        return List.of(new Error(exception.getMessage(), UNAUTHORIZED));
     }
 
     @ExceptionHandler(ResponseStatusException.class)

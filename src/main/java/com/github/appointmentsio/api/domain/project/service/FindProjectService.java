@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 import static com.github.appointmentsio.api.domain.session.service.SessionService.authorizedOrThrow;
+import static com.github.appointmentsio.api.utils.Constraints.MESSAGES.NOT_AUTHORIZED_TO_LIST;
+import static com.github.appointmentsio.api.utils.Messages.message;
 import static com.github.appointmentsio.api.utils.Response.unauthorized;
 
 @Service
@@ -22,7 +24,7 @@ public class FindProjectService {
 
     public List<ProjectInfo> findAll(Long userId) {
         if (!authorizedOrThrow().canRead(userId)) {
-            throw unauthorized("Not authorized to list this user's projects");
+            throw unauthorized(message(NOT_AUTHORIZED_TO_LIST, "'projects'"));
         }
 
         return projectRepository.findAllFetchUser(userId).stream()
