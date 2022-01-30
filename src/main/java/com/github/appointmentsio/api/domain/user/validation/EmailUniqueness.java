@@ -1,6 +1,6 @@
 package com.github.appointmentsio.api.domain.user.validation;
 
-import com.github.appointmentsio.api.domain.shared.Addressable;
+import com.github.appointmentsio.api.domain.shared.model.Addressable;
 import com.github.appointmentsio.api.domain.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

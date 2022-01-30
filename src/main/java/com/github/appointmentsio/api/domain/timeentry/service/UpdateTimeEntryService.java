@@ -1,8 +1,8 @@
 package com.github.appointmentsio.api.domain.timeentry.service;
 
 import com.github.appointmentsio.api.domain.project.repository.ProjectRepository;
-import com.github.appointmentsio.api.domain.timeentry.model.TimeEntryInfo;
 import com.github.appointmentsio.api.domain.timeentry.form.UpdateTimeEntryProps;
+import com.github.appointmentsio.api.domain.timeentry.model.TimeEntryInfo;
 import com.github.appointmentsio.api.domain.timeentry.repository.TimeEntryRepository;
 import com.github.appointmentsio.api.errors.Error;
 import com.github.appointmentsio.api.errors.exception.BadRequestException;
@@ -13,7 +13,9 @@ import static com.github.appointmentsio.api.domain.session.service.SessionServic
 import static com.github.appointmentsio.api.utils.Constraints.MESSAGES.NOT_AUTHORIZED_TO_MODIFY;
 import static com.github.appointmentsio.api.utils.Constraints.MESSAGES.TIMEENTRY_DATE_INTERVAL_INVALID;
 import static com.github.appointmentsio.api.utils.Messages.message;
-import static com.github.appointmentsio.api.utils.Response.*;
+import static com.github.appointmentsio.api.utils.Response.notFound;
+import static com.github.appointmentsio.api.utils.Response.unauthorized;
+import static java.nio.charset.StandardCharsets.UTF_8;
 
 @Service
 public class UpdateTimeEntryService {
@@ -30,7 +32,7 @@ public class UpdateTimeEntryService {
         this.projectRepository = projectRepository;
     }
 
-    public TimeEntryInfo update(Long id, UpdateTimeEntryProps props) {
+    public TimeEntryInfo update(String nanoid, UpdateTimeEntryProps props) {
 
         var exception = new BadRequestException();
 
@@ -45,11 +47,12 @@ public class UpdateTimeEntryService {
             throw exception;
         }
 
-        props.getProjectId().ifPresent(projectId -> {
-            if (!projectRepository.existsById(projectId)) {
-                throw notFound("Project not found");
-            }
-        });
+        var projectId = props.getProjectId()
+                .flatMap(projectRepository::findOptionalIdByNanoid);
+
+        var id = timeEntryRepository
+                .findOptionalIdByNanoid(nanoid.getBytes(UTF_8))
+                .orElseThrow(() -> notFound("time entry not found"));
 
         var entry = timeEntryRepository.findById(id)
             .orElseThrow(() -> notFound("time entry not found"));
@@ -60,7 +63,7 @@ public class UpdateTimeEntryService {
             throw unauthorized(message(NOT_AUTHORIZED_TO_MODIFY, "'time entries'"));
         }
 
-        entry.update(props);
+        entry.update(props, projectId);
         timeEntryRepository.save(entry);
 
         return new TimeEntryInfo(timeEntryRepository.findByIdFetchUserAndProject(id));

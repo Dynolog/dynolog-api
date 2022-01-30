@@ -2,8 +2,11 @@ package com.github.appointmentsio.api.domain.project.entity;
 
 import com.github.appointmentsio.api.domain.project.form.CreateProjectProps;
 import com.github.appointmentsio.api.domain.project.form.UpdateProjectProps;
+import com.github.appointmentsio.api.domain.shared.model.NonSequentialId;
 import com.github.appointmentsio.api.domain.user.entity.User;
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.Hibernate;
 
 import javax.persistence.*;
@@ -25,7 +28,7 @@ import static javax.persistence.GenerationType.IDENTITY;
 @Setter
 @Entity
 @NoArgsConstructor
-public class Project implements Serializable {
+public class Project extends NonSequentialId implements Serializable {
 
     @Id
     @GeneratedValue(strategy = IDENTITY)
@@ -51,19 +54,23 @@ public class Project implements Serializable {
         this.currency = props.getCurrency();
     }
 
-    public Project(Long id, String name, BigDecimal hourlyRate, String currency) {
+    public Project(Long id, byte[] nanoid, String name, BigDecimal hourlyRate, String currency) {
         this.id = id;
+        this.nanoid = nanoid;
+
         this.name = name;
         this.hourlyRate = hourlyRate;
         this.currency = currency;
     }
 
-    public Project(Long id, String name, BigDecimal hourlyRate, Long userId, String userName) {
+    public Project(Long id, byte[] nanoid, String name, BigDecimal hourlyRate, Long userId, byte[] userNanoid, String userName) {
         this.id = id;
+        this.nanoid = nanoid;
+
         this.name = name;
         this.hourlyRate = hourlyRate;
         if (nonNull(userId)) {
-            this.user = new User(userId, userName);
+            this.user = new User(userId, userNanoid, userName);
         }
     }
 

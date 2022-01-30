@@ -44,9 +44,9 @@ public class ProjectsController {
     @GetMapping
     @Operation(summary = "List all projects from user")
     public ResponseEntity<List<ProjectInfo>> index(
-        @RequestParam(value = "user_id") Long userId
+        @RequestParam(value = "user_id") String userNanoid
     ) {
-        var projects = findService.findAll(userId);
+        var projects = findService.findAll(userNanoid);
         return ok(projects);
     }
 
@@ -62,7 +62,7 @@ public class ProjectsController {
     @PutMapping("{id}")
     @Operation(summary = "Update a project")
     public ResponseEntity<ProjectInfo> update(
-        @PathVariable Long id,
+        @PathVariable String id,
         @RequestBody @Valid UpdateProjectProps body
     ) {
         var project = updateService.update(id, body);

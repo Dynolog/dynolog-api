@@ -12,6 +12,8 @@ import com.github.appointmentsio.api.errors.exception.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.nio.charset.StandardCharsets;
+
 import static com.github.appointmentsio.api.domain.session.service.SessionService.authorizedOrThrow;
 import static com.github.appointmentsio.api.utils.Constraints.MESSAGES.NOT_AUTHORIZED_TO_CREATE;
 import static com.github.appointmentsio.api.utils.Constraints.MESSAGES.TIMEENTRY_DATE_INTERVAL_INVALID;
@@ -27,9 +29,9 @@ public class CreateTimeEntryService {
 
     @Autowired
     public CreateTimeEntryService(
-        TimeEntryRepository timeEntryRepository,
-        UserRepository userRepository,
-        ProjectRepository projectRepository
+            TimeEntryRepository timeEntryRepository,
+            UserRepository userRepository,
+            ProjectRepository projectRepository
     ) {
         this.timeEntryRepository = timeEntryRepository;
         this.userRepository = userRepository;
@@ -37,12 +39,6 @@ public class CreateTimeEntryService {
     }
 
     public TimeEntryInfo create(CreateTimeEntryProps props) {
-
-        var authorized = authorizedOrThrow();
-
-        if (!authorized.canModify(props.getUserId())) {
-            throw unauthorized(message(NOT_AUTHORIZED_TO_CREATE, "'time entries'"));
-        }
 
         var exception = new BadRequestException();
 
@@ -57,17 +53,21 @@ public class CreateTimeEntryService {
             throw exception;
         }
 
-        if (!userRepository.existsById(props.getUserId())) {
-            throw notFound("User not found");
+        var userId = userRepository.findOptionalIdByNanoid(props.getUserId())
+                .orElseThrow(() -> notFound("User not found"));
+
+        var authorized = authorizedOrThrow();
+
+        if (!authorized.canModify(userId)) {
+            throw unauthorized(message(NOT_AUTHORIZED_TO_CREATE, "'time entries'"));
         }
 
-        props.getProjectId().ifPresent(projectId -> {
-            if (!projectRepository.existsById(projectId)) {
-                throw notFound("Project not found");
-            }
-        });
+        var projectId = props.getProjectId()
+                .flatMap(projectRepository::findOptionalIdByNanoid);
 
-        var id = timeEntryRepository.save(new TimeEntry(props)).getId();
+
+        var id = timeEntryRepository.save(new TimeEntry(props, userId, projectId)).getId();
+
         var timeEntry = timeEntryRepository.findByIdFetchUserAndProject(id);
 
         return new TimeEntryInfo(timeEntry);

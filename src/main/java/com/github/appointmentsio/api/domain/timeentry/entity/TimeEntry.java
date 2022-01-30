@@ -1,10 +1,13 @@
 package com.github.appointmentsio.api.domain.timeentry.entity;
 
 import com.github.appointmentsio.api.domain.project.entity.Project;
+import com.github.appointmentsio.api.domain.shared.model.NonSequentialId;
 import com.github.appointmentsio.api.domain.timeentry.form.CreateTimeEntryProps;
 import com.github.appointmentsio.api.domain.timeentry.form.UpdateTimeEntryProps;
 import com.github.appointmentsio.api.domain.user.entity.User;
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.Hibernate;
 
 import javax.persistence.*;
@@ -27,7 +30,7 @@ import static javax.persistence.GenerationType.IDENTITY;
 @Setter
 @Entity
 @NoArgsConstructor
-public class TimeEntry implements Serializable {
+public class TimeEntry extends NonSequentialId implements Serializable {
 
     @Id
     @GeneratedValue(strategy = IDENTITY)
@@ -46,48 +49,53 @@ public class TimeEntry implements Serializable {
 
     public TimeEntry(
             Long id,
+            byte[] nanoid,
             String description,
             LocalDateTime start,
             LocalDateTime stop,
             Long userId,
+            byte[] userNanoid,
             String userName,
             Long projectId,
+            byte[] projectNanoid,
             String projectName,
             BigDecimal hourlyHate,
             String currency
     ) {
         this.id = id;
+        this.nanoid = nanoid;
+
         this.description = description;
         this.start = start;
         this.stop = stop;
 
         if (nonNull(userId)) {
-            this.user = new User(userId, userName);
+            this.user = new User(userId, userNanoid, userName);
         }
 
         if (nonNull(projectId)) {
-            this.project = new Project(projectId, projectName, hourlyHate, currency);
+            this.project = new Project(projectId, projectNanoid, projectName, hourlyHate, currency);
         }
     }
 
-    public TimeEntry(CreateTimeEntryProps props) {
+    public TimeEntry(CreateTimeEntryProps props, Long userId, Optional<Long> projectId) {
         this.description = props.getDescription();
         this.start = props.getStart();
         this.stop = props.getStop();
 
-        this.user = new User(props.getUserId());
+        this.user = new User(userId);
 
-        this.project = props.getProjectId()
+        this.project = projectId
                 .map(Project::new)
-                .orElseGet(() -> null);
+                .orElse(null);
     }
 
-    public void update(UpdateTimeEntryProps props) {
+    public void update(UpdateTimeEntryProps props, Optional<Long> projectId) {
         this.start = props.getStart();
         this.stop = props.getStop();
         this.description = props.getDescription();
 
-        this.project = props.getProjectId()
+        this.project = projectId
                 .map(Project::new)
                 .orElseGet(() -> null);
     }

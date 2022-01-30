@@ -3,9 +3,12 @@ package com.github.appointmentsio.api.domain.timeentry.form;
 import lombok.Data;
 
 import javax.validation.constraints.NotNull;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
+import static java.util.Optional.of;
 import static java.util.Optional.ofNullable;
 
 @Data
@@ -19,11 +22,15 @@ public class CreateTimeEntryProps {
     private LocalDateTime stop;
 
     @NotNull(message = "{timeentry.user-id.notnull}")
-    private Long userId;
+    private String userId;
 
-    private Long projectId;
+    private String projectId;
 
-    public Optional<Long> getProjectId() {
-        return ofNullable(projectId);
+    public byte[] getUserId() {
+        return userId.getBytes(UTF_8);
+    }
+
+    public Optional<byte[]> getProjectId() {
+        return ofNullable(projectId).map(id -> id.getBytes(UTF_8));
     }
 }

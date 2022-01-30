@@ -11,6 +11,7 @@ import java.util.Optional;
 
 import static com.github.appointmentsio.api.domain.project.repository.Queries.FIND_ALL_FETCH_USER;
 import static com.github.appointmentsio.api.domain.project.repository.Queries.FIND_PROJECT_BY_ID_FETCH_USER;
+import static com.github.appointmentsio.api.domain.shared.repository.Queries.FIND_ID_BY_NANOID;
 
 @Repository
 public interface ProjectRepository extends JpaRepository<Project, Long> {
@@ -23,4 +24,7 @@ public interface ProjectRepository extends JpaRepository<Project, Long> {
 
     @Query(FIND_ALL_FETCH_USER)
     List<Project> findAllFetchUser(@Param("user_id") Long userId);
+
+    @Query(FIND_ID_BY_NANOID)
+    Optional<Long> findOptionalIdByNanoid(byte[] nanoid);
 }

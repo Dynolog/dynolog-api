@@ -4,6 +4,7 @@ import com.github.appointmentsio.api.domain.session.entity.RefreshToken;
 import com.github.appointmentsio.api.domain.session.form.CreateTokenProps;
 import com.github.appointmentsio.api.domain.session.model.TokenResponse;
 import com.github.appointmentsio.api.domain.session.repository.RefreshTokenRepository;
+import com.github.appointmentsio.api.domain.user.entity.User;
 import com.github.appointmentsio.api.domain.user.model.SimplifiedUser;
 import com.github.appointmentsio.api.domain.user.service.FindUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,20 +33,19 @@ public class CreateTokenService {
     private final FindUserService findUserService;
 
     public TokenResponse create(CreateTokenProps request) {
-
         var userFound = findUserService.findByEmail(request.getEmail())
             .filter(user -> user.validatePassword(request.getPassword()))
                 .orElseThrow(() -> forbidden(message(CREATE_SESSION_ERROR_MESSAGE)));
-        return create(new SimplifiedUser(userFound));
+        return create(userFound);
     }
 
-    public TokenResponse create(SimplifiedUser user) {
+    public TokenResponse create(User user) {
 
         var now = LocalDateTime.now();
         var expiresIn = now.plusHours(TOKEN_EXPIRATION_IN_HOURS);
 
         var token = JWT.encode(user, expiresIn, TOKEN_SECRET);
-        var refresh = new RefreshToken(user, REFRESH_TOKEN_EXPIRATION_IN_DAYS);
+        var refresh = new RefreshToken(user.getId(), REFRESH_TOKEN_EXPIRATION_IN_DAYS);
 
         refreshTokenRepository.disableOldRefreshTokens(user.getId());
 

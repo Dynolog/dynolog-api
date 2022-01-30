@@ -2,7 +2,7 @@ package com.github.appointmentsio.api.domain.timeentry.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.github.appointmentsio.api.domain.project.model.SimplifiedProject;
-import com.github.appointmentsio.api.domain.shared.Identity;
+import com.github.appointmentsio.api.domain.shared.model.Identity;
 import com.github.appointmentsio.api.domain.timeentry.entity.TimeEntry;
 import com.github.appointmentsio.api.domain.user.model.SimplifiedUser;
 import lombok.Getter;

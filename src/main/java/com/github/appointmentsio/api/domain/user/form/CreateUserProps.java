@@ -5,7 +5,7 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import com.github.appointmentsio.api.domain.shared.Addressable;
+import com.github.appointmentsio.api.domain.shared.model.Addressable;
 import static com.github.appointmentsio.api.domain.user.validation.EmailUniqueness.validateEmailUniqueness;
 
 @Data

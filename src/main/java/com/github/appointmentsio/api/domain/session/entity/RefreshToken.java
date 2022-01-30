@@ -12,6 +12,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 import static java.time.LocalDateTime.now;
+import static java.util.Optional.ofNullable;
 import static java.util.UUID.randomUUID;
 import static javax.persistence.FetchType.EAGER;
 import static javax.persistence.GenerationType.IDENTITY;
@@ -42,10 +43,10 @@ public class RefreshToken implements Serializable {
         this.code = randomUUID().toString();
     }
 
-    public RefreshToken(SimplifiedUser user, Integer daysToExpire) {
+    public RefreshToken(Long userId, Integer daysToExpire) {
         this.expiresIn = now().plusDays(daysToExpire);
         this.code = randomUUID().toString();
-        this.user = Optional.ofNullable(user.getId()).map(User::new).orElse(null);
+        this.user = ofNullable(userId).map(User::new).orElse(null);
     }
 
     public Boolean nonExpired() {

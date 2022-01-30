@@ -2,8 +2,9 @@ package com.github.appointmentsio.api.domain.user.entity;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.github.appointmentsio.api.domain.role.entity.Role;
-import com.github.appointmentsio.api.domain.shared.Addressable;
-import com.github.appointmentsio.api.domain.shared.Identity;
+import com.github.appointmentsio.api.domain.shared.model.Addressable;
+import com.github.appointmentsio.api.domain.shared.model.Identity;
+import com.github.appointmentsio.api.domain.shared.model.NonSequentialId;
 import com.github.appointmentsio.api.domain.user.form.CreateUserProps;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,12 +13,12 @@ import org.hibernate.Hibernate;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonProperty.Access.WRITE_ONLY;
 import static com.github.appointmentsio.api.utils.Constraints.SECURITY.PASSWORD_ENCODER;
+import static java.util.Arrays.stream;
 import static java.util.Optional.ofNullable;
 import static javax.persistence.CascadeType.DETACH;
 import static javax.persistence.FetchType.LAZY;
@@ -27,7 +28,7 @@ import static javax.persistence.GenerationType.IDENTITY;
 @Getter
 @Setter
 @NoArgsConstructor
-public class User implements Serializable, Addressable, Identity {
+public class User extends NonSequentialId implements Serializable, Addressable, Identity {
 
     @Id
     @GeneratedValue(strategy = IDENTITY)
@@ -48,9 +49,9 @@ public class User implements Serializable, Addressable, Identity {
 
     @ManyToMany(cascade = DETACH, fetch = LAZY)
     @JoinTable(
-        name = "user_role",
-        joinColumns = {@JoinColumn(name = "user_id")},
-        inverseJoinColumns = {@JoinColumn(name = "role_id")}
+            name = "user_role",
+            joinColumns = {@JoinColumn(name = "user_id")},
+            inverseJoinColumns = {@JoinColumn(name = "role_id")}
     )
     private List<Role> roles;
 
@@ -66,38 +67,42 @@ public class User implements Serializable, Addressable, Identity {
     }
 
     public User(
-        Long id,
-        String name,
-        String email,
-        String password,
-        String timezone,
-        String dateFormat,
-        String timeFormat,
-        String joinedRoles
+            Long id,
+            byte[] nanoid,
+            String name,
+            String email,
+            String password,
+            String timezone,
+            String dateFormat,
+            String timeFormat,
+            String joinedRoles
     ) {
         this.id = id;
         this.name = name;
         this.email = email;
         this.password = password;
 
+        this.nanoid = nanoid;
+
         this.timezone = timezone;
         this.dateFormat = dateFormat;
         this.timeFormat = timeFormat;
 
         this.roles = ofNullable(joinedRoles)
-            .map(roles -> Arrays.stream(roles.split(",")).map(Role::new).toList())
+                .map(roles -> stream(roles.split(",")).map(Role::new).toList())
                 .orElse(List.of());
     }
 
-    public User(Long id, String name) {
+    public User(Long id, byte[] nanoid, String name) {
         this.id = id;
+        this.nanoid = nanoid;
         this.name = name;
     }
 
     public List<String> getRoles() {
         return ofNullable(this.roles).map(roles -> roles.stream()
                 .map(Role::getInitials)
-                    .toList()).orElseGet(List::of);
+                .toList()).orElseGet(List::of);
     }
 
     public List<Role> getAuthorities() {
