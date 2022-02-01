@@ -25,12 +25,4 @@ public class CreateTimeEntryProps {
     private String userId;
 
     private String projectId;
-
-    public byte[] getUserId() {
-        return userId.getBytes(UTF_8);
-    }
-
-    public Optional<byte[]> getProjectId() {
-        return ofNullable(projectId).map(id -> id.getBytes(UTF_8));
-    }
 }

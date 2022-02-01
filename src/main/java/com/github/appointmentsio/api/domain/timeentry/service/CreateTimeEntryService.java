@@ -1,18 +1,16 @@
 package com.github.appointmentsio.api.domain.timeentry.service;
 
+import com.github.appointmentsio.api.domain.project.entity.Project;
 import com.github.appointmentsio.api.domain.project.repository.ProjectRepository;
-import com.github.appointmentsio.api.domain.session.service.SessionService;
 import com.github.appointmentsio.api.domain.timeentry.entity.TimeEntry;
 import com.github.appointmentsio.api.domain.timeentry.form.CreateTimeEntryProps;
 import com.github.appointmentsio.api.domain.timeentry.model.TimeEntryInfo;
 import com.github.appointmentsio.api.domain.timeentry.repository.TimeEntryRepository;
-import com.github.appointmentsio.api.domain.user.repository.UserRepository;
+import com.github.appointmentsio.api.domain.user.service.FindUserService;
 import com.github.appointmentsio.api.errors.Error;
 import com.github.appointmentsio.api.errors.exception.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.nio.charset.StandardCharsets;
 
 import static com.github.appointmentsio.api.domain.session.service.SessionService.authorizedOrThrow;
 import static com.github.appointmentsio.api.utils.Constraints.MESSAGES.NOT_AUTHORIZED_TO_CREATE;
@@ -20,22 +18,24 @@ import static com.github.appointmentsio.api.utils.Constraints.MESSAGES.TIMEENTRY
 import static com.github.appointmentsio.api.utils.Messages.message;
 import static com.github.appointmentsio.api.utils.Response.notFound;
 import static com.github.appointmentsio.api.utils.Response.unauthorized;
+import static java.nio.charset.StandardCharsets.UTF_8;
+import static java.util.Objects.nonNull;
 
 @Service
 public class CreateTimeEntryService {
     private final TimeEntryRepository timeEntryRepository;
-    private final UserRepository userRepository;
     private final ProjectRepository projectRepository;
+    private final FindUserService findUserService;
 
     @Autowired
     public CreateTimeEntryService(
             TimeEntryRepository timeEntryRepository,
-            UserRepository userRepository,
-            ProjectRepository projectRepository
+            ProjectRepository projectRepository,
+            FindUserService findUserService
     ) {
         this.timeEntryRepository = timeEntryRepository;
-        this.userRepository = userRepository;
         this.projectRepository = projectRepository;
+        this.findUserService = findUserService;
     }
 
     public TimeEntryInfo create(CreateTimeEntryProps props) {
@@ -53,22 +53,26 @@ public class CreateTimeEntryService {
             throw exception;
         }
 
-        var userId = userRepository.findOptionalIdByNanoid(props.getUserId())
+        var user = findUserService.findOptionalByNanoidFetchRoles(props.getUserId())
                 .orElseThrow(() -> notFound("User not found"));
 
         var authorized = authorizedOrThrow();
 
-        if (!authorized.canModify(userId)) {
+        if (!authorized.canModify(user)) {
             throw unauthorized(message(NOT_AUTHORIZED_TO_CREATE, "'time entries'"));
         }
 
-        var projectId = props.getProjectId()
-                .flatMap(projectRepository::findOptionalIdByNanoid);
+        Project project = null;
 
+        if (nonNull(props.getProjectId())) {
+            var projectNanoid = props.getProjectId();
+            project = projectRepository.findOptionalByIdFetchUser(projectNanoid.getBytes(UTF_8))
+                    .orElseThrow(() -> notFound("project not found"));
+        }
 
-        var id = timeEntryRepository.save(new TimeEntry(props, userId, projectId)).getId();
+        var created = timeEntryRepository.save(new TimeEntry(props, user, project));
 
-        var timeEntry = timeEntryRepository.findByIdFetchUserAndProject(id);
+        var timeEntry = timeEntryRepository.findByIdFetchUserAndProject(created.getId());
 
         return new TimeEntryInfo(timeEntry);
     }

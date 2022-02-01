@@ -17,6 +17,7 @@ public final class Queries {
                     project.id,
                     project.nanoid,
                     project.name,
+                    project.color,
                     project.hourlyRate,
                     project.currency
                 )
@@ -49,5 +50,12 @@ public final class Queries {
                 LEFT JOIN time_entry.user AS user
                 LEFT JOIN time_entry.project AS project
                 WHERE time_entry.id = :id
+            """;
+
+    public static final String FIND_BY_NANOID = """
+                select time_entry from TimeEntry time_entry
+                left join fetch time_entry.user
+                left join fetch time_entry.project
+                where time_entry.nanoid = :nanoid
             """;
 }

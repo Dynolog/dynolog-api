@@ -14,6 +14,7 @@ public class ProjectSummary {
     private String id;
     private String totalTime;
     private String currency;
+    private String color;
     private BigDecimal billableHoursAmount;
     private String name;
 
@@ -29,5 +30,6 @@ public class ProjectSummary {
         this.totalTime = millisToTime(totalMillis);
         this.billableHoursAmount = project.calcBillableValue(totalMillis);
         this.currency = project.getCurrency();
+        this.color = project.getColor();
     }
 }

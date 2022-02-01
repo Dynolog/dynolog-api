@@ -12,12 +12,14 @@ import static java.util.Optional.ofNullable;
 public class ProjectInfo {
     private final String id;
     private final String name;
+    private final String color;
     private final BigDecimal hourlyRate;
     private final SimpleEntityRelation user;
 
     public ProjectInfo(Project project) {
         this.id = project.getNanoid();
         this.name = project.getName();
+        this.color = project.getColor();
         this.hourlyRate = project.getHourlyRate();
 
         this.user = ofNullable(project.getUser())

@@ -59,6 +59,7 @@ public class TimeEntry extends NonSequentialId implements Serializable {
             Long projectId,
             byte[] projectNanoid,
             String projectName,
+            String color,
             BigDecimal hourlyHate,
             String currency
     ) {
@@ -74,30 +75,23 @@ public class TimeEntry extends NonSequentialId implements Serializable {
         }
 
         if (nonNull(projectId)) {
-            this.project = new Project(projectId, projectNanoid, projectName, hourlyHate, currency);
+            this.project = new Project(projectId, projectNanoid, projectName, color, hourlyHate, currency);
         }
     }
 
-    public TimeEntry(CreateTimeEntryProps props, Long userId, Optional<Long> projectId) {
+    public TimeEntry(CreateTimeEntryProps props, User user, Project project) {
         this.description = props.getDescription();
         this.start = props.getStart();
         this.stop = props.getStop();
-
-        this.user = new User(userId);
-
-        this.project = projectId
-                .map(Project::new)
-                .orElse(null);
+        this.user = user;
+        this.project = project;
     }
 
-    public void update(UpdateTimeEntryProps props, Optional<Long> projectId) {
+    public void update(UpdateTimeEntryProps props, Project project) {
         this.start = props.getStart();
         this.stop = props.getStop();
         this.description = props.getDescription();
-
-        this.project = projectId
-                .map(Project::new)
-                .orElseGet(() -> null);
+        this.project = project;
     }
 
     public Long totalTimeInMillis() {

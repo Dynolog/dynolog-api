@@ -55,10 +55,11 @@ public class Project extends NonSequentialId implements Serializable {
         this.color = props.getColor();
     }
 
-    public Project(Long id, byte[] nanoid, String name, BigDecimal hourlyRate, String currency) {
+    public Project(Long id, byte[] nanoid, String name, String color, BigDecimal hourlyRate, String currency) {
         this.id = id;
         this.nanoid = nanoid;
 
+        this.color = color;
         this.name = name;
         this.hourlyRate = hourlyRate;
         this.currency = currency;

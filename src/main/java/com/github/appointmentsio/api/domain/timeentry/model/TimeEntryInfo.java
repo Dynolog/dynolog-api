@@ -14,7 +14,7 @@ public class TimeEntryInfo {
     private final LocalDateTime start;
     private final LocalDateTime stop;
     private final SimpleEntityRelation user;
-    private final SimpleEntityRelation project;
+    private final ProjectInfoInTimeEntryList project;
 
     public TimeEntryInfo(TimeEntry timeEntry) {
         this.id = timeEntry.getNanoid();
@@ -29,7 +29,7 @@ public class TimeEntryInfo {
 
         this.project = timeEntry
                 .getProject()
-                .map((project) -> new SimpleEntityRelation(project.getNanoid(), project.getName()))
+                .map((project) -> new ProjectInfoInTimeEntryList(project.getNanoid(), project.getName(), project.getColor()))
                 .orElse(null);
     }
 }

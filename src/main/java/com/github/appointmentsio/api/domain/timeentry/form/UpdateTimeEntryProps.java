@@ -20,8 +20,4 @@ public class UpdateTimeEntryProps {
     private LocalDateTime stop;
 
     private String projectId;
-
-    public Optional<byte[]> getProjectId() {
-        return ofNullable(projectId).map(id -> id.getBytes(UTF_8));
-    }
 }
