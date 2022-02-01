@@ -47,9 +47,9 @@ public class Project extends NonSequentialId implements Serializable {
         this.user = null;
     }
 
-    public Project(CreateProjectProps props) {
+    public Project(CreateProjectProps props, Long userId) {
         this.name = props.getName();
-        this.user = new User(props.getUserId());
+        this.user = new User(userId);
         this.hourlyRate = props.getHourlyRate();
         this.currency = props.getCurrency();
     }

@@ -23,5 +23,5 @@ public class CreateProjectProps {
     private String currency;
 
     @NotNull(message = "{project.user-id.notnull}")
-    private Long userId;
+    private String userId;
 }
