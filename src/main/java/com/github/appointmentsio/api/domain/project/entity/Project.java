@@ -7,7 +7,6 @@ import com.github.appointmentsio.api.domain.user.entity.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.Hibernate;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -37,6 +36,7 @@ public class Project extends NonSequentialId implements Serializable {
     private String name;
     private BigDecimal hourlyRate;
     private String currency;
+    private String color;
 
     @ManyToOne(fetch = LAZY, cascade = DETACH)
     @JoinColumn(name = "user_id")
@@ -47,11 +47,12 @@ public class Project extends NonSequentialId implements Serializable {
         this.user = null;
     }
 
-    public Project(CreateProjectProps props, Long userId) {
+    public Project(CreateProjectProps props, User user) {
         this.name = props.getName();
-        this.user = new User(userId);
+        this.user = user;
         this.hourlyRate = props.getHourlyRate();
         this.currency = props.getCurrency();
+        this.color = props.getColor();
     }
 
     public Project(Long id, byte[] nanoid, String name, BigDecimal hourlyRate, String currency) {
@@ -78,6 +79,7 @@ public class Project extends NonSequentialId implements Serializable {
         this.name = props.getName();
         this.hourlyRate = props.getHourlyRate();
         this.currency = props.getCurrency();
+        this.color = props.getColor();
     }
 
     public BigDecimal calcBillableValue(Long millis) {
@@ -89,14 +91,14 @@ public class Project extends NonSequentialId implements Serializable {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        if (!(o instanceof Project)) return false;
         Project project = (Project) o;
-        return id != null && Objects.equals(id, project.id);
+        return getId().equals(project.getId());
     }
 
     @Override
     public int hashCode() {
-        return getClass().hashCode();
+        return Objects.hash(getId());
     }
 
     @Override

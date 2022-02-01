@@ -2,6 +2,7 @@ package com.github.appointmentsio.api.domain.session.service;
 
 import com.github.appointmentsio.api.domain.session.model.Authorized;
 import com.github.appointmentsio.api.domain.user.repository.UserRepository;
+import com.github.appointmentsio.api.domain.user.service.FindUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -27,13 +28,13 @@ import static java.util.logging.Level.WARNING;
 public class SessionService implements UserDetailsService {
 
     @Autowired
-    UserRepository repository;
+    FindUserService findUserService;
 
     private static final Logger LOGGER = Logger.getLogger(SessionService.class.getName());
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        var user = repository.findOptionalByEmailFetchRoles(email)
+        var user = findUserService.findOptionalByEmailFetchRoles(email)
             .orElseThrow(() -> new UsernameNotFoundException(INVALID_USERNAME));
         
         return new Authorized(user);

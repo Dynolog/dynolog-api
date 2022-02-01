@@ -1,6 +1,7 @@
 package com.github.appointmentsio.api.domain.project.form;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.Digits;
@@ -8,7 +9,8 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 
-@Data
+@Getter
+@Setter
 public class UpdateProjectProps {
     @NotEmpty(message = "{project.name.notempty}")
     private String name;
@@ -20,4 +22,6 @@ public class UpdateProjectProps {
 
     @NotNull(message = "{project.currency.notnull}")
     private String currency;
+
+    private String color = "#7B70EA";
 }

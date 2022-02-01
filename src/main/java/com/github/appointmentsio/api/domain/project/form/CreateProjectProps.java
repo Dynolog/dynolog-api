@@ -1,5 +1,6 @@
 package com.github.appointmentsio.api.domain.project.form;
 
+import com.github.appointmentsio.api.domain.user.entity.User;
 import lombok.Data;
 
 import javax.validation.constraints.DecimalMin;
@@ -21,6 +22,8 @@ public class CreateProjectProps {
 
     @NotNull(message = "{project.currency.notnull}")
     private String currency;
+
+    private String color = "#7B70EA";
 
     @NotNull(message = "{project.user-id.notnull}")
     private String userId;

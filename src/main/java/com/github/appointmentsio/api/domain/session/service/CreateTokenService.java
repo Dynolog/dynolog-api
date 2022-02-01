@@ -5,7 +5,7 @@ import com.github.appointmentsio.api.domain.session.form.CreateTokenProps;
 import com.github.appointmentsio.api.domain.session.model.TokenResponse;
 import com.github.appointmentsio.api.domain.session.repository.RefreshTokenRepository;
 import com.github.appointmentsio.api.domain.user.entity.User;
-import com.github.appointmentsio.api.domain.user.model.SimplifiedUser;
+import com.github.appointmentsio.api.domain.user.repository.UserRepository;
 import com.github.appointmentsio.api.domain.user.service.FindUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,6 +20,9 @@ import static com.github.appointmentsio.api.utils.Response.forbidden;
 @Service
 public class CreateTokenService {
 
+    private final RefreshTokenRepository refreshTokenRepository;
+    private final FindUserService findUserService;
+
     @Autowired
     public CreateTokenService(
         RefreshTokenRepository refreshTokenRepository,
@@ -29,11 +32,9 @@ public class CreateTokenService {
         this.findUserService = findUserService;
     }
 
-    private final RefreshTokenRepository refreshTokenRepository;
-    private final FindUserService findUserService;
 
     public TokenResponse create(CreateTokenProps request) {
-        var userFound = findUserService.findByEmail(request.getEmail())
+        var userFound = findUserService.findOptionalByEmailFetchRoles(request.getEmail())
             .filter(user -> user.validatePassword(request.getPassword()))
                 .orElseThrow(() -> forbidden(message(CREATE_SESSION_ERROR_MESSAGE)));
         return create(userFound);
