@@ -9,10 +9,10 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.github.throyer</groupId>
-    <artifactId>apontamentos</artifactId>
+    <artifactId>appointments-io</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>apontamentos</name>
-    <description>apontamento.io</description>
+    <name>Appointments.io</name>
+    <description>Appointments.io</description>
     
     <properties>
         <java.version>17</java.version>
@@ -32,6 +32,14 @@
             <artifactId>javafaker</artifactId>
             <version>1.0.2</version>
         </dependency>
+        
+        <!-- https://mvnrepository.com/artifact/com.itextpdf/itextpdf -->
+        <dependency>
+            <groupId>com.itextpdf</groupId>
+            <artifactId>itextpdf</artifactId>
+            <version>5.5.13.2</version>
+        </dependency>
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
@@ -68,17 +76,17 @@
         <dependency>
             <groupId>org.springdoc</groupId>
             <artifactId>springdoc-openapi-ui</artifactId>
-            <version>1.6.3</version>
+            <version>1.6.4</version>
         </dependency>
         <dependency>
             <groupId>org.springdoc</groupId>
             <artifactId>springdoc-openapi-webmvc-core</artifactId>
-            <version>1.6.3</version>
+            <version>1.6.4</version>
         </dependency>
         <dependency>
             <groupId>org.springdoc</groupId>
             <artifactId>springdoc-openapi-security</artifactId>
-            <version>1.6.3</version>
+            <version>1.6.4</version>
         </dependency>
 
         <dependency>
@@ -97,6 +105,13 @@
             <artifactId>postgresql</artifactId>
             <scope>runtime</scope>
         </dependency>
+
+        <dependency>
+            <groupId>com.aventrix.jnanoid</groupId>
+            <artifactId>jnanoid</artifactId>
+            <version>2.0.0</version>
+        </dependency>
+
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
