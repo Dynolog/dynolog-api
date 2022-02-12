@@ -2,12 +2,10 @@ package com.github.appointmentsio.api.domain.timeentry.service;
 
 import com.github.appointmentsio.api.domain.timeentry.model.Summary;
 import com.github.appointmentsio.api.domain.timeentry.repository.TimeEntryRepository;
-import com.github.appointmentsio.api.domain.user.repository.UserRepository;
 import com.github.appointmentsio.api.errors.Error;
 import com.github.appointmentsio.api.errors.exception.BadRequestException;
 import org.springframework.stereotype.Service;
 
-import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
@@ -23,27 +21,18 @@ import static java.time.temporal.ChronoUnit.YEARS;
 public class findSummaryService {
 
     public findSummaryService(
-            TimeEntryRepository timeEntryRepository,
-            UserRepository userRepository
+            TimeEntryRepository timeEntryRepository
     ) {
         this.timeEntryRepository = timeEntryRepository;
-        this.userRepository = userRepository;
     }
 
     private final TimeEntryRepository timeEntryRepository;
-    private final UserRepository userRepository;
 
     public Summary findSummaryByUserId(LocalDateTime start, LocalDateTime end, String userNanoid) {
-        var optional = userRepository.findOptionalIdByNanoid(userNanoid.getBytes(UTF_8));
-        return optional.map(id -> findSummaryByUserId(start, end, id))
-                .orElseThrow(() -> notFound("user not found"));
-    }
-
-    public Summary findSummaryByUserId(LocalDateTime start, LocalDateTime end, Long userId) {
 
         var authorized = authorizedOrThrow();
 
-        if (!authorized.canRead(userId)) {
+        if (!authorized.canRead(userNanoid)) {
             throw unauthorized(message(NOT_AUTHORIZED_TO_READ, "'summaries'"));
         }
 
@@ -62,7 +51,7 @@ public class findSummaryService {
         }
 
         var entries = timeEntryRepository
-                .findTimeEntriesByUserIdAndBetweenStartAndEndDate(start, end, userId);
+                .findTimeEntriesByUserIdAndBetweenStartAndEndDate(start, end, userNanoid.getBytes(UTF_8));
 
         return new Summary(entries);
     }

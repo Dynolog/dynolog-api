@@ -10,11 +10,9 @@ import com.github.appointmentsio.api.errors.exception.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
-import static com.github.appointmentsio.api.domain.pagination.Page.empty;
 import static com.github.appointmentsio.api.domain.pagination.Page.of;
 import static com.github.appointmentsio.api.domain.session.service.SessionService.authorizedOrThrow;
 import static com.github.appointmentsio.api.utils.Constraints.MESSAGES.*;
@@ -41,28 +39,16 @@ public class FindTimeEntryService {
     public final TimeEntryRepository timeEntryRepository;
     public final UserRepository userRepository;
 
-    public Page<TimeEntryInfo> findAll(
-            Optional<LocalDateTime> start,
-            Optional<LocalDateTime> stop,
-            Optional<Integer> page,
-            Optional<Integer> size,
-            String userNanoid
-    ) {
-        var optional = userRepository.findOptionalIdByNanoid(userNanoid.getBytes(UTF_8));
-        return optional.map(id -> findAll(start, stop, page, size, id))
-                .orElseGet(Page::empty);
-    }
-
     public Page<TimeEntryInfo> findAll (
         Optional<LocalDateTime> optionalStart,
         Optional<LocalDateTime> optionalEnd,
         Optional<Integer> pageNumber,
         Optional<Integer> pageSize,
-        Long userId
+        String userNanoid
     ) {
         var authorized = authorizedOrThrow();
 
-        if (!authorized.canRead(userId)) {
+        if (!authorized.canRead(userNanoid)) {
             throw unauthorized(message(NOT_AUTHORIZED_TO_LIST, "'time entries"));
         }
 
@@ -85,7 +71,7 @@ public class FindTimeEntryService {
 
         var pageable = Pagination.of(pageNumber, pageSize);
 
-        var page = timeEntryRepository.findAllByUserIdFetchUserAndProject(pageable, start, end, userId).map(TimeEntryInfo::new);
+        var page = timeEntryRepository.findAllByUserIdFetchUserAndProject(pageable, start, end, userNanoid.getBytes(UTF_8)).map(TimeEntryInfo::new);
 
         return of(page);
     }

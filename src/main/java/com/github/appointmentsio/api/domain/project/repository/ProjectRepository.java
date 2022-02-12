@@ -24,7 +24,5 @@ public interface ProjectRepository extends NonSequentialIdRepository<Project> {
     Project findByIdFetchUser(@Param("id") Long id);
 
     @Query(FIND_ALL_FETCH_USER)
-    List<Project> findAllFetchUser(@Param("user_id") Long userId);
-
-
+    List<Project> findAllFetchUser(@Param("nanoid") byte[] nanoid);
 }

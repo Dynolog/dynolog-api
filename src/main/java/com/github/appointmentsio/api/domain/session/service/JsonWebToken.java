@@ -46,7 +46,7 @@ public class JsonWebToken {
     public Authorized decode(String token, String secret) {
         var decoded = Jwts.parser().setSigningKey(secret).parseClaimsJws(token);
 
-        var id = Long.parseLong(decoded.getBody().getSubject());
+        var id = decoded.getBody().getSubject();
         
         var joinedRolesString = decoded.getBody().get(ROLES_KEY_ON_JWT).toString();
         var roles = joinedRolesString.split(",");

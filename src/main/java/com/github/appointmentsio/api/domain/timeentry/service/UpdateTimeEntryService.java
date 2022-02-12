@@ -63,7 +63,7 @@ public class UpdateTimeEntryService {
 
         var authorized = authorizedOrThrow();
 
-        if (!authorized.canRead(timeEntry.getUser())) {
+        if (!authorized.canRead(timeEntry.getUser().getNanoid())) {
             throw unauthorized(message(NOT_AUTHORIZED_TO_MODIFY, "'time entries'"));
         }
 

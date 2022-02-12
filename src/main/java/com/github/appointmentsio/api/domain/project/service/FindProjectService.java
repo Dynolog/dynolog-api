@@ -18,28 +18,20 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 public class FindProjectService {
 
     private final ProjectRepository projectRepository;
-    private final UserRepository userRepository;
 
     @Autowired
     public FindProjectService(
-            ProjectRepository projectRepository,
-            UserRepository userRepository
+            ProjectRepository projectRepository
     ) {
         this.projectRepository = projectRepository;
-        this.userRepository = userRepository;
     }
 
     public List<ProjectInfo> findAll(String userNanoid) {
-        var optional = userRepository.findOptionalIdByNanoid(userNanoid.getBytes(UTF_8));
-        return optional.map(this::findAll).orElseGet(List::of);
-    }
-
-    public List<ProjectInfo> findAll(Long userId) {
-        if (!authorizedOrThrow().canRead(userId)) {
+        if (!authorizedOrThrow().canRead(userNanoid)) {
             throw unauthorized(message(NOT_AUTHORIZED_TO_LIST, "'projects'"));
         }
 
-        return projectRepository.findAllFetchUser(userId).stream()
+        return projectRepository.findAllFetchUser(userNanoid.getBytes(UTF_8)).stream()
                 .map(ProjectInfo::new)
                 .toList();
     }

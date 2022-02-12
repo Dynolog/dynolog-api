@@ -29,12 +29,12 @@ public class UpdateProjectService {
 
         var authorized = authorizedOrThrow();
 
-        var project = projectRepository.findOptionalByIdFetchUser(nanoid.getBytes(UTF_8))
-                .orElseThrow(() -> notFound("Project not found"));
-
-        if (!authorized.canModify(project.getUser())) {
+        if (!authorized.canModify(nanoid)) {
             throw unauthorized(message(NOT_AUTHORIZED_TO_MODIFY, "'projects'"));
         }
+
+        var project = projectRepository.findOptionalByIdFetchUser(nanoid.getBytes(UTF_8))
+                .orElseThrow(() -> notFound("Project not found"));
 
         project.update(props);
 

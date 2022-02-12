@@ -32,12 +32,12 @@ public class CreateProjectService {
     public ProjectInfo create(CreateProjectProps props) {
         var authorized = authorizedOrThrow();
 
-        var user = findUserService.findOptionalByNanoidFetchRoles(props.getUserId())
-                .orElseThrow(() -> notFound("User not found"));
-
-        if (!authorized.canModify(user.getId())) {
+        if (!authorized.canModify(props.getUserId())) {
             throw unauthorized(message(NOT_AUTHORIZED_TO_CREATE, "'projects'"));
         }
+
+        var user = findUserService.findOptionalByNanoidFetchRoles(props.getUserId())
+                .orElseThrow(() -> notFound("User not found"));
 
         var project = projectRepository.save(new Project(props, user));
 

@@ -6,6 +6,8 @@ import lombok.Data;
 
 import java.time.LocalDateTime;
 
+import static com.github.appointmentsio.api.utils.TimeUtils.millisToTime;
+
 @Data
 public class TimeEntryInfo {
 
@@ -22,10 +24,9 @@ public class TimeEntryInfo {
         this.start = timeEntry.getStart();
         this.stop = timeEntry.getStop();
 
-        this.user = timeEntry
-                .getUser()
-                .map((user) -> new SimpleEntityRelation(user.getNanoid(), user.getName()))
-                .orElse(null);
+        var user = timeEntry.getUser();
+
+        this.user = new SimpleEntityRelation(user.getNanoid(), user.getName());
 
         this.project = timeEntry
                 .getProject()

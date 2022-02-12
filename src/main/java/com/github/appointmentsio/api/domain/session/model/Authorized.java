@@ -19,10 +19,10 @@ public class Authorized extends User {
     @Serial
     private static final long serialVersionUID = 1L;
 
-    private final Long id;
+    private final String id;
     private final String name;
 
-    public Authorized(Long id, List<Role> authorities) {
+    public Authorized(String id, List<Role> authorities) {
         super("USERNAME", "SECRET", authorities);
         this.id = id;
         this.name = "";
@@ -38,11 +38,11 @@ public class Authorized extends User {
             true,
             user.getAuthorities()
         );
-        this.id = user.getId();
+        this.id = user.getNanoid();
         this.name = user.getName();
     }
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
@@ -60,38 +60,16 @@ public class Authorized extends User {
                 .anyMatch((role) -> role.getAuthority().equals("ADM"));
     }
 
-    public <T extends Identity> Boolean canModify(Optional<T> identity) {
-        if (identity.isEmpty()) {
-            return false;
-        }
-        return canRead(identity.get());
-    }
-
-    public Boolean canModify(Identity identity) {
-        return canRead(identity.getId());
-    }
-
-    public Boolean canModify(Long id) {
+    public Boolean canModify(String id) {
         var admin = isAdmin();
-        var equals = getId().equals(id);
+        var equals = this.id.equals(id);
         if (admin) {
             return true;
         }
         return equals;
     }
 
-    public <T extends Identity> Boolean canRead(Optional<T> identity) {
-        if (identity.isEmpty()) {
-            return false;
-        }
-        return canRead(identity.get());
-    }
-
-    public Boolean canRead(Identity identity) {
-        return canRead(identity.getId());
-    }
-
-    public Boolean canRead(Long id) {
+    public Boolean canRead(String id) {
         var admin = isAdmin();
         var equals = this.id.equals(id);
         if (admin) {

@@ -22,7 +22,7 @@ public interface TimeEntryRepository extends NonSequentialIdRepository<TimeEntry
             Pageable pageable,
             @Param("start_date") LocalDateTime start,
             @Param("end_date") LocalDateTime end,
-            @Param("user_id") Long userId
+            @Param("user_nanoid") byte[] userId
     );
 
     @Query(FIND_TIME_ENTRY_BY_ID)
@@ -35,6 +35,6 @@ public interface TimeEntryRepository extends NonSequentialIdRepository<TimeEntry
     List<TimeEntry> findTimeEntriesByUserIdAndBetweenStartAndEndDate(
             @Param("start_date") LocalDateTime start,
             @Param("end_date") LocalDateTime end,
-            @Param("user_id") Long userId
+            @Param("user_nanoid") byte[] userId
     );
 }

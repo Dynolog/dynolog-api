@@ -30,10 +30,7 @@ public class SimplifiedTimeEntry implements Identity {
         this.start = timeEntry.getStart();
         this.stop = timeEntry.getStop();
 
-        this.user = timeEntry
-            .getUser()
-                .map(SimplifiedUser::new)
-            .orElse(null);
+        this.user = new SimplifiedUser(timeEntry.getUser());
 
         this.project = timeEntry
             .getProject()

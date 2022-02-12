@@ -40,6 +40,12 @@ public class CreateTimeEntryService {
 
     public TimeEntryInfo create(CreateTimeEntryProps props) {
 
+        var authorized = authorizedOrThrow();
+
+        if (!authorized.canModify(props.getUserId())) {
+            throw unauthorized(message(NOT_AUTHORIZED_TO_CREATE, "'time entries'"));
+        }
+
         var exception = new BadRequestException();
 
         var start = props.getStart();
@@ -55,12 +61,6 @@ public class CreateTimeEntryService {
 
         var user = findUserService.findOptionalByNanoidFetchRoles(props.getUserId())
                 .orElseThrow(() -> notFound("User not found"));
-
-        var authorized = authorizedOrThrow();
-
-        if (!authorized.canModify(user)) {
-            throw unauthorized(message(NOT_AUTHORIZED_TO_CREATE, "'time entries'"));
-        }
 
         Project project = null;
 

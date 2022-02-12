@@ -19,6 +19,6 @@ public class Queries {
     public static final String FIND_ALL_FETCH_USER = """
                 select project from Project project
                 left join fetch project.user user
-                where project.user.id = :user_id
+                where project.user.nanoid = :nanoid
             """;
 }

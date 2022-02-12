@@ -98,10 +98,6 @@ public class TimeEntry extends NonSequentialId implements Serializable {
         return MILLIS.between(start, stop);
     }
 
-    public Optional<User> getUser() {
-        return ofNullable(user);
-    }
-
     public Optional<Project> getProject() {
         return ofNullable(project);
     }

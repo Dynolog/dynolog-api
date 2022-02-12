@@ -25,7 +25,6 @@ import java.util.logging.Logger;
 import static com.github.appointmentsio.api.domain.session.service.SessionService.authorizedOrThrow;
 import static com.github.appointmentsio.api.utils.Constraints.MESSAGES.*;
 import static com.github.appointmentsio.api.utils.Messages.message;
-import static com.github.appointmentsio.api.utils.Response.notFound;
 import static com.github.appointmentsio.api.utils.Response.unauthorized;
 import static com.github.appointmentsio.api.utils.TimeUtils.millisToTime;
 import static com.itextpdf.text.Element.ALIGN_LEFT;
@@ -48,15 +47,9 @@ public class PdfService {
     private UserRepository userRepository;
 
     public ByteArrayInputStream create(LocalDateTime start, LocalDateTime end, String userNanoid) {
-        var optional = userRepository.findOptionalIdByNanoid(userNanoid.getBytes(UTF_8));
-        return optional.map(id -> create(start, end, id))
-                .orElseThrow(() -> notFound("user not found"));
-    }
-
-    public ByteArrayInputStream create(LocalDateTime start, LocalDateTime end, Long userId) {
         var authorized = authorizedOrThrow();
 
-        if (!authorized.canRead(userId)) {
+        if (!authorized.canRead(userNanoid)) {
             throw unauthorized(message(NOT_AUTHORIZED_TO_READ, "'summaries'"));
         }
 
@@ -75,7 +68,7 @@ public class PdfService {
         }
 
         var entries = timeEntryRepository
-                .findTimeEntriesByUserIdAndBetweenStartAndEndDate(start, end, userId);
+                .findTimeEntriesByUserIdAndBetweenStartAndEndDate(start, end, userNanoid.getBytes(UTF_8));
 
         return create(entries);
     }
