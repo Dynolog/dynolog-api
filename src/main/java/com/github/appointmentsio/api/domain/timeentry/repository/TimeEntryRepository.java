@@ -25,6 +25,9 @@ public interface TimeEntryRepository extends NonSequentialIdRepository<TimeEntry
             @Param("user_nanoid") byte[] userId
     );
 
+    @Query(FIND_TIME_ENTRIES_BY_USER_NANOID_WHERE_STOP_NULL_FETCH_USER_AND_PROJECT)
+    Page<TimeEntry> findByUserNanoidWhereStopIdNullFetchUserAndProject(Pageable pageable, @Param("user_nanoid") byte[] userId);
+
     @Query(FIND_TIME_ENTRY_BY_ID)
     TimeEntry findByIdFetchUserAndProject(@Param("id") Long id);
 

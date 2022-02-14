@@ -16,7 +16,6 @@ public class UpdateTimeEntryProps {
     @NotNull(message = "{timeentry.start.notnull}")
     private LocalDateTime start;
 
-    @NotNull(message = "{timeentry.stop.notnull}")
     private LocalDateTime stop;
 
     private String projectId;

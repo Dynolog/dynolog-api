@@ -18,7 +18,6 @@ public class CreateTimeEntryProps {
     @NotNull(message = "{timeentry.start.notnull}")
     private LocalDateTime start;
 
-    @NotNull(message = "{timeentry.stop.notnull}")
     private LocalDateTime stop;
 
     @NotNull(message = "{timeentry.user-id.notnull}")

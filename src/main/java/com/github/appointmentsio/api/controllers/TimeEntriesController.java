@@ -5,6 +5,7 @@ import com.github.appointmentsio.api.domain.timeentry.form.CreateTimeEntryProps;
 import com.github.appointmentsio.api.domain.timeentry.model.TimeEntryInfo;
 import com.github.appointmentsio.api.domain.timeentry.form.UpdateTimeEntryProps;
 import com.github.appointmentsio.api.domain.timeentry.service.CreateTimeEntryService;
+import com.github.appointmentsio.api.domain.timeentry.service.FindTimeEntriesRunningService;
 import com.github.appointmentsio.api.domain.timeentry.service.FindTimeEntryService;
 import com.github.appointmentsio.api.domain.timeentry.service.UpdateTimeEntryService;
 
@@ -35,16 +36,19 @@ public class TimeEntriesController {
 
     private final CreateTimeEntryService createService;
     private final FindTimeEntryService findService;
+    private final FindTimeEntriesRunningService findRunningService;
     private final UpdateTimeEntryService updateService;
 
     @Autowired
     public TimeEntriesController(
         CreateTimeEntryService createService,
         FindTimeEntryService findService,
+        FindTimeEntriesRunningService findRunningService,
         UpdateTimeEntryService updateService
     ) {
         this.createService = createService;
         this.findService = findService;
+        this.findRunningService = findRunningService;
         this.updateService = updateService;
     }
 
@@ -58,6 +62,13 @@ public class TimeEntriesController {
         @RequestParam("user_id") String userNanoid
     ) {
         var result = findService.findAll(start, end, page, size, userNanoid);
+        return ok(result);
+    }
+
+    @GetMapping("/running")
+    @Operation(summary = "Returns a list of time entries that were not finished")
+    public ResponseEntity<TimeEntryInfo> running(@RequestParam("user_id") String nanoid) {
+        var result = findRunningService.find(nanoid);
         return ok(result);
     }
     

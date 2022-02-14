@@ -41,7 +41,7 @@ public class UpdateTimeEntryService {
         var start = props.getStart();
         var stop = props.getStop();
 
-        if (start.isAfter(stop) || stop.isBefore(start)) {
+        if (nonNull(start) && nonNull(stop) && (start.isAfter(stop) || stop.isBefore(start))) {
             exception.add(new Error("start or stop", message(TIMEENTRY_DATE_INTERVAL_INVALID)));
         }
 
