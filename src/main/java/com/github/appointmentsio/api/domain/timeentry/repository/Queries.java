@@ -34,13 +34,31 @@ public final class Queries {
             """;
 
     public static final String FIND_TIME_ENTRIES_BY_USER_NANOID_WHERE_STOP_NULL_FETCH_USER_AND_PROJECT = """
-                SELECT
-            """ + SELECT + """
-                FROM TimeEntry AS time_entry
-                LEFT JOIN time_entry.user AS user
-                LEFT JOIN time_entry.project AS project
-                WHERE time_entry.stop IS NULL AND user.nanoid = :user_nanoid
-                ORDER BY time_entry.start DESC
+                select
+                    t.id as "time_entry_id",
+                    t.nanoid as "time_entry_nanoid",
+                    t.description as "time_entry_description",
+                    t.start as "time_entry_start",
+                    t.stop as "time_entry_stop",
+                    u.id as "user_id",
+                    u.nanoid as "user_nanoid",
+                    u.name as "user_name",
+                    p.id as "project_id",
+                    p.nanoid as "project_nanoid",
+                    p.name as "project_name",
+                    p.color as "project_color",
+                    p.hourly_rate as "project_hourly_rate",
+                    p.currency as "project_currency"
+                from
+                    "time_entry" t
+                left outer join "user" u on t."user_id" = u."id"
+                left outer join "project" p on t."project_id" = p."id"
+                where
+                    (t."stop" is null)
+                    and u."nanoid" = :user_nano_id
+                order by
+                    t."start" desc
+                limit 1
             """;
 
     public static final String FIND_TIME_ENTRIES_BY_USER_ID_BETWEEN_START_AND_END_DATE = """
