@@ -6,12 +6,13 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonFormat.Shape;
 import com.github.appointmentsio.api.domain.session.entity.RefreshToken;
+import io.swagger.v3.oas.annotations.media.Schema;
 
+@Schema(name = "RefreshToken", requiredProperties = {"access_token", "refresh_token", "expires_in", "token_type"})
 public class RefreshTokenResponse {
     private final String token;
     private final RefreshToken refreshToken;
     private final LocalDateTime expiresIn;
-    private final String type = "Bearer";
 
     public RefreshTokenResponse(
         String token,
@@ -41,6 +42,6 @@ public class RefreshTokenResponse {
 
     @JsonProperty("token_type")
     public String getTokenType() {
-        return type;
+        return  "Bearer";
     }
 }

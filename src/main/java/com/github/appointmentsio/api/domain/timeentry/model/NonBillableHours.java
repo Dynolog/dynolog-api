@@ -1,12 +1,14 @@
 package com.github.appointmentsio.api.domain.timeentry.model;
 
 import com.github.appointmentsio.api.domain.timeentry.entity.TimeEntry;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
 
 import static com.github.appointmentsio.api.domain.timeentry.entity.TimeEntry.sum;
 import static com.github.appointmentsio.api.utils.TimeUtils.millisToTime;
 
+@Schema(requiredProperties = {"totalTime", "timeEntries"})
 public class NonBillableHours {
     public final String totalTime;
     public final List<TimeEntrySummary> timeEntries;

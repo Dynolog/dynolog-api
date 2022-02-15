@@ -2,7 +2,9 @@ package com.github.appointmentsio.api.domain.timeentry.model;
 
 import com.github.appointmentsio.api.domain.project.entity.Project;
 import com.github.appointmentsio.api.domain.timeentry.entity.TimeEntry;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
+import lombok.Getter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,12 +13,12 @@ import java.util.Optional;
 import static com.github.appointmentsio.api.utils.TimeUtils.millisToTime;
 import static java.util.stream.Collectors.groupingBy;
 
-@Data
+@Getter
+@Schema(requiredProperties = {"totalTime", "totalAmountByCurrency", "nonBillableHours", "projects"})
 public class Summary {
     private final String totalTime;
     private final List<Currencies> totalAmountByCurrency = new ArrayList<>();
     private NonBillableHours nonBillableHours = new NonBillableHours(List.of());
-
     private final List<ProjectSummary> projects = new ArrayList<>();
 
     public Summary(List<TimeEntry> timeEntries) {

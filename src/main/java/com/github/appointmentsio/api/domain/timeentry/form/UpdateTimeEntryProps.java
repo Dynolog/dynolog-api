@@ -11,7 +11,7 @@ import static java.util.Optional.ofNullable;
 
 @Data
 public class UpdateTimeEntryProps {
-    private String description = "";
+    private String description;
 
     @NotNull(message = "{timeentry.start.notnull}")
     private LocalDateTime start;

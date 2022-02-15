@@ -13,7 +13,7 @@ import static java.util.Optional.ofNullable;
 
 @Data
 public class CreateTimeEntryProps {
-    private String description = "";
+    private String description;
 
     @NotNull(message = "{timeentry.start.notnull}")
     private LocalDateTime start;

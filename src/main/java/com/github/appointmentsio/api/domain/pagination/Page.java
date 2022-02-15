@@ -1,11 +1,13 @@
 package com.github.appointmentsio.api.domain.pagination;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 
 import java.util.Collection;
 import java.util.List;
 
 @Getter
+@Schema(requiredProperties = {"content", "page", "size", "totalPages", "totalElements"})
 public class Page<T> {
     private final Collection<T> content;
     private final Integer page;
