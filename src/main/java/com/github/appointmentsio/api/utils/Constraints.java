@@ -37,6 +37,10 @@ public class Constraints {
         public static final double HOURS_IN_MILLISECONDS = 3.6e+6;
     }
 
+    public static class PATTERNS {
+        public static final String DATE_ISO_WITH_TIMEZONE = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
+    }
+
     /**
      * Validation messages.
      * @see "resources/messages.properties"
