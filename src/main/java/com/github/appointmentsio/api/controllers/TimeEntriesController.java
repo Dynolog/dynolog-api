@@ -67,7 +67,7 @@ public class TimeEntriesController {
 
     @GetMapping("/running")
     @Operation(summary = "Returns a list of time entries that were not finished")
-    public ResponseEntity<TimeEntryInfo> running(@RequestParam("user_id") String nanoid) {
+    public ResponseEntity<TimeEntryInfo> running(@RequestParam("userId") String nanoid) {
         var result = findRunningService.find(nanoid);
         return ok(result);
     }
