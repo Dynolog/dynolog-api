@@ -8,6 +8,7 @@ import com.github.appointmentsio.api.domain.timeentry.model.TimeEntryInfo;
 import com.github.appointmentsio.api.domain.timeentry.repository.TimeEntryRepository;
 import com.github.appointmentsio.api.domain.user.service.FindUserService;
 import com.github.appointmentsio.api.errors.Error;
+import com.github.appointmentsio.api.errors.ValidationError;
 import com.github.appointmentsio.api.errors.exception.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -52,7 +53,7 @@ public class CreateTimeEntryService {
         var stop = props.getStop();
 
         if (nonNull(start) && nonNull(stop) && (start.isAfter(stop) || stop.isBefore(start))) {
-            exception.add(new Error("start or stop", message(TIMEENTRY_DATE_INTERVAL_INVALID)));
+            exception.add(new ValidationError("start or stop", message(TIMEENTRY_DATE_INTERVAL_INVALID)));
         }
 
         if (exception.hasError()) {

@@ -5,6 +5,7 @@ import com.github.appointmentsio.api.domain.timeentry.entity.TimeEntry;
 import com.github.appointmentsio.api.domain.timeentry.repository.TimeEntryRepository;
 import com.github.appointmentsio.api.domain.user.repository.UserRepository;
 import com.github.appointmentsio.api.errors.Error;
+import com.github.appointmentsio.api.errors.ValidationError;
 import com.github.appointmentsio.api.errors.exception.BadRequestException;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
@@ -53,14 +54,14 @@ public class PdfService {
             throw unauthorized(message(NOT_AUTHORIZED_TO_READ, "'summaries'"));
         }
 
-        var errors = new ArrayList<Error>();
+        var errors = new ArrayList<ValidationError>();
 
         if (start.isAfter(end) || end.isBefore(start)) {
-            errors.add(new Error("start_date or end_date", message(SEARCH_DATE_INTERVAL_INVALID)));
+            errors.add(new ValidationError("start_date or end_date", message(SEARCH_DATE_INTERVAL_INVALID)));
         }
 
         if (YEARS.between(start, end) > 1) {
-            errors.add(new Error("start_date or end_date", message(DATES_INTERVAL_CANNOT_LONGER_THAN_YEARS, 1)));
+            errors.add(new ValidationError("start_date or end_date", message(DATES_INTERVAL_CANNOT_LONGER_THAN_YEARS, 1)));
         }
 
         if (!errors.isEmpty()) {
