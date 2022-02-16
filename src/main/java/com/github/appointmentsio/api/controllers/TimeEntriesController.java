@@ -55,11 +55,11 @@ public class TimeEntriesController {
     @GetMapping
     @Operation(summary = "Returns a paginated list of time entries")
     public ResponseEntity<Page<TimeEntryInfo>> index(
-        @RequestParam("start_date") @DateTimeFormat(iso = DATE_TIME) Optional<LocalDateTime> start,
-        @RequestParam("end_date") @DateTimeFormat(iso = DATE_TIME) Optional<LocalDateTime> end,
+        @RequestParam("startDate") @DateTimeFormat(iso = DATE_TIME) Optional<LocalDateTime> start,
+        @RequestParam("endDate") @DateTimeFormat(iso = DATE_TIME) Optional<LocalDateTime> end,
         @RequestParam("page") Optional<Integer> page,
         @RequestParam("size") Optional<Integer> size,
-        @RequestParam("user_id") String userNanoid
+        @RequestParam("userId") String userNanoid
     ) {
         var result = findService.findAll(start, end, page, size, userNanoid);
         return ok(result);

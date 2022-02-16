@@ -44,7 +44,7 @@ public class ProjectsController {
     @GetMapping
     @Operation(summary = "List all projects from user")
     public ResponseEntity<List<ProjectInfo>> index(
-        @RequestParam(value = "user_id") String userNanoid
+        @RequestParam(value = "userId") String userNanoid
     ) {
         var projects = findService.findAll(userNanoid);
         return ok(projects);

@@ -65,9 +65,9 @@ public class ReportsController {
     @GetMapping("/summary")
     @Operation(summary = "Returns a summary of all time entries for a user")
     public ResponseEntity<Summary> summary(
-            @RequestParam("start_date") @DateTimeFormat(iso = DATE_TIME) LocalDateTime start,
-            @RequestParam("end_date") @DateTimeFormat(iso = DATE_TIME) LocalDateTime end,
-            @RequestParam("user_id") String userNanoid
+            @RequestParam("startDate") @DateTimeFormat(iso = DATE_TIME) LocalDateTime start,
+            @RequestParam("endDate") @DateTimeFormat(iso = DATE_TIME) LocalDateTime end,
+            @RequestParam("userId") String userNanoid
     ) {
         return ok(findSummaryService.findSummaryByUserId(start, end, userNanoid));
     }
