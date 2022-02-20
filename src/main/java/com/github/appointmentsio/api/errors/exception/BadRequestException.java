@@ -1,26 +1,26 @@
 package com.github.appointmentsio.api.errors.exception;
 
-import com.github.appointmentsio.api.errors.ValidationError;
+import com.github.appointmentsio.api.errors.model.FieldError;
 
 import java.util.ArrayList;
 import java.util.Collection;
 
 public class BadRequestException extends RuntimeException {
-    Collection<ValidationError> errors;
+    Collection<FieldError> errors;
 
     public BadRequestException() {
         this.errors = new ArrayList<>();
     }
 
-    public BadRequestException(Collection<ValidationError> errors) {
+    public BadRequestException(Collection<FieldError> errors) {
         this.errors = errors;
     }
 
-    public Collection<ValidationError> getErrors() {
+    public Collection<FieldError> getErrors() {
         return errors;
     }
 
-    public void add(ValidationError error) {
+    public void add(FieldError error) {
         this.errors.add(error);
     }
 

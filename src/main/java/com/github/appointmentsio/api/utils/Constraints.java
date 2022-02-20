@@ -47,6 +47,8 @@ public class Constraints {
      * @see "resources/messages.properties"
      */
     public static class MESSAGES {
+        public static final String CHECK_PROPERTY_ERRORS = "check.property.errors";
+
         public static final String NOT_AUTHORIZED = "not.authorized";
 
         public static final String NOT_AUTHORIZED_TO_LIST = "not.authorized.list";

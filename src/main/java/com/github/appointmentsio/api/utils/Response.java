@@ -1,6 +1,6 @@
 package com.github.appointmentsio.api.utils;
 
-import com.github.appointmentsio.api.errors.Error;
+import com.github.appointmentsio.api.errors.model.ApiError;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.server.ResponseStatusException;
@@ -34,7 +34,7 @@ public class Response {
             response.setStatus(FORBIDDEN.value());
             response.setContentType("application/json");
             response.getWriter().write(stringify(
-                    new Error(message(TOKEN_HEADER_MISSING_MESSAGE), FORBIDDEN)
+                    new ApiError(message(TOKEN_HEADER_MISSING_MESSAGE), FORBIDDEN)
             ));
         } catch (Exception exception) {
             LOGGER.log(Level.SEVERE, CAN_T_WRITE_RESPONSE_ERROR, exception);
@@ -46,17 +46,17 @@ public class Response {
             response.setStatus(FORBIDDEN.value());
             response.setContentType("application/json");
             response.getWriter().write(stringify(
-                    new Error(message(TOKEN_EXPIRED_OR_INVALID), FORBIDDEN)
+                    new ApiError(message(TOKEN_EXPIRED_OR_INVALID), FORBIDDEN)
             ));
         } catch (IOException exception) {
             LOGGER.log(Level.SEVERE, CAN_T_WRITE_RESPONSE_ERROR, exception);
         }
     }
 
-    public static ResponseEntity<Error> fromException(ResponseStatusException exception) {
+    public static ResponseEntity<ApiError> fromException(ResponseStatusException exception) {
         return ResponseEntity
                 .status(exception.getStatus())
-                    .body(new Error(exception.getReason(), exception.getStatus()));
+                    .body(new ApiError(exception.getReason(), exception.getStatus()));
     }
 
     public static <T> ResponseEntity<T> forbidden(T body) {

@@ -1,6 +1,9 @@
 package com.github.appointmentsio.api.errors;
 
 import com.github.appointmentsio.api.errors.exception.BadRequestException;
+import com.github.appointmentsio.api.errors.model.ApiError;
+import com.github.appointmentsio.api.errors.model.FieldError;
+import com.github.appointmentsio.api.errors.model.ValidationError;
 import com.github.appointmentsio.api.utils.Response;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
@@ -13,7 +16,6 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.format.DateTimeParseException;
-import java.util.Collection;
 import java.util.List;
 
 import static com.github.appointmentsio.api.utils.Constraints.MESSAGES.NOT_AUTHORIZED;
@@ -26,42 +28,47 @@ public class ValidationHandlers {
 
     @ResponseStatus(code = UNPROCESSABLE_ENTITY)
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public Collection<ValidationError> badRequest(MethodArgumentNotValidException exception) {
-        return ValidationError.of(exception);
+    public ValidationError badRequest(MethodArgumentNotValidException exception) {
+        var errors = FieldError.of(exception);
+        return new ValidationError(errors);
     }
 
     @ResponseStatus(code = BAD_REQUEST)
     @ExceptionHandler(BadRequestException.class)
-    public Collection<ValidationError> badRequest(BadRequestException exception) {
-        return exception.getErrors();
+    public ValidationError badRequest(BadRequestException exception) {
+        var errors = exception.getErrors();
+        return new ValidationError(errors);
     }
 
     @ResponseStatus(code = BAD_REQUEST)
     @ExceptionHandler(DateTimeParseException.class)
-    public Collection<ValidationError> badRequest(DateTimeParseException exception) {
-        return List.of(new ValidationError(exception.getCause().getCause().getMessage()));
+    public ValidationError badRequest(DateTimeParseException exception) {
+        var errors = List.of(new FieldError(exception.getCause().getCause().getMessage()));
+        return new ValidationError(errors);
     }
 
     @ResponseStatus(code = BAD_REQUEST)
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
-    public Collection<ValidationError> badRequest(MethodArgumentTypeMismatchException exception) {
-        return List.of(new ValidationError(exception.getParameter().getParameterName(), message(TYPE_MISMATCH_ERROR_MESSAGE)));
+    public ValidationError badRequest(MethodArgumentTypeMismatchException exception) {
+        var errors = List.of(new FieldError(exception.getParameter().getParameterName(), message(TYPE_MISMATCH_ERROR_MESSAGE)));
+        return new ValidationError(errors);
     }
 
     @ResponseStatus(code = BAD_REQUEST)
     @ExceptionHandler(MissingServletRequestParameterException.class)
-    public Collection<ValidationError> badRequest(MissingServletRequestParameterException exception) {
-        return List.of(new ValidationError(exception.getParameterName(), exception.getMessage()));
+    public ValidationError badRequest(MissingServletRequestParameterException exception) {
+        var errors = List.of(new FieldError(exception.getParameterName(), exception.getMessage()));
+        return new ValidationError(errors);
     }
 
     @ResponseStatus(code = UNAUTHORIZED)
     @ExceptionHandler(AccessDeniedException.class)
-    public Error unauthorized(AccessDeniedException exception) {
-        return new Error(message(NOT_AUTHORIZED), UNAUTHORIZED);
+    public ApiError unauthorized(AccessDeniedException exception) {
+        return new ApiError(message(NOT_AUTHORIZED), UNAUTHORIZED);
     }
 
     @ExceptionHandler(ResponseStatusException.class)
-    public ResponseEntity<Error> status(ResponseStatusException exception) {
+    public ResponseEntity<ApiError> status(ResponseStatusException exception) {
         return Response.fromException(exception);
     }
 }
