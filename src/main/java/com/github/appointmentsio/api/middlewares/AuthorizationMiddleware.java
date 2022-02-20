@@ -2,6 +2,7 @@ package com.github.appointmentsio.api.middlewares;
 
 import com.github.appointmentsio.api.domain.session.service.SessionService;
 import com.github.appointmentsio.api.errors.exception.TokenExpiredOrInvalidException;
+import com.github.appointmentsio.api.errors.exception.TokenHeaderMissingException;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -42,8 +43,6 @@ public class AuthorizationMiddleware extends OncePerRequestFilter {
             authorize(token);
         } catch (TokenExpiredOrInvalidException exception) {
             expired(response);
-        } catch (Exception exception) {
-            forbidden(response);
         }
     }
 

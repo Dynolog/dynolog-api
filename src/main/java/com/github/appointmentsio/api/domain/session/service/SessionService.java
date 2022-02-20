@@ -44,11 +44,11 @@ public class SessionService implements UserDetailsService {
     }
 
     public static void authorize(String token) {
-        if (isNull(token)) {
-            throw new TokenHeaderMissingException();
-        }
-
         try {
+            if (isNull(token)) {
+                return;
+            }
+
             var authorized = JWT.decode(token, TOKEN_SECRET);
             SecurityContextHolder
                     .getContext()

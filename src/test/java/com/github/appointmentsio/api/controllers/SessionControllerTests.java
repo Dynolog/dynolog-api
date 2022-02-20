@@ -162,4 +162,15 @@ public class SessionControllerTests {
                 .andExpect(status().isUnauthorized())
                 .andExpect(jsonPath("$.message").value("Not authorized."));
     }
+
+    @Test
+    @DisplayName("Deve aceitar requisições sem token em rotas publicas.")
+    public void temp() throws Exception {
+        var request = get("/api");
+
+        api.perform(request)
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.message").value("Is a live!"));
+    }
 }

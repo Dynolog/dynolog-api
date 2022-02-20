@@ -26,13 +26,17 @@ public class Response {
     private Response() { }
 
     public static void forbidden(HttpServletResponse response) {
+        if (response.isCommitted()) {
+            return;
+        }
+
         try {
             response.setStatus(FORBIDDEN.value());
             response.setContentType("application/json");
             response.getWriter().write(stringify(
                     new Error(message(TOKEN_HEADER_MISSING_MESSAGE), FORBIDDEN)
             ));
-        } catch (IOException exception) {
+        } catch (Exception exception) {
             LOGGER.log(Level.SEVERE, CAN_T_WRITE_RESPONSE_ERROR, exception);
         }
     }
