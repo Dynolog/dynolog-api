@@ -11,11 +11,14 @@ public class Constraints {
     private Constraints(
             @Value("${token.secret}") String tokenSecret,
             @Value("${token.expiration-in-hours}") Integer tokenExpirationInHours,
-            @Value("${token.refresh.expiration-in-days}") Integer refreshTokenExpirationInDays
+            @Value("${token.refresh.expiration-in-days}") Integer refreshTokenExpirationInDays,
+            @Value("${bucket4j.filters[0].rate-limits[0].bandwidths[0].capacity}") Integer maxRequestsPerMinute
     ) {
         Constraints.SECURITY.TOKEN_SECRET = tokenSecret;
         Constraints.SECURITY.TOKEN_EXPIRATION_IN_HOURS = tokenExpirationInHours;
         Constraints.SECURITY.REFRESH_TOKEN_EXPIRATION_IN_DAYS = refreshTokenExpirationInDays;
+
+        Constraints.RATE_LIMIT.MAX_REQUESTS_PER_MINUTE = maxRequestsPerMinute;
     }
 
     public static class SECURITY {
@@ -40,6 +43,10 @@ public class Constraints {
 
     public static class PATTERNS {
         public static final String DATE_ISO_WITH_TIMEZONE = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
+    }
+
+    public static class RATE_LIMIT {
+        public static Integer MAX_REQUESTS_PER_MINUTE;
     }
 
     /**
