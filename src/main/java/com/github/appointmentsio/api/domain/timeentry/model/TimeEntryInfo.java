@@ -1,7 +1,6 @@
 package com.github.appointmentsio.api.domain.timeentry.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.github.appointmentsio.api.domain.shared.model.SimpleEntityRelation;
 import com.github.appointmentsio.api.domain.timeentry.entity.TimeEntry;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
@@ -16,7 +15,7 @@ public class TimeEntryInfo {
 
     private final String id;
     private final String description;
-    private final SimpleEntityRelation user;
+    private final TimeEntryUser user;
     private final TimeEntryProjectInfo project;
 
     @JsonFormat(timezone = "UTC", pattern = DATE_ISO_WITH_TIMEZONE)
@@ -33,7 +32,7 @@ public class TimeEntryInfo {
 
         var user = timeEntry.getUser();
 
-        this.user = new SimpleEntityRelation(user.getNanoid(), user.getName());
+        this.user = new TimeEntryUser(user.getNanoid(), user.getName());
 
         this.project = timeEntry
                 .getProject()

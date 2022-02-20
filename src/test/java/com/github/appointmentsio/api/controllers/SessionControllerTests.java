@@ -4,6 +4,7 @@ import com.github.appointmentsio.api.domain.user.repository.UserRepository;
 import com.github.appointmentsio.api.utils.JSON;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureDataJpa;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -20,6 +21,7 @@ import static com.github.appointmentsio.api.utils.Random.user;
 import static java.lang.String.format;
 import static java.time.LocalDateTime.now;
 import static java.util.List.of;
+import static org.junit.jupiter.api.TestInstance.Lifecycle.PER_CLASS;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
@@ -29,10 +31,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@SpringBootTest(webEnvironment = WebEnvironment.MOCK)
-@DirtiesContext(classMode = ClassMode.BEFORE_CLASS)
 @AutoConfigureDataJpa
 @AutoConfigureMockMvc
+@TestInstance(PER_CLASS)
+@DirtiesContext(classMode = ClassMode.BEFORE_CLASS)
+@SpringBootTest(webEnvironment = WebEnvironment.MOCK)
 public class SessionControllerTests {
     @Autowired
     private MockMvc api;
