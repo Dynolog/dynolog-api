@@ -39,7 +39,7 @@ public class InternationalizationTests {
     public void should_return_error_messages_in_pt_BR() throws Exception {
         var body = JSON.stringify(of(
             "password", MOCK_PASSWORD,
-            "email", "email@email.com"
+            "email", MOCK_EMAIL
         ));
 
         var request = post("/api/sessions")
