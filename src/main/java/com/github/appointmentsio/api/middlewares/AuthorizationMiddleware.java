@@ -1,6 +1,7 @@
 package com.github.appointmentsio.api.middlewares;
 
 import com.github.appointmentsio.api.domain.session.service.SessionService;
+import com.github.appointmentsio.api.errors.exception.TokenExpiredOrInvalidException;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -11,8 +12,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+import static com.github.appointmentsio.api.domain.session.service.SessionService.authorize;
 import static com.github.appointmentsio.api.utils.Constraints.SECURITY.*;
+import static com.github.appointmentsio.api.utils.Response.expired;
+import static com.github.appointmentsio.api.utils.Response.forbidden;
 import static java.util.Objects.isNull;
+import static java.util.Objects.nonNull;
 import static java.util.Optional.ofNullable;
 
 @Component
@@ -21,33 +26,42 @@ public class AuthorizationMiddleware extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(
-        HttpServletRequest request,
-        HttpServletResponse response,
-        FilterChain filter
+            HttpServletRequest request,
+            HttpServletResponse response,
+            FilterChain filter
     )
-        throws ServletException, IOException {
+            throws ServletException, IOException {
 
-        ofNullable(authorization(request))
-            .ifPresent(SessionService::authorize);
+        tryAuthorize(response, authorization(request));
 
         filter.doFilter(request, response);
     }
-    
+
+    public void tryAuthorize(HttpServletResponse response, String token) {
+        try {
+            authorize(token);
+        } catch (TokenExpiredOrInvalidException exception) {
+            expired(response);
+        } catch (Exception exception) {
+            forbidden(response);
+        }
+    }
+
     private static String authorization(HttpServletRequest request) {
         var token = request.getHeader(AUTHORIZATION_HEADER);
 
         if (tokenIsNull(token)) {
-            return null;            
+            return null;
         }
-        
+
         if (token.substring(7).equals(SECURITY_TYPE)) {
             return null;
         }
 
         return token.substring(7);
     }
-    
+
     private static boolean tokenIsNull(String token) {
         return isNull(token) || !token.startsWith(ACCEPTABLE_TOKEN_TYPE);
-    }    
+    }
 }

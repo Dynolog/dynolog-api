@@ -3,6 +3,9 @@ package com.github.appointmentsio.api.domain.session.service;
 import com.github.appointmentsio.api.domain.session.model.Authorized;
 import com.github.appointmentsio.api.domain.user.repository.UserRepository;
 import com.github.appointmentsio.api.domain.user.service.FindUserService;
+import com.github.appointmentsio.api.errors.exception.TokenExpiredOrInvalidException;
+import com.github.appointmentsio.api.errors.exception.TokenHeaderMissingException;
+import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -13,12 +16,12 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 import java.util.logging.Logger;
 
-import static com.github.appointmentsio.api.utils.Constraints.MESSAGES.INVALID_USERNAME;
-import static com.github.appointmentsio.api.utils.Constraints.MESSAGES.TOKEN_EXPIRED_OR_INVALID;
+import static com.github.appointmentsio.api.utils.Constraints.MESSAGES.*;
 import static com.github.appointmentsio.api.utils.Constraints.SECURITY.JWT;
 import static com.github.appointmentsio.api.utils.Constraints.SECURITY.TOKEN_SECRET;
 import static com.github.appointmentsio.api.utils.Messages.message;
 import static com.github.appointmentsio.api.utils.Response.forbidden;
+import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 import static java.util.Optional.empty;
 import static java.util.Optional.of;
@@ -35,25 +38,29 @@ public class SessionService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         var user = findUserService.findOptionalByEmailFetchRoles(email)
-            .orElseThrow(() -> new UsernameNotFoundException(INVALID_USERNAME));
-        
+                .orElseThrow(() -> new UsernameNotFoundException(INVALID_USERNAME));
+
         return new Authorized(user);
     }
 
     public static void authorize(String token) {
+        if (isNull(token)) {
+            throw new TokenHeaderMissingException();
+        }
+
         try {
             var authorized = JWT.decode(token, TOKEN_SECRET);
             SecurityContextHolder
-                .getContext()
+                    .getContext()
                     .setAuthentication(authorized.getAuthentication());
         } catch (Exception exception) {
-            LOGGER.log(WARNING, message(TOKEN_EXPIRED_OR_INVALID));
+            throw new TokenExpiredOrInvalidException();
         }
     }
 
     public static Authorized authorizedOrThrow() {
         return authorized()
-            .orElseThrow(() -> forbidden("Forbidden"));
+                .orElseThrow(() -> forbidden("Forbidden"));
     }
 
     public static Optional<Authorized> authorized() {

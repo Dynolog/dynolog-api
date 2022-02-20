@@ -6,7 +6,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.List;
 
 import static com.github.appointmentsio.api.domain.timeentry.entity.TimeEntry.sum;
-import static com.github.appointmentsio.api.utils.TimeUtils.millisToTime;
+import static com.github.appointmentsio.api.utils.Time.format;
 
 @Schema(requiredProperties = {"totalTime", "timeEntries"})
 public class NonBillableHours {
@@ -15,6 +15,6 @@ public class NonBillableHours {
 
     public NonBillableHours(List<TimeEntry> timeEntries) {
         this.timeEntries = timeEntries.stream().map(TimeEntrySummary::new).toList();
-        this.totalTime = millisToTime(sum(timeEntries));
+        this.totalTime = format(sum(timeEntries));
     }
 }

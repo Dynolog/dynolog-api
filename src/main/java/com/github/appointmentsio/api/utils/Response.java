@@ -10,8 +10,10 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import static com.github.appointmentsio.api.utils.Constraints.MESSAGES.TOKEN_EXPIRED_OR_INVALID;
 import static com.github.appointmentsio.api.utils.Constraints.MESSAGES.TOKEN_HEADER_MISSING_MESSAGE;
-import static com.github.appointmentsio.api.utils.JsonUtils.toJson;
+import static com.github.appointmentsio.api.utils.Constraints.SECURITY.CAN_T_WRITE_RESPONSE_ERROR;
+import static com.github.appointmentsio.api.utils.JSON.stringify;
 import static com.github.appointmentsio.api.utils.Messages.message;
 import static java.lang.String.format;
 import static java.net.URI.create;
@@ -27,11 +29,23 @@ public class Response {
         try {
             response.setStatus(FORBIDDEN.value());
             response.setContentType("application/json");
-            response.getWriter().write(toJson(
+            response.getWriter().write(stringify(
                     new Error(message(TOKEN_HEADER_MISSING_MESSAGE), FORBIDDEN)
             ));
         } catch (IOException exception) {
-            LOGGER.log(Level.SEVERE, "can't write response error on token expired or invalid exception", exception);
+            LOGGER.log(Level.SEVERE, CAN_T_WRITE_RESPONSE_ERROR, exception);
+        }
+    }
+
+    public static void expired(HttpServletResponse response) {
+        try {
+            response.setStatus(FORBIDDEN.value());
+            response.setContentType("application/json");
+            response.getWriter().write(stringify(
+                    new Error(message(TOKEN_EXPIRED_OR_INVALID), FORBIDDEN)
+            ));
+        } catch (IOException exception) {
+            LOGGER.log(Level.SEVERE, CAN_T_WRITE_RESPONSE_ERROR, exception);
         }
     }
 

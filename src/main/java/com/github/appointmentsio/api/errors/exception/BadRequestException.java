@@ -1,6 +1,5 @@
 package com.github.appointmentsio.api.errors.exception;
 
-import com.github.appointmentsio.api.errors.Error;
 import com.github.appointmentsio.api.errors.ValidationError;
 
 import java.util.ArrayList;
@@ -14,26 +13,6 @@ public class BadRequestException extends RuntimeException {
     }
 
     public BadRequestException(Collection<ValidationError> errors) {
-        this.errors = errors;
-    }
-
-    public BadRequestException(String message, Collection<ValidationError> errors) {
-        super(message);
-        this.errors = errors;
-    }
-
-    public BadRequestException(String message, Throwable cause, Collection<ValidationError> errors) {
-        super(message, cause);
-        this.errors = errors;
-    }
-
-    public BadRequestException(Throwable cause, Collection<ValidationError> errors) {
-        super(cause);
-        this.errors = errors;
-    }
-
-    public BadRequestException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace, Collection<ValidationError> errors) {
-        super(message, cause, enableSuppression, writableStackTrace);
         this.errors = errors;
     }
 

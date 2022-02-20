@@ -66,6 +66,13 @@ public class User extends NonSequentialId implements Serializable, Addressable, 
         this.roles = roles;
     }
 
+    public User(String name, String email, String password, List<Role> roles) {
+        this.name = name;
+        this.email = email;
+        this.password = password;
+        this.roles = roles;
+    }
+
     public User(
             Long id,
             byte[] nanoid,

@@ -22,6 +22,7 @@ public class Constraints {
         public static final String SECURITY_TYPE = "Bearer";
         public static final String AUTHORIZATION_HEADER = "Authorization";
         public static final String ACCEPTABLE_TOKEN_TYPE = SECURITY_TYPE + " ";
+        public static final String CAN_T_WRITE_RESPONSE_ERROR = "can't write response error.";
 
         public static String TOKEN_SECRET;
         public static Integer TOKEN_EXPIRATION_IN_HOURS;
@@ -46,6 +47,8 @@ public class Constraints {
      * @see "resources/messages.properties"
      */
     public static class MESSAGES {
+        public static final String NOT_AUTHORIZED = "not.authorized";
+
         public static final String NOT_AUTHORIZED_TO_LIST = "not.authorized.list";
         public static final String NOT_AUTHORIZED_TO_READ = "not.authorized.read";
         public static final String NOT_AUTHORIZED_TO_CREATE = "not.authorized.create";

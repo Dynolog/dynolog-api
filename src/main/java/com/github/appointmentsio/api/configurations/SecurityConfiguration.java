@@ -80,7 +80,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .csrf()
                     .disable()
                         .exceptionHandling()
-                            .authenticationEntryPoint((request, response, exception) -> forbidden(response))
+                            .authenticationEntryPoint((request, response, exception) -> {})
             .and()
                 .sessionManagement()
                     .sessionCreationPolicy(STATELESS)

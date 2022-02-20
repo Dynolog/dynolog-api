@@ -16,6 +16,7 @@ import java.time.format.DateTimeParseException;
 import java.util.Collection;
 import java.util.List;
 
+import static com.github.appointmentsio.api.utils.Constraints.MESSAGES.NOT_AUTHORIZED;
 import static com.github.appointmentsio.api.utils.Constraints.MESSAGES.TYPE_MISMATCH_ERROR_MESSAGE;
 import static com.github.appointmentsio.api.utils.Messages.message;
 import static org.springframework.http.HttpStatus.*;
@@ -56,7 +57,7 @@ public class ValidationHandlers {
     @ResponseStatus(code = UNAUTHORIZED)
     @ExceptionHandler(AccessDeniedException.class)
     public Error unauthorized(AccessDeniedException exception) {
-        return new Error(exception.getMessage(), UNAUTHORIZED);
+        return new Error(message(NOT_AUTHORIZED), UNAUTHORIZED);
     }
 
     @ExceptionHandler(ResponseStatusException.class)

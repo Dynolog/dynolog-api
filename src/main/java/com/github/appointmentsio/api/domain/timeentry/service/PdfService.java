@@ -4,7 +4,6 @@ import com.github.appointmentsio.api.domain.project.entity.Project;
 import com.github.appointmentsio.api.domain.timeentry.entity.TimeEntry;
 import com.github.appointmentsio.api.domain.timeentry.repository.TimeEntryRepository;
 import com.github.appointmentsio.api.domain.user.repository.UserRepository;
-import com.github.appointmentsio.api.errors.Error;
 import com.github.appointmentsio.api.errors.ValidationError;
 import com.github.appointmentsio.api.errors.exception.BadRequestException;
 import com.itextpdf.text.Document;
@@ -27,7 +26,7 @@ import static com.github.appointmentsio.api.domain.session.service.SessionServic
 import static com.github.appointmentsio.api.utils.Constraints.MESSAGES.*;
 import static com.github.appointmentsio.api.utils.Messages.message;
 import static com.github.appointmentsio.api.utils.Response.unauthorized;
-import static com.github.appointmentsio.api.utils.TimeUtils.millisToTime;
+import static com.github.appointmentsio.api.utils.Time.format;
 import static com.itextpdf.text.Element.ALIGN_LEFT;
 import static com.itextpdf.text.FontFactory.HELVETICA;
 import static com.itextpdf.text.FontFactory.getFont;
@@ -88,7 +87,7 @@ public class PdfService {
 
             timeEntries.forEach(timeEntry -> {
                 var description = timeEntry.getDescription();
-                var duration = millisToTime(timeEntry.totalTimeInMillis());
+                var duration = format(timeEntry.totalTimeInMillis());
                 var project = timeEntry.getProject().map(Project::getName).orElse("");
                 var date = timeEntry.getStart().format(ofPattern("dd/MM/yyyy"));
 

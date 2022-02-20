@@ -1,28 +1,68 @@
 package com.github.appointmentsio.api.utils;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Locale;
 
+import com.github.appointmentsio.api.domain.role.entity.Role;
+import com.github.appointmentsio.api.domain.user.entity.User;
 import com.github.javafaker.Faker;
+
+import static com.aventrix.jnanoid.jnanoid.NanoIdUtils.randomNanoId;
+import static com.github.appointmentsio.api.utils.Constraints.SECURITY.JWT;
+import static com.github.appointmentsio.api.utils.Constraints.SECURITY.TOKEN_SECRET;
+import static java.lang.String.format;
+import static java.time.LocalDateTime.now;
+import static java.util.List.of;
 
 public class Random {
         
     private static final java.util.Random RANDOM = new java.util.Random();
     public static final Faker FAKER = new Faker(new Locale("pt", "BR"), RANDOM);
 
-    public static Integer between(Integer min, Integer max) {
-        return RANDOM.nextInt(max - min) + min;
-    }
-
-    public static <T> T getRandomElement(List<T> itens) {
-        return itens.get(RANDOM.nextInt(itens.size()));
-    }
-
-    public static String code() {
-        return String.format("%s%s%s%s", between(0, 9), between(0, 9), between(0, 9), between(0, 9));
-    }
-
     public static String password() {
         return FAKER.regexify("[a-z]{5,13}[1-9]{1,5}[A-Z]{1,5}[#?!@$%^&*-]{1,5}");
+    }
+
+    public static String nanoid() {
+        return randomNanoId();
+    }
+
+    public static User user() {
+        return user(of());
+    }
+
+    public static User user(List<Role> roles) {
+        return new User(
+                FAKER.name().fullName(),
+                FAKER.internet().safeEmailAddress(),
+                password(),
+                roles
+        );
+    }
+
+    public static String token() {
+        return token(now().plusHours(24), TOKEN_SECRET);
+    }
+
+    public static String token(List<String> roles) {
+        return token(nanoid(), now().plusHours(24), TOKEN_SECRET, roles);
+    }
+
+    public static String token(LocalDateTime expiration) {
+        return token(expiration, TOKEN_SECRET);
+    }
+
+    public static String token(LocalDateTime expiration, List<String> roles) {
+        return token(nanoid(), expiration, TOKEN_SECRET, roles);
+    }
+
+    public static String token(LocalDateTime expiration, String secret) {
+        return token(nanoid(), expiration, secret, of("ADM"));
+    }
+
+    public static String token(String id, LocalDateTime expiration, String secret, List<String> roles) {
+        var token = JWT.encode(id, roles, expiration, secret);
+        return format("Bearer %s", token);
     }
 }

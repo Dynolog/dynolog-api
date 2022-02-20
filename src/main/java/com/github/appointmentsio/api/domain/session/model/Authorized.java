@@ -1,7 +1,6 @@
 package com.github.appointmentsio.api.domain.session.model;
 
 import com.github.appointmentsio.api.domain.role.entity.Role;
-import com.github.appointmentsio.api.domain.shared.model.Identity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -9,9 +8,8 @@ import org.springframework.security.core.userdetails.User;
 import java.io.Serial;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
-import static com.github.appointmentsio.api.utils.JsonUtils.toJson;
+import static com.github.appointmentsio.api.utils.JSON.stringify;
 import static java.util.stream.Collectors.joining;
 
 public class Authorized extends User {
@@ -81,6 +79,6 @@ public class Authorized extends User {
     @Override
     public String toString() {
         var roles = this.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(joining(","));
-        return toJson(Map.of("id", this.id, "roles", roles));
+        return stringify(Map.of("id", this.id, "roles", roles));
     }
 }
