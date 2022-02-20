@@ -2,6 +2,7 @@ package com.github.appointmentsio.api.ratelimit;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -11,6 +12,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.util.List;
 
 import static com.github.appointmentsio.api.utils.Constraints.RATE_LIMIT.MAX_REQUESTS_PER_MINUTE;
+import static java.util.concurrent.TimeUnit.SECONDS;
+import static org.junit.jupiter.api.TestInstance.Lifecycle.PER_CLASS;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.MOCK;
 import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
@@ -21,6 +24,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @AutoConfigureMockMvc
+@TestInstance(PER_CLASS)
 @SpringBootTest(webEnvironment = MOCK)
 @DirtiesContext(classMode = BEFORE_CLASS)
 public class RateLimitTests {
