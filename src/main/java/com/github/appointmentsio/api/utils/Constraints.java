@@ -1,9 +1,13 @@
 package com.github.appointmentsio.api.utils;
 
 import com.github.appointmentsio.api.domain.session.service.JsonWebToken;
+import com.github.appointmentsio.api.middlewares.PublicRouteMatcher;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
+
+import static com.github.appointmentsio.api.middlewares.PublicRouteMatcher.create;
 
 @Component
 public class Constraints {
@@ -22,6 +26,10 @@ public class Constraints {
     }
 
     public static class SECURITY {
+        public static final PublicRouteMatcher PUBLIC_ROUTES = create()
+            .add(HttpMethod.GET, "/", "/api", "/documentation/**", "/swagger-ui/**")
+            .add(HttpMethod.POST, "/api/sessions", "/api/sessions/refresh", "/api/users");
+
         public static final String SECURITY_TYPE = "Bearer";
         public static final String AUTHORIZATION_HEADER = "Authorization";
         public static final String ACCEPTABLE_TOKEN_TYPE = SECURITY_TYPE + " ";

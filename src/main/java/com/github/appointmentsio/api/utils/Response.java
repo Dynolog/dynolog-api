@@ -3,6 +3,7 @@ package com.github.appointmentsio.api.utils;
 import com.github.appointmentsio.api.errors.model.ApiError;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.servlet.http.HttpServletResponse;
@@ -42,6 +43,10 @@ public class Response {
     }
 
     public static void expired(HttpServletResponse response) {
+        if (response.isCommitted()) {
+            return;
+        }
+
         try {
             response.setStatus(FORBIDDEN.value());
             response.setContentType("application/json");

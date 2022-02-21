@@ -1,8 +1,6 @@
 package com.github.appointmentsio.api.middlewares;
 
-import com.github.appointmentsio.api.domain.session.service.SessionService;
 import com.github.appointmentsio.api.errors.exception.TokenExpiredOrInvalidException;
-import com.github.appointmentsio.api.errors.exception.TokenHeaderMissingException;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -16,10 +14,7 @@ import java.io.IOException;
 import static com.github.appointmentsio.api.domain.session.service.SessionService.authorize;
 import static com.github.appointmentsio.api.utils.Constraints.SECURITY.*;
 import static com.github.appointmentsio.api.utils.Response.expired;
-import static com.github.appointmentsio.api.utils.Response.forbidden;
 import static java.util.Objects.isNull;
-import static java.util.Objects.nonNull;
-import static java.util.Optional.ofNullable;
 
 @Component
 @Order(1)
@@ -33,12 +28,20 @@ public class AuthorizationMiddleware extends OncePerRequestFilter {
     )
             throws ServletException, IOException {
 
-        tryAuthorize(response, authorization(request));
+        tryAuthorize(request, response, authorization(request));
 
         filter.doFilter(request, response);
     }
 
-    public void tryAuthorize(HttpServletResponse response, String token) {
+    public void tryAuthorize(
+            HttpServletRequest request,
+            HttpServletResponse response,
+            String token
+    ) {
+        if (PUBLIC_ROUTES.anyMatch(request)) {
+            return;
+        }
+
         try {
             authorize(token);
         } catch (TokenExpiredOrInvalidException exception) {

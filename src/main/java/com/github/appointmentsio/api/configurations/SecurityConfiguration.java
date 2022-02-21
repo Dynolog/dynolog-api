@@ -2,14 +2,6 @@ package com.github.appointmentsio.api.configurations;
 
 import com.github.appointmentsio.api.domain.session.service.SessionService;
 import com.github.appointmentsio.api.middlewares.AuthorizationMiddleware;
-
-import static com.github.appointmentsio.api.utils.Constraints.SECURITY.PASSWORD_ENCODER;
-import static com.github.appointmentsio.api.utils.Response.forbidden;
-
-import static org.springframework.http.HttpMethod.GET;
-import static org.springframework.http.HttpMethod.POST;
-import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -24,12 +16,17 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.stereotype.Component;
 import org.springframework.web.cors.CorsConfiguration;
 
+import static com.github.appointmentsio.api.utils.Constraints.SECURITY.PASSWORD_ENCODER;
+import static com.github.appointmentsio.api.utils.Constraints.SECURITY.PUBLIC_ROUTES;
+import static com.github.appointmentsio.api.utils.Response.forbidden;
+import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
+
 @Component
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
-    
+
     public static final String[] STATIC_FILES = {
         "/robots.txt",
         "/font/**",
@@ -40,7 +37,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         "/favicon.ico",
         "/**.html",
         "/documentation/**"
-    };   
+    };
 
     @Autowired
     private SessionService sessionService;
@@ -53,27 +50,15 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         auth.userDetailsService(sessionService)
             .passwordEncoder(PASSWORD_ENCODER);
     }
-    
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+
+        PUBLIC_ROUTES.configure(http);
+
         http
             .antMatcher("/**")
                 .authorizeRequests()
-                    .antMatchers(
-                        GET,
-                        "/",
-                        "/api",
-                        "/documentation/**",
-                        "/swagger-ui/**"
-                    )
-                        .permitAll()
-                    .antMatchers(
-                        POST,
-                        "/api/sessions",
-                        "/api/sessions/refresh",
-                        "/api/users"
-                    )
-                        .permitAll()
                     .anyRequest()
                         .authenticated()
             .and()
@@ -87,8 +72,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .and()
                 .addFilterBefore(authorizationMiddleware, UsernamePasswordAuthenticationFilter.class)
             .cors()
-                .configurationSource(request -> new CorsConfiguration().applyPermitDefaultValues());      
-            
+                .configurationSource(request -> new CorsConfiguration().applyPermitDefaultValues());
     }
 
     @Override
