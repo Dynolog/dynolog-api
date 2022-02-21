@@ -17,7 +17,12 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
 
+import static com.github.appointmentsio.api.domain.session.service.SessionService.authorized;
+import static com.github.appointmentsio.api.domain.session.service.SessionService.authorizedOrThrow;
+import static com.github.appointmentsio.api.utils.Constraints.MESSAGES.NOT_AUTHORIZED_TO_CREATE;
+import static com.github.appointmentsio.api.utils.Messages.message;
 import static com.github.appointmentsio.api.utils.Response.ok;
+import static com.github.appointmentsio.api.utils.Response.unauthorized;
 
 @RestController
 @Tag(name = "Projects")
@@ -32,9 +37,9 @@ public class ProjectsController {
 
     @Autowired
     public ProjectsController(
-        FindProjectService findService,
-        CreateProjectService createService,
-        UpdateProjectService updateService
+            FindProjectService findService,
+            CreateProjectService createService,
+            UpdateProjectService updateService
     ) {
         this.findService = findService;
         this.createService = createService;
@@ -44,7 +49,7 @@ public class ProjectsController {
     @GetMapping
     @Operation(summary = "List all projects from user")
     public ResponseEntity<List<ProjectInfo>> index(
-        @RequestParam(value = "userId") String userNanoid
+            @RequestParam(value = "userId") String userNanoid
     ) {
         var projects = findService.findAll(userNanoid);
         return ok(projects);
@@ -53,17 +58,21 @@ public class ProjectsController {
     @PostMapping
     @Operation(summary = "Register a new project")
     public ResponseEntity<ProjectInfo> create(
-        @RequestBody @Valid CreateProjectProps body
+            @RequestBody @Valid CreateProjectProps body
     ) {
+        if (!authorizedOrThrow().canModify(body.getUserId())) {
+            throw unauthorized(message(NOT_AUTHORIZED_TO_CREATE, "'projects'"));
+        }
+
         var project = createService.create(body);
-        return ok(project);
+        return ok(new ProjectInfo(project));
     }
 
     @PutMapping("{id}")
     @Operation(summary = "Update a project")
     public ResponseEntity<ProjectInfo> update(
-        @PathVariable String id,
-        @RequestBody @Valid UpdateProjectProps body
+            @PathVariable String id,
+            @RequestBody @Valid UpdateProjectProps body
     ) {
         var project = updateService.update(id, body);
         return ok(project);

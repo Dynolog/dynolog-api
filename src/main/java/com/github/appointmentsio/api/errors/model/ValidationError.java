@@ -9,7 +9,7 @@ import static com.github.appointmentsio.api.utils.Constraints.MESSAGES.CHECK_PRO
 import static com.github.appointmentsio.api.utils.Messages.message;
 
 @Getter
-@Schema(name = "Error", requiredProperties = {"message", "errors"})
+@Schema(requiredProperties = {"message", "errors"})
 public class ValidationError {
     public final String message;
     public final Collection<FieldError> errors;
