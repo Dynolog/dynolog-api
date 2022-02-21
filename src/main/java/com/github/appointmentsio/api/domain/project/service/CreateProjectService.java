@@ -8,6 +8,7 @@ import com.github.appointmentsio.api.domain.user.service.FindUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import static com.github.appointmentsio.api.domain.session.service.SessionService.authorized;
 import static com.github.appointmentsio.api.domain.session.service.SessionService.authorizedOrThrow;
 import static com.github.appointmentsio.api.utils.Constraints.MESSAGES.NOT_AUTHORIZED_TO_CREATE;
 import static com.github.appointmentsio.api.utils.Messages.message;
@@ -29,12 +30,12 @@ public class CreateProjectService {
         this.findUserService = findService;
     }
 
-    public ProjectInfo create(CreateProjectProps props) {
-        var authorized = authorizedOrThrow();
-
-        if (!authorized.canModify(props.getUserId())) {
-            throw unauthorized(message(NOT_AUTHORIZED_TO_CREATE, "'projects'"));
-        }
+    public Project create(CreateProjectProps props) {
+        authorized().ifPresent(authorized -> {
+            if (!authorized.canModify(props.getUserId())) {
+                throw unauthorized(message(NOT_AUTHORIZED_TO_CREATE, "'projects'"));
+            }
+        });
 
         var user = findUserService.findOptionalByNanoidFetchRoles(props.getUserId())
                 .orElseThrow(() -> notFound("User not found"));
@@ -43,6 +44,6 @@ public class CreateProjectService {
 
         project.setUser(user);
 
-        return new ProjectInfo(project);
+        return project;
     }
 }

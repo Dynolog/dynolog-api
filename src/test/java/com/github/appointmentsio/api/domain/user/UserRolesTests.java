@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class UserTests {
+public class UserRolesTests {
 
     @Test
     @DisplayName("O usuario deve ter uma lista vazia de roles.")

@@ -1,6 +1,7 @@
 package com.github.appointmentsio.api.utils;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
@@ -13,6 +14,7 @@ import static com.github.appointmentsio.api.utils.Constraints.SECURITY.JWT;
 import static com.github.appointmentsio.api.utils.Constraints.SECURITY.TOKEN_SECRET;
 import static java.lang.String.format;
 import static java.time.LocalDateTime.now;
+import static java.util.Arrays.asList;
 import static java.util.List.of;
 
 public class Random {
@@ -22,6 +24,14 @@ public class Random {
 
     public static String password() {
         return FAKER.regexify("[a-z]{5,13}[1-9]{1,5}[A-Z]{1,5}[#?!@$%^&*-]{1,5}");
+    }
+
+    public static String name() {
+        return  FAKER.name().fullName();
+    }
+
+    public static String email() {
+        return FAKER.internet().safeEmailAddress();
     }
 
     public static String nanoid() {
@@ -43,6 +53,10 @@ public class Random {
 
     public static String token() {
         return token(now().plusHours(24), TOKEN_SECRET);
+    }
+
+    public static String token(String id, String roles) {
+        return token(id, now().plusHours(24), TOKEN_SECRET, asList(roles.split(",")));
     }
 
     public static String token(List<String> roles) {

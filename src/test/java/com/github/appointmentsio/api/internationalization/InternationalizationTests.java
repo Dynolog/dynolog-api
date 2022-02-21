@@ -14,7 +14,6 @@ import static org.springframework.http.HttpHeaders.ACCEPT_LANGUAGE;
 import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -42,13 +41,10 @@ public class InternationalizationTests {
             "email", MOCK_EMAIL
         ));
 
-        var request = post("/api/sessions")
-                .content(body)
-                .header(CONTENT_TYPE, APPLICATION_JSON)
-                .header(ACCEPT_LANGUAGE, PT_BR);
-
-        api.perform(request)
-                .andDo(print())
+        api.perform(post("/api/sessions")
+                        .content(body)
+                        .header(CONTENT_TYPE, APPLICATION_JSON)
+                        .header(ACCEPT_LANGUAGE, PT_BR))
                 .andExpect(status().isForbidden())
                 .andExpect(jsonPath("$.message").value(PT_BR_MESSAGE));;
     }
@@ -61,13 +57,10 @@ public class InternationalizationTests {
             "email", MOCK_EMAIL
         ));
 
-        var request = post("/api/sessions")
-                .content(body)
-                .header(CONTENT_TYPE, APPLICATION_JSON)
-                .header(ACCEPT_LANGUAGE, EN_US);
-
-        api.perform(request)
-                .andDo(print())
+        api.perform(post("/api/sessions")
+                        .content(body)
+                        .header(CONTENT_TYPE, APPLICATION_JSON)
+                        .header(ACCEPT_LANGUAGE, EN_US))
                 .andExpect(status().isForbidden())
                 .andExpect(jsonPath("$.message").value(EN_US_MESSAGE));;
     }

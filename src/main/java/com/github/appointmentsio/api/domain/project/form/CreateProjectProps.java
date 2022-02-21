@@ -1,7 +1,7 @@
 package com.github.appointmentsio.api.domain.project.form;
 
-import com.github.appointmentsio.api.domain.user.entity.User;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.Digits;
@@ -10,6 +10,7 @@ import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 
 @Data
+@NoArgsConstructor
 public class CreateProjectProps {
 
     @NotEmpty(message = "{project.name.notempty}")
@@ -27,4 +28,11 @@ public class CreateProjectProps {
 
     @NotNull(message = "{project.user-id.notnull}")
     private String userId;
+
+    public CreateProjectProps(String name, BigDecimal hourlyRate, String currency, String userId) {
+        this.name = name;
+        this.hourlyRate = hourlyRate;
+        this.currency = currency;
+        this.userId = userId;
+    }
 }
