@@ -45,6 +45,7 @@ public class ReportsController {
     private final findSummaryService findSummaryService;
     private final PdfService pdfService;
 
+    @Operation(hidden = true)
     @GetMapping(produces = APPLICATION_PDF_VALUE)
     public ResponseEntity<InputStreamResource> index(
         @RequestParam("start_date") @DateTimeFormat(iso = DATE_TIME) LocalDateTime start,

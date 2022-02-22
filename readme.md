@@ -117,6 +117,7 @@ Creating database migration files
 | secret value in token generation         | `TOKEN_SECRET`                     | secret                      |
 | token expiration time in hours           | `TOKEN_EXPIRATION_IN_HOURS`        | 24                          |
 | refresh token expiry time in days        | `REFRESH_TOKEN_EXPIRATION_IN_DAYS` | 7                           |
+| max requests per minute                  | `MAX_REQUESTS_PER_MINUTE`          | 10                          |
 
 > these variables are defined in: [**application.properties**](./src/main/resources/application.properties)
 >
