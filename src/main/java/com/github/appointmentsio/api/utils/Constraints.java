@@ -1,13 +1,16 @@
 package com.github.appointmentsio.api.utils;
 
+import static com.github.appointmentsio.api.configurations.PublicRoutes.create;
+import static org.springframework.http.HttpMethod.GET;
+import static org.springframework.http.HttpMethod.POST;
+
+import com.github.appointmentsio.api.configurations.PublicRoutes;
 import com.github.appointmentsio.api.domain.session.service.JsonWebToken;
-import com.github.appointmentsio.api.middlewares.PublicRouteMatcher;
+
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
-
-import static com.github.appointmentsio.api.middlewares.PublicRouteMatcher.create;
+import org.springframework.web.cors.CorsConfiguration;
 
 @Component
 public class Constraints {
@@ -26,14 +29,16 @@ public class Constraints {
     }
 
     public static class SECURITY {
-        public static final PublicRouteMatcher PUBLIC_ROUTES = create()
-            .add(HttpMethod.GET, "/", "/api", "/documentation/**", "/swagger-ui/**")
-            .add(HttpMethod.POST, "/api/sessions", "/api/sessions/refresh", "/api/users");
+        public static final PublicRoutes PUBLIC_ROUTES = create()
+            .add(GET, "/", "/api", "/documentation/**", "/swagger-ui/**")
+            .add(POST, "/api/sessions", "/api/sessions/refresh", "/api/users");
 
         public static final String SECURITY_TYPE = "Bearer";
         public static final String AUTHORIZATION_HEADER = "Authorization";
         public static final String ACCEPTABLE_TOKEN_TYPE = SECURITY_TYPE + " ";
         public static final String CAN_T_WRITE_RESPONSE_ERROR = "can't write response error.";
+
+        public static final CorsConfiguration CORS = new CorsConfiguration();
 
         public static String TOKEN_SECRET;
         public static Integer TOKEN_EXPIRATION_IN_HOURS;
@@ -42,6 +47,18 @@ public class Constraints {
         public static final JsonWebToken JWT = new JsonWebToken();
         public static final BCryptPasswordEncoder PASSWORD_ENCODER = new BCryptPasswordEncoder(PASSWORD_STRENGTH);
         public static final String ROLES_KEY_ON_JWT = "roles";
+
+        public static final String[] STATIC_FILES = {
+            "/robots.txt",
+            "/font/**",
+            "/css/**",
+            "/webjars/**",
+            "/webjars/",
+            "/js/**",
+            "/favicon.ico",
+            "/**.html",
+            "/documentation/**"
+        };
     }
 
     public static class CURRENCY {

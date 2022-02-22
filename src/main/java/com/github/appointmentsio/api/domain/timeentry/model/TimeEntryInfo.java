@@ -25,18 +25,18 @@ public class TimeEntryInfo {
     private final LocalDateTime stop;
 
     public TimeEntryInfo(TimeEntry timeEntry) {
-        this.id = timeEntry.getNanoid();
+        this.id = timeEntry.getNanoId();
         this.description = timeEntry.getDescription();
         this.start = timeEntry.getStart();
         this.stop = timeEntry.getStop();
 
         var user = timeEntry.getUser();
 
-        this.user = new TimeEntryUser(user.getNanoid(), user.getName());
+        this.user = new TimeEntryUser(user.getNanoId(), user.getName());
 
         this.project = timeEntry
                 .getProject()
-                .map((project) -> new TimeEntryProjectInfo(project.getNanoid(), project.getName(), project.getColor()))
+                .map((project) -> new TimeEntryProjectInfo(project.getNanoId(), project.getName(), project.getColor()))
                 .orElse(null);
     }
 }

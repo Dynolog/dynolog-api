@@ -75,7 +75,7 @@ public class User extends NonSequentialId implements Serializable, Addressable, 
 
     public User(
             Long id,
-            byte[] nanoid,
+            byte[] nanoId,
             String name,
             String email,
             String password,
@@ -89,7 +89,7 @@ public class User extends NonSequentialId implements Serializable, Addressable, 
         this.email = email;
         this.password = password;
 
-        this.nanoid = nanoid;
+        this.nanoId = nanoId;
 
         this.timezone = timezone;
         this.dateFormat = dateFormat;
@@ -100,9 +100,9 @@ public class User extends NonSequentialId implements Serializable, Addressable, 
                 .orElse(List.of());
     }
 
-    public User(Long id, byte[] nanoid, String name) {
+    public User(Long id, byte[] nanoId, String name) {
         this.id = id;
-        this.nanoid = nanoid;
+        this.nanoId = nanoId;
         this.name = name;
     }
 

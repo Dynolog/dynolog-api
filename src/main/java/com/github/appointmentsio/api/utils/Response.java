@@ -1,16 +1,5 @@
 package com.github.appointmentsio.api.utils;
 
-import com.github.appointmentsio.api.errors.model.ApiError;
-import org.springframework.data.repository.CrudRepository;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-import org.springframework.web.server.ResponseStatusException;
-
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 import static com.github.appointmentsio.api.utils.Constraints.MESSAGES.TOKEN_EXPIRED_OR_INVALID;
 import static com.github.appointmentsio.api.utils.Constraints.MESSAGES.TOKEN_HEADER_MISSING_MESSAGE;
 import static com.github.appointmentsio.api.utils.Constraints.SECURITY.CAN_T_WRITE_RESPONSE_ERROR;
@@ -18,7 +7,23 @@ import static com.github.appointmentsio.api.utils.JSON.stringify;
 import static com.github.appointmentsio.api.utils.Messages.message;
 import static java.lang.String.format;
 import static java.net.URI.create;
-import static org.springframework.http.HttpStatus.*;
+import static org.springframework.http.HttpStatus.CREATED;
+import static org.springframework.http.HttpStatus.FORBIDDEN;
+import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
+import static org.springframework.http.HttpStatus.UNAUTHORIZED;
+
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import javax.servlet.http.HttpServletResponse;
+
+import com.github.appointmentsio.api.errors.model.ApiError;
+
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.server.ResponseStatusException;
 
 public class Response {
 

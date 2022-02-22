@@ -26,7 +26,7 @@ public class SimplifiedUser implements Addressable {
     }
 
     public SimplifiedUser(User user) {
-        this.id = user.getNanoid();
+        this.id = user.getNanoId();
         this.name = user.getName();
         this.email = user.getEmail();
 

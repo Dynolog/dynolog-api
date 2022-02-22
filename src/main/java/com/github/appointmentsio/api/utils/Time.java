@@ -1,7 +1,5 @@
 package com.github.appointmentsio.api.utils;
 
-import static java.lang.String.format;
-
 public class Time {
 
     /**

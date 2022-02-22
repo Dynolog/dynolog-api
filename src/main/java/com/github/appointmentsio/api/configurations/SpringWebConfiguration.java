@@ -1,7 +1,11 @@
 package com.github.appointmentsio.api.configurations;
 
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeIn;
 import io.swagger.v3.oas.annotations.info.Contact;
+import io.swagger.v3.oas.annotations.info.Info;
+import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import io.swagger.v3.oas.models.Operation;
 import io.swagger.v3.oas.models.media.StringSchema;
 import io.swagger.v3.oas.models.parameters.Parameter;
@@ -12,11 +16,6 @@ import org.springframework.security.data.repository.query.SecurityEvaluationCont
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-import io.swagger.v3.oas.annotations.OpenAPIDefinition;
-import io.swagger.v3.oas.annotations.info.Info;
-import io.swagger.v3.oas.annotations.security.SecurityScheme;
-
-import static io.swagger.v3.oas.annotations.enums.SecuritySchemeIn.HEADER;
 import static io.swagger.v3.oas.annotations.enums.SecuritySchemeType.HTTP;
 
 @Configuration
@@ -33,7 +32,7 @@ import static io.swagger.v3.oas.annotations.enums.SecuritySchemeType.HTTP;
     name = "token",
     type = HTTP,
     bearerFormat = "JWT",
-    in = HEADER,
+    in = SecuritySchemeIn.HEADER,
     scheme = "bearer"
 )
 public class SpringWebConfiguration implements WebMvcConfigurer {
@@ -46,7 +45,7 @@ public class SpringWebConfiguration implements WebMvcConfigurer {
     public OperationCustomizer customGlobalHeaders() {
         return (Operation operation, HandlerMethod handlerMethod) -> {
             var acceptLanguage = new Parameter()
-                    .in(ParameterIn.HEADER.toString())
+                .in(ParameterIn.HEADER.toString())
                     .schema(new StringSchema())
                     .name("Accept-Language")
                     .description("Informs the client's language")

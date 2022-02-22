@@ -22,7 +22,7 @@ public class TimeEntrySummary {
     private final LocalDateTime stop;
 
     public TimeEntrySummary(TimeEntry timeEntry) {
-        this.id = timeEntry.getNanoid();
+        this.id = timeEntry.getNanoId();
         this.description = timeEntry.getDescription();
         this.start = timeEntry.getStart();
         this.stop = timeEntry.getStop();

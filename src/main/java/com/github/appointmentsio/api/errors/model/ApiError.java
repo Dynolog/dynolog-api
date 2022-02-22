@@ -1,8 +1,9 @@
 package com.github.appointmentsio.api.errors.model;
 
+import org.springframework.http.HttpStatus;
+
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
-import org.springframework.http.HttpStatus;
 
 @Getter
 @Schema(requiredProperties = {"message", "status"})

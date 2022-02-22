@@ -1,28 +1,28 @@
 package com.github.appointmentsio.api.domain.timeentry.service;
 
-import com.github.appointmentsio.api.domain.pagination.Page;
-import com.github.appointmentsio.api.domain.pagination.Pagination;
-import com.github.appointmentsio.api.domain.timeentry.model.TimeEntryInfo;
-import com.github.appointmentsio.api.domain.timeentry.repository.TimeEntryRepository;
-import com.github.appointmentsio.api.domain.user.repository.UserRepository;
-import com.github.appointmentsio.api.errors.model.FieldError;
-import com.github.appointmentsio.api.errors.exception.BadRequestException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import java.time.LocalDateTime;
-import java.util.Optional;
-
 import static com.github.appointmentsio.api.domain.pagination.Page.of;
-import static com.github.appointmentsio.api.domain.session.service.SessionService.authorizedOrThrow;
-import static com.github.appointmentsio.api.utils.Constraints.MESSAGES.*;
+import static com.github.appointmentsio.api.utils.Constraints.MESSAGES.DATES_INTERVAL_CANNOT_LONGER_THAN_MONTHS;
+import static com.github.appointmentsio.api.utils.Constraints.MESSAGES.SEARCH_DATE_INTERVAL_INVALID;
 import static com.github.appointmentsio.api.utils.Messages.message;
-import static com.github.appointmentsio.api.utils.Response.unauthorized;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.time.LocalDateTime.now;
 import static java.time.temporal.ChronoUnit.MONTHS;
 import static java.time.temporal.TemporalAdjusters.firstDayOfMonth;
 import static java.time.temporal.TemporalAdjusters.lastDayOfMonth;
+
+import java.time.LocalDateTime;
+import java.util.Optional;
+
+import com.github.appointmentsio.api.domain.pagination.Page;
+import com.github.appointmentsio.api.domain.pagination.Pagination;
+import com.github.appointmentsio.api.domain.timeentry.entity.TimeEntry;
+import com.github.appointmentsio.api.domain.timeentry.repository.TimeEntryRepository;
+import com.github.appointmentsio.api.domain.user.repository.UserRepository;
+import com.github.appointmentsio.api.errors.exception.BadRequestException;
+import com.github.appointmentsio.api.errors.model.FieldError;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 @Service
 public class FindTimeEntryService {
@@ -39,19 +39,13 @@ public class FindTimeEntryService {
     public final TimeEntryRepository timeEntryRepository;
     public final UserRepository userRepository;
 
-    public Page<TimeEntryInfo> findAll (
+    public Page<TimeEntry> findAll (
         Optional<LocalDateTime> optionalStart,
         Optional<LocalDateTime> optionalEnd,
         Optional<Integer> pageNumber,
         Optional<Integer> pageSize,
-        String userNanoid
+        String userNanoId
     ) {
-        var authorized = authorizedOrThrow();
-
-        if (!authorized.canRead(userNanoid)) {
-            throw unauthorized(message(NOT_AUTHORIZED_TO_LIST, "'time entries"));
-        }
-
         var start = optionalStart.orElse(now().with(firstDayOfMonth()));
         var end = optionalEnd.orElse(now().with(lastDayOfMonth()));
 
@@ -71,7 +65,7 @@ public class FindTimeEntryService {
 
         var pageable = Pagination.of(pageNumber, pageSize);
 
-        var page = timeEntryRepository.findAllByUserIdFetchUserAndProject(pageable, start, end, userNanoid.getBytes(UTF_8)).map(TimeEntryInfo::new);
+        var page = timeEntryRepository.findAllByUserIdFetchUserAndProject(pageable, start, end, userNanoId.getBytes(UTF_8));
 
         return of(page);
     }

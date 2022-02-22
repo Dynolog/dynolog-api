@@ -1,10 +1,11 @@
 package com.github.appointmentsio.api.errors.model;
 
-import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Getter;
+import java.util.List;
+
 import org.springframework.web.bind.MethodArgumentNotValidException;
 
-import java.util.List;
+import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Getter;
 
 @Getter
 @Schema(requiredProperties = {"message"})

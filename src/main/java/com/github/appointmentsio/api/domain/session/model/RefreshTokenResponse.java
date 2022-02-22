@@ -3,9 +3,10 @@ package com.github.appointmentsio.api.domain.session.model;
 import java.time.LocalDateTime;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonFormat.Shape;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.github.appointmentsio.api.domain.session.entity.RefreshToken;
+
 import io.swagger.v3.oas.annotations.media.Schema;
 
 @Schema(name = "RefreshToken", requiredProperties = {"accessToken", "refreshToken", "expiresIn", "tokenType"})

@@ -1,9 +1,9 @@
 package com.github.appointmentsio.api.errors.exception;
 
-import com.github.appointmentsio.api.errors.model.FieldError;
-
 import java.util.ArrayList;
 import java.util.Collection;
+
+import com.github.appointmentsio.api.errors.model.FieldError;
 
 public class BadRequestException extends RuntimeException {
     Collection<FieldError> errors;

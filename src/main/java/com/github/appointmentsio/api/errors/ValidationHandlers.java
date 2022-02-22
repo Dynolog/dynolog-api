@@ -1,10 +1,21 @@
 package com.github.appointmentsio.api.errors;
 
+import static com.github.appointmentsio.api.utils.Constraints.MESSAGES.NOT_AUTHORIZED;
+import static com.github.appointmentsio.api.utils.Constraints.MESSAGES.TYPE_MISMATCH_ERROR_MESSAGE;
+import static com.github.appointmentsio.api.utils.Messages.message;
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
+import static org.springframework.http.HttpStatus.UNAUTHORIZED;
+import static org.springframework.http.HttpStatus.UNPROCESSABLE_ENTITY;
+
+import java.time.format.DateTimeParseException;
+import java.util.List;
+
 import com.github.appointmentsio.api.errors.exception.BadRequestException;
 import com.github.appointmentsio.api.errors.model.ApiError;
 import com.github.appointmentsio.api.errors.model.FieldError;
 import com.github.appointmentsio.api.errors.model.ValidationError;
 import com.github.appointmentsio.api.utils.Response;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -14,14 +25,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.server.ResponseStatusException;
-
-import java.time.format.DateTimeParseException;
-import java.util.List;
-
-import static com.github.appointmentsio.api.utils.Constraints.MESSAGES.NOT_AUTHORIZED;
-import static com.github.appointmentsio.api.utils.Constraints.MESSAGES.TYPE_MISMATCH_ERROR_MESSAGE;
-import static com.github.appointmentsio.api.utils.Messages.message;
-import static org.springframework.http.HttpStatus.*;
 
 @RestControllerAdvice
 public class ValidationHandlers {

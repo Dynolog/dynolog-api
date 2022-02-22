@@ -14,10 +14,8 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.stereotype.Component;
-import org.springframework.web.cors.CorsConfiguration;
 
-import static com.github.appointmentsio.api.utils.Constraints.SECURITY.PASSWORD_ENCODER;
-import static com.github.appointmentsio.api.utils.Constraints.SECURITY.PUBLIC_ROUTES;
+import static com.github.appointmentsio.api.utils.Constraints.SECURITY.*;
 import static com.github.appointmentsio.api.utils.Response.forbidden;
 import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
 
@@ -26,18 +24,6 @@ import static org.springframework.security.config.http.SessionCreationPolicy.STA
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
-
-    public static final String[] STATIC_FILES = {
-        "/robots.txt",
-        "/font/**",
-        "/css/**",
-        "/webjars/**",
-        "/webjars/",
-        "/js/**",
-        "/favicon.ico",
-        "/**.html",
-        "/documentation/**"
-    };
 
     @Autowired
     private SessionService sessionService;
@@ -48,7 +34,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(sessionService)
-            .passwordEncoder(PASSWORD_ENCODER);
+                .passwordEncoder(PASSWORD_ENCODER);
     }
 
     @Override
@@ -71,8 +57,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                     .sessionCreationPolicy(STATELESS)
             .and()
                 .addFilterBefore(authorizationMiddleware, UsernamePasswordAuthenticationFilter.class)
-            .cors()
-                .configurationSource(request -> new CorsConfiguration().applyPermitDefaultValues());
+                    .cors()
+                        .configurationSource(request -> CORS.applyPermitDefaultValues());
     }
 
     @Override

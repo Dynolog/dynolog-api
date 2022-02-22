@@ -66,7 +66,7 @@ public class TimeEntryControllerTests {
         project = createProjectService.create(new CreateProjectProps(
                 "fake_project",
                 BigDecimal.valueOf(60L),
-                "BRL", user.getNanoid()
+                "BRL", user.getNanoId()
         ));
     }
 
@@ -78,10 +78,10 @@ public class TimeEntryControllerTests {
         var endDate = now.plusMonths(7).format(ISO_LOCAL_DATE_TIME);
 
         api.perform(get(TIME_ENTRIES_URL)
-                        .header(AUTHORIZATION, token(user.getNanoid(), USER_ROLE))
+                        .header(AUTHORIZATION, token(user.getNanoId(), USER_ROLE))
                         .queryParam("startDate", startDate)
                         .queryParam("endDate", endDate)
-                        .queryParam("userId", user.getNanoid()))
+                        .queryParam("userId", user.getNanoId()))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.errors").isArray())
                 .andExpect(jsonPath("$.errors[?(@.message == 'The interval cannot be longer than 6 months.')]", hasSize(1)));
@@ -95,10 +95,10 @@ public class TimeEntryControllerTests {
         var endDate = now.plusMonths(2).format(ISO_LOCAL_DATE_TIME);
 
         api.perform(get(TIME_ENTRIES_URL)
-                        .header(AUTHORIZATION, token(user.getNanoid(), USER_ROLE))
+                        .header(AUTHORIZATION, token(user.getNanoId(), USER_ROLE))
                         .queryParam("startDate", startDate)
                         .queryParam("endDate", endDate)
-                        .queryParam("userId", user.getNanoid()))
+                        .queryParam("userId", user.getNanoId()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.content").isArray());
     }
@@ -111,11 +111,11 @@ public class TimeEntryControllerTests {
 
         var body = JSON.stringify(Map.of(
                 "stop", endDate,
-                "projectId", project.getNanoid()
+                "projectId", project.getNanoId()
         ));
 
         api.perform(post(TIME_ENTRIES_URL)
-                        .header(AUTHORIZATION, token(user.getNanoid(), USER_ROLE))
+                        .header(AUTHORIZATION, token(user.getNanoId(), USER_ROLE))
                         .header(CONTENT_TYPE, APPLICATION_JSON)
                         .content(body))
                 .andExpect(status().isUnprocessableEntity())

@@ -18,13 +18,13 @@ public class ProjectInfo {
     private final ProjectUser user;
 
     public ProjectInfo(Project project) {
-        this.id = project.getNanoid();
+        this.id = project.getNanoId();
         this.name = project.getName();
         this.color = project.getColor();
         this.hourlyRate = project.getHourlyRate();
 
         this.user = ofNullable(project.getUser())
-            .map((user) -> new ProjectUser(user.getNanoid(), user.getName()))
+            .map((user) -> new ProjectUser(user.getNanoId(), user.getName()))
                 .orElse(null);
     }
 }

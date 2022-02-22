@@ -48,34 +48,34 @@ public class TimeEntry extends NonSequentialId implements Serializable {
     private Project project;
 
     public TimeEntry(
-            Long id,
-            byte[] nanoid,
-            String description,
-            LocalDateTime start,
-            LocalDateTime stop,
-            Long userId,
-            byte[] userNanoid,
-            String userName,
-            Long projectId,
-            byte[] projectNanoid,
-            String projectName,
-            String color,
-            BigDecimal hourlyHate,
-            String currency
+        Long id,
+        byte[] nanoId,
+        String description,
+        LocalDateTime start,
+        LocalDateTime stop,
+        Long userId,
+        byte[] userNanoId,
+        String userName,
+        Long projectId,
+        byte[] projectNanoId,
+        String projectName,
+        String color,
+        BigDecimal hourlyHate,
+        String currency
     ) {
         this.id = id;
-        this.nanoid = nanoid;
+        this.nanoId = nanoId;
 
         this.description = description;
         this.start = start;
         this.stop = stop;
 
         if (nonNull(userId)) {
-            this.user = new User(userId, userNanoid, userName);
+            this.user = new User(userId, userNanoId, userName);
         }
 
         if (nonNull(projectId)) {
-            this.project = new Project(projectId, projectNanoid, projectName, color, hourlyHate, currency);
+            this.project = new Project(projectId, projectNanoId, projectName, color, hourlyHate, currency);
         }
     }
 

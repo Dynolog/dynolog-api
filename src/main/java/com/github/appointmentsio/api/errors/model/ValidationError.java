@@ -1,12 +1,12 @@
 package com.github.appointmentsio.api.errors.model;
 
-import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Getter;
+import static com.github.appointmentsio.api.utils.Constraints.MESSAGES.CHECK_PROPERTY_ERRORS;
+import static com.github.appointmentsio.api.utils.Messages.message;
 
 import java.util.Collection;
 
-import static com.github.appointmentsio.api.utils.Constraints.MESSAGES.CHECK_PROPERTY_ERRORS;
-import static com.github.appointmentsio.api.utils.Messages.message;
+import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Getter;
 
 @Getter
 @Schema(requiredProperties = {"message", "errors"})

@@ -1,29 +1,9 @@
 package com.github.appointmentsio.api.domain.timeentry.service;
 
-import com.github.appointmentsio.api.domain.project.entity.Project;
-import com.github.appointmentsio.api.domain.timeentry.entity.TimeEntry;
-import com.github.appointmentsio.api.domain.timeentry.repository.TimeEntryRepository;
-import com.github.appointmentsio.api.domain.user.repository.UserRepository;
-import com.github.appointmentsio.api.errors.model.FieldError;
-import com.github.appointmentsio.api.errors.exception.BadRequestException;
-import com.itextpdf.text.Document;
-import com.itextpdf.text.DocumentException;
-import com.itextpdf.text.Phrase;
-import com.itextpdf.text.pdf.PdfPCell;
-import com.itextpdf.text.pdf.PdfPTable;
-import com.itextpdf.text.pdf.PdfWriter;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.logging.Logger;
-
 import static com.github.appointmentsio.api.domain.session.service.SessionService.authorizedOrThrow;
-import static com.github.appointmentsio.api.utils.Constraints.MESSAGES.*;
+import static com.github.appointmentsio.api.utils.Constraints.MESSAGES.DATES_INTERVAL_CANNOT_LONGER_THAN_YEARS;
+import static com.github.appointmentsio.api.utils.Constraints.MESSAGES.NOT_AUTHORIZED_TO_READ;
+import static com.github.appointmentsio.api.utils.Constraints.MESSAGES.SEARCH_DATE_INTERVAL_INVALID;
 import static com.github.appointmentsio.api.utils.Messages.message;
 import static com.github.appointmentsio.api.utils.Response.unauthorized;
 import static com.github.appointmentsio.api.utils.Time.format;
@@ -35,6 +15,28 @@ import static java.time.format.DateTimeFormatter.ofPattern;
 import static java.time.temporal.ChronoUnit.YEARS;
 import static java.util.logging.Level.SEVERE;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Logger;
+
+import com.github.appointmentsio.api.domain.project.entity.Project;
+import com.github.appointmentsio.api.domain.timeentry.entity.TimeEntry;
+import com.github.appointmentsio.api.domain.timeentry.repository.TimeEntryRepository;
+import com.github.appointmentsio.api.errors.exception.BadRequestException;
+import com.github.appointmentsio.api.errors.model.FieldError;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Phrase;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 @Service
 public class PdfService {
 
@@ -42,9 +44,6 @@ public class PdfService {
 
     @Autowired
     private TimeEntryRepository timeEntryRepository;
-
-    @Autowired
-    private UserRepository userRepository;
 
     public ByteArrayInputStream create(LocalDateTime start, LocalDateTime end, String userNanoid) {
         var authorized = authorizedOrThrow();

@@ -1,16 +1,17 @@
 package com.github.appointmentsio.api.domain.session.model;
 
-import com.github.appointmentsio.api.domain.role.entity.Role;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.User;
+import static com.github.appointmentsio.api.utils.JSON.stringify;
+import static java.util.stream.Collectors.joining;
 
 import java.io.Serial;
 import java.util.List;
 import java.util.Map;
 
-import static com.github.appointmentsio.api.utils.JSON.stringify;
-import static java.util.stream.Collectors.joining;
+import com.github.appointmentsio.api.domain.role.entity.Role;
+
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.User;
 
 public class Authorized extends User {
 
@@ -36,7 +37,7 @@ public class Authorized extends User {
             true,
             user.getAuthorities()
         );
-        this.id = user.getNanoid();
+        this.id = user.getNanoId();
         this.name = user.getName();
     }
 

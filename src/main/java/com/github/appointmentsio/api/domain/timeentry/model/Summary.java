@@ -24,11 +24,11 @@ public class Summary {
         this.totalTime = format(TimeEntry.sum(timeEntries));
 
         timeEntries.stream()
-                .collect(groupingBy(TimeEntry::getProject))
+            .collect(groupingBy(TimeEntry::getProject))
                 .forEach(this::addProjectSummary);
 
         projects.stream()
-                .collect(groupingBy(ProjectSummary::getCurrency))
+            .collect(groupingBy(ProjectSummary::getCurrency))
                 .forEach(this::addCurrencyAmount);
     }
 

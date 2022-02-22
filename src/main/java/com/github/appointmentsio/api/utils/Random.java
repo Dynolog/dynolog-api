@@ -1,14 +1,5 @@
 package com.github.appointmentsio.api.utils;
 
-import java.time.LocalDateTime;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Locale;
-
-import com.github.appointmentsio.api.domain.role.entity.Role;
-import com.github.appointmentsio.api.domain.user.entity.User;
-import com.github.javafaker.Faker;
-
 import static com.aventrix.jnanoid.jnanoid.NanoIdUtils.randomNanoId;
 import static com.github.appointmentsio.api.utils.Constraints.SECURITY.JWT;
 import static com.github.appointmentsio.api.utils.Constraints.SECURITY.TOKEN_SECRET;
@@ -16,6 +7,14 @@ import static java.lang.String.format;
 import static java.time.LocalDateTime.now;
 import static java.util.Arrays.asList;
 import static java.util.List.of;
+
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Locale;
+
+import com.github.appointmentsio.api.domain.role.entity.Role;
+import com.github.appointmentsio.api.domain.user.entity.User;
+import com.github.javafaker.Faker;
 
 public class Random {
         

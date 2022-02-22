@@ -13,16 +13,9 @@ import static com.github.appointmentsio.api.domain.project.repository.Queries.*;
 
 @Repository
 public interface ProjectRepository extends NonSequentialIdRepository<Project> {
+    @Query(FIND_PROJECT_BY_NANO_ID_FETCH_USER)
+    Optional<Project> findOptionalByNanoIdFetchUser(@Param("project_nano_id") byte[] projectNanoId);
 
-    @Query(FIND_PROJECT_BY_ID_FETCH_USER)
-    Optional<Project> findOptionalByIdFetchUser(@Param("id") Long id);
-
-    @Query(FIND_PROJECT_BY_NANOID_FETCH_USER)
-    Optional<Project> findOptionalByIdFetchUser(@Param("nanoid") byte[] nanoid);
-
-    @Query(FIND_PROJECT_BY_ID_FETCH_USER)
-    Project findByIdFetchUser(@Param("id") Long id);
-
-    @Query(FIND_ALL_FETCH_USER)
-    List<Project> findAllFetchUser(@Param("nanoid") byte[] nanoid);
+    @Query(FIND_ALL_BY_USER_NANO_ID_FETCH_USER)
+    List<Project> findAllByUserNanoIdFetchUser(@Param("user_nano_id") byte[] userNanoId);
 }

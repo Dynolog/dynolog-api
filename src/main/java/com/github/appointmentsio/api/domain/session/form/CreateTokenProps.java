@@ -1,10 +1,9 @@
 package com.github.appointmentsio.api.domain.session.form;
 
-import lombok.Builder;
+import javax.validation.constraints.NotEmpty;
+
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import javax.validation.constraints.NotEmpty;
 
 @Data
 @NoArgsConstructor

@@ -1,4 +1,4 @@
-package com.github.appointmentsio.api.middlewares;
+package com.github.appointmentsio.api.configurations;
 
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -14,21 +14,22 @@ import java.util.logging.Logger;
 import static java.util.Arrays.asList;
 import static java.util.logging.Level.SEVERE;
 
-public class PublicRouteMatcher {
-    private Map<HttpMethod, String[]> routes = new HashMap<>();
-    private List<AntPathRequestMatcher> matchers = new ArrayList<>();
+public class PublicRoutes {
+    private final Map<HttpMethod, String[]> routes = new HashMap<>();
+    private final List<AntPathRequestMatcher> matchers = new ArrayList<>();
 
-    private static final Logger LOGGER = Logger.getLogger(PublicRouteMatcher.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(PublicRoutes.class.getName());
 
-    private PublicRouteMatcher() { }
-
-    public static PublicRouteMatcher create() {
-        return new PublicRouteMatcher();
+    private PublicRoutes() {
     }
 
-    public PublicRouteMatcher add(HttpMethod method, String... routes) {
+    public static PublicRoutes create() {
+        return new PublicRoutes();
+    }
+
+    public PublicRoutes add(HttpMethod method, String... routes) {
         this.routes.put(method, routes);
-            asList(routes)
+        asList(routes)
                 .forEach(route -> matchers.add(new AntPathRequestMatcher(route, method.name())));
         return this;
     }
@@ -37,7 +38,7 @@ public class PublicRouteMatcher {
         try {
             return this.matchers.stream().anyMatch(requestMatcher -> requestMatcher.matches(request));
         } catch (Exception exception) {
-            LOGGER.log(SEVERE,"error on route matching", exception);
+            LOGGER.log(SEVERE, "error on route matching", exception);
             return false;
         }
     }
@@ -46,12 +47,12 @@ public class PublicRouteMatcher {
         routes.forEach((method, routes) -> {
             try {
                 http
-                    .antMatcher("/**")
+                        .antMatcher("/**")
                         .authorizeRequests()
                         .antMatchers(method, routes)
-                    .permitAll();
+                        .permitAll();
             } catch (Exception exception) {
-                LOGGER.log(SEVERE,"error on set public routes", exception);
+                LOGGER.log(SEVERE, "error on set public routes", exception);
             }
         });
     }

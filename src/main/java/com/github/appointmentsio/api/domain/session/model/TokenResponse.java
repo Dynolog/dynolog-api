@@ -1,14 +1,15 @@
 package com.github.appointmentsio.api.domain.session.model;
 
+import java.time.LocalDateTime;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonFormat.Shape;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.github.appointmentsio.api.domain.session.entity.RefreshToken;
 import com.github.appointmentsio.api.domain.user.entity.User;
 import com.github.appointmentsio.api.domain.user.model.SimplifiedUser;
-import io.swagger.v3.oas.annotations.media.Schema;
 
-import java.time.LocalDateTime;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 @Schema(name = "Token", requiredProperties = {"user", "accessToken", "refreshToken", "expiresIn", "tokenType"})
 public class TokenResponse {

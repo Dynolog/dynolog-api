@@ -24,7 +24,7 @@ public class ProjectSummary {
         Project project,
         List<TimeEntry> timeEntries
     ) {
-        this.id = project.getNanoid();
+        this.id = project.getNanoId();
         this.name = project.getName();
 
         var totalMillis = TimeEntry.sum(timeEntries);

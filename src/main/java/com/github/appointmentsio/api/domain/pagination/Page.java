@@ -5,17 +5,18 @@ import lombok.Getter;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.function.Function;
 
 @Getter
 @Schema(requiredProperties = {"content", "page", "size", "totalPages", "totalElements"})
 public class Page<T> {
-    private final Collection<T> content;
+    private final Collection<? extends T> content;
     private final Integer page;
     private final Integer size;
     private final Integer totalPages;
     private final Long totalElements;
 
-    public Page(Collection<T> content, Integer page, Integer size, Integer totalPages, Long totalElements) {
+    public Page(Collection<? extends T> content, Integer page, Integer size, Integer totalPages, Long totalElements) {
         this.content = content;
         this.page = page;
         this.size = size;
@@ -29,6 +30,11 @@ public class Page<T> {
         this.size = page.getSize();
         this.totalPages = page.getTotalPages();
         this.totalElements = page.getTotalElements();
+    }
+
+    public <U> Page<U> map(Function<? super T, ? extends U> converter) {
+        var content = this.content.stream().map(converter).toList();
+        return new Page<U>(content, this.page, this.size, this.totalPages, this.totalElements);
     }
 
     public static <T> Page<T> of(org.springframework.data.domain.Page<T> page) {

@@ -1,11 +1,25 @@
 package com.github.appointmentsio.api.domain.session.service;
 
+import static com.github.appointmentsio.api.utils.Constraints.MESSAGES.INVALID_USERNAME;
+import static com.github.appointmentsio.api.utils.Constraints.SECURITY.JWT;
+import static com.github.appointmentsio.api.utils.Constraints.SECURITY.PUBLIC_ROUTES;
+import static com.github.appointmentsio.api.utils.Constraints.SECURITY.TOKEN_SECRET;
+import static com.github.appointmentsio.api.utils.Response.expired;
+import static com.github.appointmentsio.api.utils.Response.forbidden;
+import static java.util.Objects.isNull;
+import static java.util.Objects.nonNull;
+import static java.util.Optional.empty;
+import static java.util.Optional.of;
+
+import java.util.Optional;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import com.github.appointmentsio.api.domain.session.model.Authorized;
-import com.github.appointmentsio.api.domain.user.repository.UserRepository;
 import com.github.appointmentsio.api.domain.user.service.FindUserService;
-import com.github.appointmentsio.api.errors.exception.TokenExpiredOrInvalidException;
-import com.github.appointmentsio.api.errors.exception.TokenHeaderMissingException;
-import io.jsonwebtoken.ExpiredJwtException;
+import com.github.appointmentsio.api.utils.Authorization;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -13,27 +27,11 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-import java.util.logging.Logger;
-
-import static com.github.appointmentsio.api.utils.Constraints.MESSAGES.*;
-import static com.github.appointmentsio.api.utils.Constraints.SECURITY.JWT;
-import static com.github.appointmentsio.api.utils.Constraints.SECURITY.TOKEN_SECRET;
-import static com.github.appointmentsio.api.utils.Messages.message;
-import static com.github.appointmentsio.api.utils.Response.forbidden;
-import static java.util.Objects.isNull;
-import static java.util.Objects.nonNull;
-import static java.util.Optional.empty;
-import static java.util.Optional.of;
-import static java.util.logging.Level.WARNING;
-
 @Service
 public class SessionService implements UserDetailsService {
 
     @Autowired
     FindUserService findUserService;
-
-    private static final Logger LOGGER = Logger.getLogger(SessionService.class.getName());
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
@@ -43,18 +41,27 @@ public class SessionService implements UserDetailsService {
         return new Authorized(user);
     }
 
-    public static void authorize(String token) {
-        try {
-            if (isNull(token)) {
-                return;
-            }
+    public static void authorize(
+        HttpServletRequest request,
+        HttpServletResponse response
+    ) {
+        if (PUBLIC_ROUTES.anyMatch(request)) {
+            return;
+        }
 
+        var token = Authorization.extract(request);
+
+        if (isNull(token)) {
+            return;
+        }
+
+        try {
             var authorized = JWT.decode(token, TOKEN_SECRET);
             SecurityContextHolder
-                    .getContext()
+                .getContext()
                     .setAuthentication(authorized.getAuthentication());
         } catch (Exception exception) {
-            throw new TokenExpiredOrInvalidException();
+            expired(response);
         }
     }
 
@@ -77,11 +84,14 @@ public class SessionService implements UserDetailsService {
     }
 
     private static Object getPrincipal() {
-        var authentication = SecurityContextHolder.getContext()
+        var authentication = SecurityContextHolder
+            .getContext()
                 .getAuthentication();
+
         if (nonNull(authentication)) {
             return authentication.getPrincipal();
         }
+        
         return null;
     }
 }

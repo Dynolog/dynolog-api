@@ -47,9 +47,6 @@ public class SessionControllerTests {
 
         var user = user();
 
-        var email = user.getEmail();
-        var password = user.getPassword();
-
         var body = JSON.stringify(Map.of(
                 "email", user.getEmail(),
                 "password", user.getPassword()
