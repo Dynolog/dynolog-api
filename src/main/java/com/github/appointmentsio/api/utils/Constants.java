@@ -1,10 +1,10 @@
 package com.github.appointmentsio.api.utils;
 
-import static com.github.appointmentsio.api.configurations.PublicRoutes.create;
+import static com.github.appointmentsio.api.domain.shared.model.PublicRoutes.create;
 import static org.springframework.http.HttpMethod.GET;
 import static org.springframework.http.HttpMethod.POST;
 
-import com.github.appointmentsio.api.configurations.PublicRoutes;
+import com.github.appointmentsio.api.domain.shared.model.PublicRoutes;
 import com.github.appointmentsio.api.domain.session.service.JsonWebToken;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -13,19 +13,19 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.cors.CorsConfiguration;
 
 @Component
-public class Constraints {
+public class Constants {
 
-    private Constraints(
+    private Constants(
             @Value("${token.secret}") String tokenSecret,
             @Value("${token.expiration-in-hours}") Integer tokenExpirationInHours,
             @Value("${token.refresh.expiration-in-days}") Integer refreshTokenExpirationInDays,
             @Value("${bucket4j.filters[0].rate-limits[0].bandwidths[0].capacity}") Integer maxRequestsPerMinute
     ) {
-        Constraints.SECURITY.TOKEN_SECRET = tokenSecret;
-        Constraints.SECURITY.TOKEN_EXPIRATION_IN_HOURS = tokenExpirationInHours;
-        Constraints.SECURITY.REFRESH_TOKEN_EXPIRATION_IN_DAYS = refreshTokenExpirationInDays;
+        Constants.SECURITY.TOKEN_SECRET = tokenSecret;
+        Constants.SECURITY.TOKEN_EXPIRATION_IN_HOURS = tokenExpirationInHours;
+        Constants.SECURITY.REFRESH_TOKEN_EXPIRATION_IN_DAYS = refreshTokenExpirationInDays;
 
-        Constraints.RATE_LIMIT.MAX_REQUESTS_PER_MINUTE = maxRequestsPerMinute;
+        Constants.RATE_LIMIT.MAX_REQUESTS_PER_MINUTE = maxRequestsPerMinute;
     }
 
     public static class SECURITY {
@@ -33,12 +33,15 @@ public class Constraints {
             .add(GET, "/", "/api", "/documentation/**", "/swagger-ui/**")
             .add(POST, "/api/sessions", "/api/sessions/refresh", "/api/users");
 
+        public static final String ERROR_CHECKING_IF_THE_REQUEST_IS_PUBLIC_ROUTE_MESSAGE = "Error when checking if the request is in a public route";
+        public static final String UNABLE_TO_INJECT_PUBLIC_API_ROUTES_MESSAGE = "Unable to inject public api routes";
+
         public static final String SECURITY_TYPE = "Bearer";
         public static final String AUTHORIZATION_HEADER = "Authorization";
         public static final String ACCEPTABLE_TOKEN_TYPE = SECURITY_TYPE + " ";
         public static final String CAN_T_WRITE_RESPONSE_ERROR = "can't write response error.";
 
-        public static final CorsConfiguration CORS = new CorsConfiguration();
+        public static final CorsConfiguration CORS_CONFIGURATION = new CorsConfiguration();
 
         public static String TOKEN_SECRET;
         public static Integer TOKEN_EXPIRATION_IN_HOURS;

@@ -9,7 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static com.github.appointmentsio.api.utils.Constraints.RATE_LIMIT.MAX_REQUESTS_PER_MINUTE;
+import static com.github.appointmentsio.api.utils.Constants.RATE_LIMIT.MAX_REQUESTS_PER_MINUTE;
 import static org.junit.jupiter.api.TestInstance.Lifecycle.PER_CLASS;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.MOCK;
 import static org.springframework.http.HttpHeaders.CONTENT_TYPE;

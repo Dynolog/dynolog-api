@@ -1,8 +1,8 @@
 package com.github.appointmentsio.api.utils;
 
-import static com.github.appointmentsio.api.utils.Constraints.SECURITY.ACCEPTABLE_TOKEN_TYPE;
-import static com.github.appointmentsio.api.utils.Constraints.SECURITY.AUTHORIZATION_HEADER;
-import static com.github.appointmentsio.api.utils.Constraints.SECURITY.SECURITY_TYPE;
+import static com.github.appointmentsio.api.utils.Constants.SECURITY.ACCEPTABLE_TOKEN_TYPE;
+import static com.github.appointmentsio.api.utils.Constants.SECURITY.AUTHORIZATION_HEADER;
+import static com.github.appointmentsio.api.utils.Constants.SECURITY.SECURITY_TYPE;
 import static java.util.Objects.isNull;
 
 import javax.servlet.http.HttpServletRequest;

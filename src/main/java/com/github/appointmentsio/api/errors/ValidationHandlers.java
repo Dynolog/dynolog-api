@@ -1,7 +1,7 @@
 package com.github.appointmentsio.api.errors;
 
-import static com.github.appointmentsio.api.utils.Constraints.MESSAGES.NOT_AUTHORIZED;
-import static com.github.appointmentsio.api.utils.Constraints.MESSAGES.TYPE_MISMATCH_ERROR_MESSAGE;
+import static com.github.appointmentsio.api.utils.Constants.MESSAGES.NOT_AUTHORIZED;
+import static com.github.appointmentsio.api.utils.Constants.MESSAGES.TYPE_MISMATCH_ERROR_MESSAGE;
 import static com.github.appointmentsio.api.utils.Messages.message;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.UNAUTHORIZED;

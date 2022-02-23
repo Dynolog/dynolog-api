@@ -1,8 +1,8 @@
 package com.github.appointmentsio.api.utils;
 
-import static com.github.appointmentsio.api.utils.Constraints.MESSAGES.TOKEN_EXPIRED_OR_INVALID;
-import static com.github.appointmentsio.api.utils.Constraints.MESSAGES.TOKEN_HEADER_MISSING_MESSAGE;
-import static com.github.appointmentsio.api.utils.Constraints.SECURITY.CAN_T_WRITE_RESPONSE_ERROR;
+import static com.github.appointmentsio.api.utils.Constants.MESSAGES.TOKEN_EXPIRED_OR_INVALID;
+import static com.github.appointmentsio.api.utils.Constants.MESSAGES.TOKEN_HEADER_MISSING_MESSAGE;
+import static com.github.appointmentsio.api.utils.Constants.SECURITY.CAN_T_WRITE_RESPONSE_ERROR;
 import static com.github.appointmentsio.api.utils.JSON.stringify;
 import static com.github.appointmentsio.api.utils.Messages.message;
 import static java.lang.String.format;

@@ -13,8 +13,8 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Objects;
 
-import static com.github.appointmentsio.api.utils.Constraints.CURRENCY.CURRENCY_SCALE;
-import static com.github.appointmentsio.api.utils.Constraints.CURRENCY.HOURS_IN_MILLISECONDS;
+import static com.github.appointmentsio.api.utils.Constants.CURRENCY.CURRENCY_SCALE;
+import static com.github.appointmentsio.api.utils.Constants.CURRENCY.HOURS_IN_MILLISECONDS;
 import static java.math.BigDecimal.valueOf;
 import static java.math.RoundingMode.HALF_EVEN;
 import static java.util.Objects.nonNull;

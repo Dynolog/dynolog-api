@@ -1,6 +1,6 @@
 package com.github.appointmentsio.api.domain.timeentry.service;
 
-import static com.github.appointmentsio.api.utils.Constraints.MESSAGES.TIMEENTRY_DATE_INTERVAL_INVALID;
+import static com.github.appointmentsio.api.utils.Constants.MESSAGES.TIMEENTRY_DATE_INTERVAL_INVALID;
 import static com.github.appointmentsio.api.utils.Messages.message;
 import static com.github.appointmentsio.api.utils.Response.notFound;
 import static java.nio.charset.StandardCharsets.UTF_8;

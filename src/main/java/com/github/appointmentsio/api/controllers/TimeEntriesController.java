@@ -1,9 +1,9 @@
 package com.github.appointmentsio.api.controllers;
 
 import static com.github.appointmentsio.api.domain.session.service.SessionService.authorizedOrThrow;
-import static com.github.appointmentsio.api.utils.Constraints.MESSAGES.NOT_AUTHORIZED_TO_CREATE;
-import static com.github.appointmentsio.api.utils.Constraints.MESSAGES.NOT_AUTHORIZED_TO_LIST;
-import static com.github.appointmentsio.api.utils.Constraints.MESSAGES.NOT_AUTHORIZED_TO_READ;
+import static com.github.appointmentsio.api.utils.Constants.MESSAGES.NOT_AUTHORIZED_TO_CREATE;
+import static com.github.appointmentsio.api.utils.Constants.MESSAGES.NOT_AUTHORIZED_TO_LIST;
+import static com.github.appointmentsio.api.utils.Constants.MESSAGES.NOT_AUTHORIZED_TO_READ;
 import static com.github.appointmentsio.api.utils.Messages.message;
 import static com.github.appointmentsio.api.utils.Response.created;
 import static com.github.appointmentsio.api.utils.Response.ok;

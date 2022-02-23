@@ -1,10 +1,10 @@
 package com.github.appointmentsio.api.domain.session.service;
 
-import static com.github.appointmentsio.api.utils.Constraints.MESSAGES.CREATE_SESSION_ERROR_MESSAGE;
-import static com.github.appointmentsio.api.utils.Constraints.SECURITY.JWT;
-import static com.github.appointmentsio.api.utils.Constraints.SECURITY.REFRESH_TOKEN_EXPIRATION_IN_DAYS;
-import static com.github.appointmentsio.api.utils.Constraints.SECURITY.TOKEN_EXPIRATION_IN_HOURS;
-import static com.github.appointmentsio.api.utils.Constraints.SECURITY.TOKEN_SECRET;
+import static com.github.appointmentsio.api.utils.Constants.MESSAGES.CREATE_SESSION_ERROR_MESSAGE;
+import static com.github.appointmentsio.api.utils.Constants.SECURITY.JWT;
+import static com.github.appointmentsio.api.utils.Constants.SECURITY.REFRESH_TOKEN_EXPIRATION_IN_DAYS;
+import static com.github.appointmentsio.api.utils.Constants.SECURITY.TOKEN_EXPIRATION_IN_HOURS;
+import static com.github.appointmentsio.api.utils.Constants.SECURITY.TOKEN_SECRET;
 import static com.github.appointmentsio.api.utils.Messages.message;
 import static com.github.appointmentsio.api.utils.Response.forbidden;
 

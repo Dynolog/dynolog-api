@@ -1,8 +1,8 @@
 package com.github.appointmentsio.api.domain.timeentry.service;
 
 import static com.github.appointmentsio.api.domain.pagination.Page.of;
-import static com.github.appointmentsio.api.utils.Constraints.MESSAGES.DATES_INTERVAL_CANNOT_LONGER_THAN_MONTHS;
-import static com.github.appointmentsio.api.utils.Constraints.MESSAGES.SEARCH_DATE_INTERVAL_INVALID;
+import static com.github.appointmentsio.api.utils.Constants.MESSAGES.DATES_INTERVAL_CANNOT_LONGER_THAN_MONTHS;
+import static com.github.appointmentsio.api.utils.Constants.MESSAGES.SEARCH_DATE_INTERVAL_INVALID;
 import static com.github.appointmentsio.api.utils.Messages.message;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.time.LocalDateTime.now;

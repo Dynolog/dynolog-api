@@ -1,6 +1,6 @@
 package com.github.appointmentsio.api.domain.session.service;
 
-import static com.github.appointmentsio.api.utils.Constraints.SECURITY.ROLES_KEY_ON_JWT;
+import static com.github.appointmentsio.api.utils.Constants.SECURITY.ROLES_KEY_ON_JWT;
 import static io.jsonwebtoken.SignatureAlgorithm.HS256;
 import static java.lang.String.join;
 import static java.util.Arrays.stream;

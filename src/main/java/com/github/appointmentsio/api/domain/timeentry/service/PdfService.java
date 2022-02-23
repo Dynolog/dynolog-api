@@ -1,9 +1,9 @@
 package com.github.appointmentsio.api.domain.timeentry.service;
 
 import static com.github.appointmentsio.api.domain.session.service.SessionService.authorizedOrThrow;
-import static com.github.appointmentsio.api.utils.Constraints.MESSAGES.DATES_INTERVAL_CANNOT_LONGER_THAN_YEARS;
-import static com.github.appointmentsio.api.utils.Constraints.MESSAGES.NOT_AUTHORIZED_TO_READ;
-import static com.github.appointmentsio.api.utils.Constraints.MESSAGES.SEARCH_DATE_INTERVAL_INVALID;
+import static com.github.appointmentsio.api.utils.Constants.MESSAGES.DATES_INTERVAL_CANNOT_LONGER_THAN_YEARS;
+import static com.github.appointmentsio.api.utils.Constants.MESSAGES.NOT_AUTHORIZED_TO_READ;
+import static com.github.appointmentsio.api.utils.Constants.MESSAGES.SEARCH_DATE_INTERVAL_INVALID;
 import static com.github.appointmentsio.api.utils.Messages.message;
 import static com.github.appointmentsio.api.utils.Response.unauthorized;
 import static com.github.appointmentsio.api.utils.Time.format;

@@ -1,8 +1,8 @@
 package com.github.appointmentsio.api.utils;
 
 import static com.aventrix.jnanoid.jnanoid.NanoIdUtils.randomNanoId;
-import static com.github.appointmentsio.api.utils.Constraints.SECURITY.JWT;
-import static com.github.appointmentsio.api.utils.Constraints.SECURITY.TOKEN_SECRET;
+import static com.github.appointmentsio.api.utils.Constants.SECURITY.JWT;
+import static com.github.appointmentsio.api.utils.Constants.SECURITY.TOKEN_SECRET;
 import static java.lang.String.format;
 import static java.time.LocalDateTime.now;
 import static java.util.Arrays.asList;

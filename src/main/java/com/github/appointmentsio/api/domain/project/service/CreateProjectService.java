@@ -1,7 +1,7 @@
 package com.github.appointmentsio.api.domain.project.service;
 
 import static com.github.appointmentsio.api.domain.session.service.SessionService.authorized;
-import static com.github.appointmentsio.api.utils.Constraints.MESSAGES.NOT_AUTHORIZED_TO_CREATE;
+import static com.github.appointmentsio.api.utils.Constants.MESSAGES.NOT_AUTHORIZED_TO_CREATE;
 import static com.github.appointmentsio.api.utils.Messages.message;
 import static com.github.appointmentsio.api.utils.Response.notFound;
 import static com.github.appointmentsio.api.utils.Response.unauthorized;

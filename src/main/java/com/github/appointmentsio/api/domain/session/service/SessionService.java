@@ -1,9 +1,9 @@
 package com.github.appointmentsio.api.domain.session.service;
 
-import static com.github.appointmentsio.api.utils.Constraints.MESSAGES.INVALID_USERNAME;
-import static com.github.appointmentsio.api.utils.Constraints.SECURITY.JWT;
-import static com.github.appointmentsio.api.utils.Constraints.SECURITY.PUBLIC_ROUTES;
-import static com.github.appointmentsio.api.utils.Constraints.SECURITY.TOKEN_SECRET;
+import static com.github.appointmentsio.api.utils.Constants.MESSAGES.INVALID_USERNAME;
+import static com.github.appointmentsio.api.utils.Constants.SECURITY.JWT;
+import static com.github.appointmentsio.api.utils.Constants.SECURITY.PUBLIC_ROUTES;
+import static com.github.appointmentsio.api.utils.Constants.SECURITY.TOKEN_SECRET;
 import static com.github.appointmentsio.api.utils.Response.expired;
 import static com.github.appointmentsio.api.utils.Response.forbidden;
 import static java.util.Objects.isNull;

@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonProperty.Access.WRITE_ONLY;
-import static com.github.appointmentsio.api.utils.Constraints.SECURITY.PASSWORD_ENCODER;
+import static com.github.appointmentsio.api.utils.Constants.SECURITY.PASSWORD_ENCODER;
 import static java.util.Arrays.stream;
 import static java.util.Optional.ofNullable;
 import static javax.persistence.CascadeType.DETACH;

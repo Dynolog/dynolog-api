@@ -1,4 +1,4 @@
-package com.github.appointmentsio.api.configurations;
+package com.github.appointmentsio.api.domain.shared.model;
 
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -11,6 +11,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
+import static com.github.appointmentsio.api.utils.Constants.SECURITY.ERROR_CHECKING_IF_THE_REQUEST_IS_PUBLIC_ROUTE_MESSAGE;
+import static com.github.appointmentsio.api.utils.Constants.SECURITY.UNABLE_TO_INJECT_PUBLIC_API_ROUTES_MESSAGE;
 import static java.util.Arrays.asList;
 import static java.util.logging.Level.SEVERE;
 
@@ -38,21 +40,21 @@ public class PublicRoutes {
         try {
             return this.matchers.stream().anyMatch(requestMatcher -> requestMatcher.matches(request));
         } catch (Exception exception) {
-            LOGGER.log(SEVERE, "error on route matching", exception);
+            LOGGER.log(SEVERE, ERROR_CHECKING_IF_THE_REQUEST_IS_PUBLIC_ROUTE_MESSAGE, exception);
             return false;
         }
     }
 
-    public void configure(HttpSecurity http) {
+    public void injectOn(HttpSecurity http) {
         routes.forEach((method, routes) -> {
             try {
                 http
-                        .antMatcher("/**")
+                    .antMatcher("/**")
                         .authorizeRequests()
-                        .antMatchers(method, routes)
-                        .permitAll();
+                            .antMatchers(method, routes)
+                                .permitAll();
             } catch (Exception exception) {
-                LOGGER.log(SEVERE, "error on set public routes", exception);
+                LOGGER.log(SEVERE, UNABLE_TO_INJECT_PUBLIC_API_ROUTES_MESSAGE, exception);
             }
         });
     }

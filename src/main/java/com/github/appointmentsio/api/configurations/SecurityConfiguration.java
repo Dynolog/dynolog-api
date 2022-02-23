@@ -15,7 +15,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.stereotype.Component;
 
-import static com.github.appointmentsio.api.utils.Constraints.SECURITY.*;
+import static com.github.appointmentsio.api.utils.Constants.SECURITY.*;
 import static com.github.appointmentsio.api.utils.Response.forbidden;
 import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
 
@@ -32,17 +32,17 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     private AuthorizationMiddleware authorizationMiddleware;
 
     @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(sessionService)
+    protected void configure(AuthenticationManagerBuilder authentication) throws Exception {
+        authentication.userDetailsService(sessionService)
                 .passwordEncoder(PASSWORD_ENCODER);
     }
 
     @Override
-    protected void configure(HttpSecurity http) throws Exception {
+    protected void configure(HttpSecurity security) throws Exception {
 
-        PUBLIC_ROUTES.configure(http);
+        PUBLIC_ROUTES.injectOn(security);
 
-        http
+        security
             .antMatcher("/**")
                 .authorizeRequests()
                     .anyRequest()
@@ -58,7 +58,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .and()
                 .addFilterBefore(authorizationMiddleware, UsernamePasswordAuthenticationFilter.class)
                     .cors()
-                        .configurationSource(request -> CORS.applyPermitDefaultValues());
+                        .configurationSource(request -> CORS_CONFIGURATION.applyPermitDefaultValues());
     }
 
     @Override

@@ -7,7 +7,7 @@ import lombok.Getter;
 
 import java.time.LocalDateTime;
 
-import static com.github.appointmentsio.api.utils.Constraints.PATTERNS.DATE_ISO_WITH_TIMEZONE;
+import static com.github.appointmentsio.api.utils.Constants.PATTERNS.DATE_ISO_WITH_TIMEZONE;
 
 @Getter
 @Schema(name = "TimeEntry", requiredProperties = {"id", "start"})
