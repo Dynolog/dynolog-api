@@ -53,6 +53,7 @@
 - [Requirements](#requirements)
 - [Installation](#installation)
 - [Swagger](#swagger)
+- [Tests](#tests)
 - [Database Migrations](#database-migrations)
 - [Environment variables](#environment-variables)
 
@@ -88,6 +89,18 @@ $ mvn clean package
 Once the application is up, it is available at: [localhost:8080/documentation](localhost:8080/documentation)
 
 > [development server](https://appointments-io.herokuapp.com)
+
+## Tests
+
+[![Coverage Status](https://coveralls.io/repos/github/appointments-io/appointments-server/badge.svg?branch=master)](https://coveralls.io/repos/github/appointments-io/appointments-server/badge.svg?branch=master)
+
+### Running a specific test
+use the parameter `-Dtest=<class>#<method>`
+
+> for example the integration test. create token:
+> ```
+> $ mvn test -Dtest=SessionControllerTests#should_return_OK_when_password_is_correct
+> ```
 
 ## Database Migrations
 Creating database migration files
