@@ -92,7 +92,7 @@ Once the application is up, it is available at: [localhost:8080/documentation](l
 
 ## Tests
 
-[![Coverage Status](https://coveralls.io/repos/github/appointments-io/appointments-server/badge.svg?branch=master)](https://coveralls.io/repos/github/appointments-io/appointments-server/badge.svg?branch=master)
+[![Coverage Status](https://coveralls.io/repos/github/appointments-io/appointments-server/badge.svg?branch=main)](https://coveralls.io/github/appointments-io/appointments-server?branch=main)
 
 ### Running a specific test
 use the parameter `-Dtest=<class>#<method>`
