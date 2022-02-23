@@ -1,16 +1,16 @@
 package com.github.appointmentsio.api.domain.user.service;
 
+import java.util.List;
+
 import com.github.appointmentsio.api.domain.role.repository.RoleRepository;
 import com.github.appointmentsio.api.domain.session.model.TokenResponse;
 import com.github.appointmentsio.api.domain.session.service.CreateTokenService;
 import com.github.appointmentsio.api.domain.user.entity.User;
 import com.github.appointmentsio.api.domain.user.form.CreateUserProps;
-import com.github.appointmentsio.api.domain.user.model.SimplifiedUser;
 import com.github.appointmentsio.api.domain.user.repository.UserRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class CreateUserService {

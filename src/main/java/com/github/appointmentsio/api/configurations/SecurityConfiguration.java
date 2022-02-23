@@ -2,14 +2,6 @@ package com.github.appointmentsio.api.configurations;
 
 import com.github.appointmentsio.api.domain.session.service.SessionService;
 import com.github.appointmentsio.api.middlewares.AuthorizationMiddleware;
-
-import static com.github.appointmentsio.api.utils.Constraints.SECURITY.PASSWORD_ENCODER;
-import static com.github.appointmentsio.api.utils.Response.forbidden;
-
-import static org.springframework.http.HttpMethod.GET;
-import static org.springframework.http.HttpMethod.POST;
-import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,25 +14,16 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.stereotype.Component;
-import org.springframework.web.cors.CorsConfiguration;
+
+import static com.github.appointmentsio.api.utils.Constants.SECURITY.*;
+import static com.github.appointmentsio.api.utils.Response.forbidden;
+import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
 
 @Component
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
-    
-    public static final String[] STATIC_FILES = {
-        "/robots.txt",
-        "/font/**",
-        "/css/**",
-        "/webjars/**",
-        "/webjars/",
-        "/js/**",
-        "/favicon.ico",
-        "/**.html",
-        "/documentation/**"
-    };   
 
     @Autowired
     private SessionService sessionService;
@@ -49,31 +32,19 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     private AuthorizationMiddleware authorizationMiddleware;
 
     @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(sessionService)
-            .passwordEncoder(PASSWORD_ENCODER);
+    protected void configure(AuthenticationManagerBuilder authentication) throws Exception {
+        authentication.userDetailsService(sessionService)
+                .passwordEncoder(PASSWORD_ENCODER);
     }
-    
+
     @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http
+    protected void configure(HttpSecurity security) throws Exception {
+
+        PUBLIC_ROUTES.injectOn(security);
+
+        security
             .antMatcher("/**")
                 .authorizeRequests()
-                    .antMatchers(
-                        GET,
-                        "/",
-                        "/api",
-                        "/documentation/**",
-                        "/swagger-ui/**"
-                    )
-                        .permitAll()
-                    .antMatchers(
-                        POST,
-                        "/api/sessions",
-                        "/api/sessions/refresh",
-                        "/api/users"
-                    )
-                        .permitAll()
                     .anyRequest()
                         .authenticated()
             .and()
@@ -86,9 +57,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                     .sessionCreationPolicy(STATELESS)
             .and()
                 .addFilterBefore(authorizationMiddleware, UsernamePasswordAuthenticationFilter.class)
-            .cors()
-                .configurationSource(request -> new CorsConfiguration().applyPermitDefaultValues());      
-            
+                    .cors()
+                        .configurationSource(request -> CORS_CONFIGURATION.applyPermitDefaultValues());
     }
 
     @Override

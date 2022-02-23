@@ -1,8 +1,8 @@
 package com.github.appointmentsio.api.domain.session.form;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 import javax.validation.constraints.NotNull;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class CreateRefreshTokenProps {
 

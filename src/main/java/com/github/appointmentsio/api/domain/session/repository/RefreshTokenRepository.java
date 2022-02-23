@@ -1,8 +1,11 @@
 package com.github.appointmentsio.api.domain.session.repository;
 
-import com.github.appointmentsio.api.domain.session.entity.RefreshToken;
 import java.util.Optional;
+
 import javax.transaction.Transactional;
+
+import com.github.appointmentsio.api.domain.session.entity.RefreshToken;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;

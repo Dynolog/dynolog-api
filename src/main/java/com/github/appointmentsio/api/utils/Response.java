@@ -1,21 +1,29 @@
 package com.github.appointmentsio.api.utils;
 
-import com.github.appointmentsio.api.errors.Error;
-import org.springframework.data.repository.CrudRepository;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.server.ResponseStatusException;
+import static com.github.appointmentsio.api.utils.Constants.MESSAGES.TOKEN_EXPIRED_OR_INVALID;
+import static com.github.appointmentsio.api.utils.Constants.MESSAGES.TOKEN_HEADER_MISSING_MESSAGE;
+import static com.github.appointmentsio.api.utils.Constants.SECURITY.CAN_T_WRITE_RESPONSE_ERROR;
+import static com.github.appointmentsio.api.utils.JSON.stringify;
+import static com.github.appointmentsio.api.utils.Messages.message;
+import static java.lang.String.format;
+import static java.net.URI.create;
+import static org.springframework.http.HttpStatus.CREATED;
+import static org.springframework.http.HttpStatus.FORBIDDEN;
+import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
+import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import static com.github.appointmentsio.api.utils.Constraints.MESSAGES.TOKEN_HEADER_MISSING_MESSAGE;
-import static com.github.appointmentsio.api.utils.JsonUtils.toJson;
-import static com.github.appointmentsio.api.utils.Messages.message;
-import static java.lang.String.format;
-import static java.net.URI.create;
-import static org.springframework.http.HttpStatus.*;
+import javax.servlet.http.HttpServletResponse;
+
+import com.github.appointmentsio.api.errors.model.ApiError;
+
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.server.ResponseStatusException;
 
 public class Response {
 
@@ -24,21 +32,41 @@ public class Response {
     private Response() { }
 
     public static void forbidden(HttpServletResponse response) {
+        if (response.isCommitted()) {
+            return;
+        }
+
         try {
             response.setStatus(FORBIDDEN.value());
             response.setContentType("application/json");
-            response.getWriter().write(toJson(
-                    new Error(message(TOKEN_HEADER_MISSING_MESSAGE), FORBIDDEN)
+            response.getWriter().write(stringify(
+                    new ApiError(message(TOKEN_HEADER_MISSING_MESSAGE), FORBIDDEN)
             ));
-        } catch (IOException exception) {
-            LOGGER.log(Level.SEVERE, "can't write response error on token expired or invalid exception", exception);
+        } catch (Exception exception) {
+            LOGGER.log(Level.SEVERE, CAN_T_WRITE_RESPONSE_ERROR, exception);
         }
     }
 
-    public static ResponseEntity<Error> fromException(ResponseStatusException exception) {
+    public static void expired(HttpServletResponse response) {
+        if (response.isCommitted()) {
+            return;
+        }
+
+        try {
+            response.setStatus(FORBIDDEN.value());
+            response.setContentType("application/json");
+            response.getWriter().write(stringify(
+                    new ApiError(message(TOKEN_EXPIRED_OR_INVALID), FORBIDDEN)
+            ));
+        } catch (IOException exception) {
+            LOGGER.log(Level.SEVERE, CAN_T_WRITE_RESPONSE_ERROR, exception);
+        }
+    }
+
+    public static ResponseEntity<ApiError> fromException(ResponseStatusException exception) {
         return ResponseEntity
                 .status(exception.getStatus())
-                    .body(new Error(exception.getReason(), exception.getStatus()));
+                    .body(new ApiError(exception.getReason(), exception.getStatus()));
     }
 
     public static <T> ResponseEntity<T> forbidden(T body) {

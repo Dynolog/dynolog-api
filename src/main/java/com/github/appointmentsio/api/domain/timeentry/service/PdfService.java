@@ -1,19 +1,19 @@
 package com.github.appointmentsio.api.domain.timeentry.service;
 
-import com.github.appointmentsio.api.domain.project.entity.Project;
-import com.github.appointmentsio.api.domain.timeentry.entity.TimeEntry;
-import com.github.appointmentsio.api.domain.timeentry.repository.TimeEntryRepository;
-import com.github.appointmentsio.api.domain.user.repository.UserRepository;
-import com.github.appointmentsio.api.errors.Error;
-import com.github.appointmentsio.api.errors.exception.BadRequestException;
-import com.itextpdf.text.Document;
-import com.itextpdf.text.DocumentException;
-import com.itextpdf.text.Phrase;
-import com.itextpdf.text.pdf.PdfPCell;
-import com.itextpdf.text.pdf.PdfPTable;
-import com.itextpdf.text.pdf.PdfWriter;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import static com.github.appointmentsio.api.domain.session.service.SessionService.authorizedOrThrow;
+import static com.github.appointmentsio.api.utils.Constants.MESSAGES.DATES_INTERVAL_CANNOT_LONGER_THAN_YEARS;
+import static com.github.appointmentsio.api.utils.Constants.MESSAGES.NOT_AUTHORIZED_TO_READ;
+import static com.github.appointmentsio.api.utils.Constants.MESSAGES.SEARCH_DATE_INTERVAL_INVALID;
+import static com.github.appointmentsio.api.utils.Messages.message;
+import static com.github.appointmentsio.api.utils.Response.unauthorized;
+import static com.github.appointmentsio.api.utils.Time.format;
+import static com.itextpdf.text.Element.ALIGN_LEFT;
+import static com.itextpdf.text.FontFactory.HELVETICA;
+import static com.itextpdf.text.FontFactory.getFont;
+import static java.nio.charset.StandardCharsets.UTF_8;
+import static java.time.format.DateTimeFormatter.ofPattern;
+import static java.time.temporal.ChronoUnit.YEARS;
+import static java.util.logging.Level.SEVERE;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -22,19 +22,20 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
-import static com.github.appointmentsio.api.domain.session.service.SessionService.authorizedOrThrow;
-import static com.github.appointmentsio.api.utils.Constraints.MESSAGES.*;
-import static com.github.appointmentsio.api.utils.Messages.message;
-import static com.github.appointmentsio.api.utils.Response.notFound;
-import static com.github.appointmentsio.api.utils.Response.unauthorized;
-import static com.github.appointmentsio.api.utils.TimeUtils.millisToTime;
-import static com.itextpdf.text.Element.ALIGN_LEFT;
-import static com.itextpdf.text.FontFactory.HELVETICA;
-import static com.itextpdf.text.FontFactory.getFont;
-import static java.nio.charset.StandardCharsets.UTF_8;
-import static java.time.format.DateTimeFormatter.ofPattern;
-import static java.time.temporal.ChronoUnit.YEARS;
-import static java.util.logging.Level.SEVERE;
+import com.github.appointmentsio.api.domain.project.entity.Project;
+import com.github.appointmentsio.api.domain.timeentry.entity.TimeEntry;
+import com.github.appointmentsio.api.domain.timeentry.repository.TimeEntryRepository;
+import com.github.appointmentsio.api.errors.exception.BadRequestException;
+import com.github.appointmentsio.api.errors.model.FieldError;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Phrase;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 @Service
 public class PdfService {
@@ -44,30 +45,21 @@ public class PdfService {
     @Autowired
     private TimeEntryRepository timeEntryRepository;
 
-    @Autowired
-    private UserRepository userRepository;
-
     public ByteArrayInputStream create(LocalDateTime start, LocalDateTime end, String userNanoid) {
-        var optional = userRepository.findOptionalIdByNanoid(userNanoid.getBytes(UTF_8));
-        return optional.map(id -> create(start, end, id))
-                .orElseThrow(() -> notFound("user not found"));
-    }
-
-    public ByteArrayInputStream create(LocalDateTime start, LocalDateTime end, Long userId) {
         var authorized = authorizedOrThrow();
 
-        if (!authorized.canRead(userId)) {
+        if (!authorized.canRead(userNanoid)) {
             throw unauthorized(message(NOT_AUTHORIZED_TO_READ, "'summaries'"));
         }
 
-        var errors = new ArrayList<Error>();
+        var errors = new ArrayList<FieldError>();
 
         if (start.isAfter(end) || end.isBefore(start)) {
-            errors.add(new Error("start_date or end_date", message(SEARCH_DATE_INTERVAL_INVALID)));
+            errors.add(new FieldError("start_date or end_date", message(SEARCH_DATE_INTERVAL_INVALID)));
         }
 
         if (YEARS.between(start, end) > 1) {
-            errors.add(new Error("start_date or end_date", message(DATES_INTERVAL_CANNOT_LONGER_THAN_YEARS, 1)));
+            errors.add(new FieldError("start_date or end_date", message(DATES_INTERVAL_CANNOT_LONGER_THAN_YEARS, 1)));
         }
 
         if (!errors.isEmpty()) {
@@ -75,7 +67,7 @@ public class PdfService {
         }
 
         var entries = timeEntryRepository
-                .findTimeEntriesByUserIdAndBetweenStartAndEndDate(start, end, userId);
+                .findTimeEntriesByUserIdAndBetweenStartAndEndDate(start, end, userNanoid.getBytes(UTF_8));
 
         return create(entries);
     }
@@ -94,7 +86,7 @@ public class PdfService {
 
             timeEntries.forEach(timeEntry -> {
                 var description = timeEntry.getDescription();
-                var duration = millisToTime(timeEntry.totalTimeInMillis());
+                var duration = format(timeEntry.totalTimeInMillis());
                 var project = timeEntry.getProject().map(Project::getName).orElse("");
                 var date = timeEntry.getStart().format(ofPattern("dd/MM/yyyy"));
 

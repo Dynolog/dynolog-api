@@ -1,22 +1,25 @@
 package com.github.appointmentsio.api.controllers;
 
+import static com.github.appointmentsio.api.utils.Response.ok;
+
+import javax.validation.Valid;
+
 import com.github.appointmentsio.api.domain.session.form.CreateRefreshTokenProps;
-import com.github.appointmentsio.api.domain.session.model.RefreshTokenResponse;
 import com.github.appointmentsio.api.domain.session.form.CreateTokenProps;
+import com.github.appointmentsio.api.domain.session.model.RefreshTokenResponse;
 import com.github.appointmentsio.api.domain.session.model.TokenResponse;
 import com.github.appointmentsio.api.domain.session.service.CreateTokenService;
 import com.github.appointmentsio.api.domain.session.service.RefreshTokenService;
-import static com.github.appointmentsio.api.utils.Response.ok;
-import javax.validation.Valid;
 
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 @RestController
 @Tag(name = "Authentication")

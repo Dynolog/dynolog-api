@@ -53,6 +53,7 @@
 - [Requirements](#requirements)
 - [Installation](#installation)
 - [Swagger](#swagger)
+- [Tests](#tests)
 - [Database Migrations](#database-migrations)
 - [Environment variables](#environment-variables)
 
@@ -89,6 +90,18 @@ Once the application is up, it is available at: [localhost:8080/documentation](l
 
 > [development server](https://appointments-io.herokuapp.com)
 
+## Tests
+
+[![Coverage Status](https://coveralls.io/repos/github/appointments-io/appointments-server/badge.svg?branch=master)](https://coveralls.io/repos/github/appointments-io/appointments-server/badge.svg?branch=master)
+
+### Running a specific test
+use the parameter `-Dtest=<class>#<method>`
+
+> for example the integration test. create token:
+> ```
+> $ mvn test -Dtest=SessionControllerTests#should_return_OK_when_password_is_correct
+> ```
+
 ## Database Migrations
 Creating database migration files
 
@@ -117,6 +130,7 @@ Creating database migration files
 | secret value in token generation         | `TOKEN_SECRET`                     | secret                      |
 | token expiration time in hours           | `TOKEN_EXPIRATION_IN_HOURS`        | 24                          |
 | refresh token expiry time in days        | `REFRESH_TOKEN_EXPIRATION_IN_DAYS` | 7                           |
+| max requests per minute                  | `MAX_REQUESTS_PER_MINUTE`          | 10                          |
 
 > these variables are defined in: [**application.properties**](./src/main/resources/application.properties)
 >

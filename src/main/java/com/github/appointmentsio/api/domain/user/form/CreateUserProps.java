@@ -22,8 +22,13 @@ public class CreateUserProps implements Addressable {
     @Size(min = 8, max = 155, message = "{user.password.size}")
     private String password;
 
-
     public void validate() {
         validateEmailUniqueness(this);
+    }
+
+    public CreateUserProps(String name, String email, String password) {
+        this.name = name;
+        this.email = email;
+        this.password = password;
     }
 }

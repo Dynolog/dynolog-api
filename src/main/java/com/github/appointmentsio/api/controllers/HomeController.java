@@ -1,16 +1,17 @@
 package com.github.appointmentsio.api.controllers;
 
+import static org.springframework.web.bind.annotation.RequestMethod.GET;
+
+import java.io.IOException;
+
+import javax.servlet.http.HttpServletResponse;
+
 import com.github.appointmentsio.api.utils.Hello;
-import io.swagger.v3.oas.annotations.Operation;
+
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-
-import static java.lang.String.join;
-import static java.util.stream.Collectors.joining;
-import static org.springframework.web.bind.annotation.RequestMethod.GET;
+import io.swagger.v3.oas.annotations.Operation;
 
 @RestController
 public class HomeController {

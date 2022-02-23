@@ -23,5 +23,5 @@ public class UpdateProjectProps {
     @NotNull(message = "{project.currency.notnull}")
     private String currency;
 
-    private String color = "#7B70EA";
+    private String color;
 }

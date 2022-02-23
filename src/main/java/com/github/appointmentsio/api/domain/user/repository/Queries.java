@@ -12,7 +12,7 @@ public class Queries {
         )
         select
             u.id,
-            u.nanoid,
+            u.nano_id,
             u."name",
             u.email,
             u.password,

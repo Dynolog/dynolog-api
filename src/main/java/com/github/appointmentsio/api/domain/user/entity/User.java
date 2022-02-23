@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonProperty.Access.WRITE_ONLY;
-import static com.github.appointmentsio.api.utils.Constraints.SECURITY.PASSWORD_ENCODER;
+import static com.github.appointmentsio.api.utils.Constants.SECURITY.PASSWORD_ENCODER;
 import static java.util.Arrays.stream;
 import static java.util.Optional.ofNullable;
 import static javax.persistence.CascadeType.DETACH;
@@ -66,9 +66,16 @@ public class User extends NonSequentialId implements Serializable, Addressable, 
         this.roles = roles;
     }
 
+    public User(String name, String email, String password, List<Role> roles) {
+        this.name = name;
+        this.email = email;
+        this.password = password;
+        this.roles = roles;
+    }
+
     public User(
             Long id,
-            byte[] nanoid,
+            byte[] nanoId,
             String name,
             String email,
             String password,
@@ -82,7 +89,7 @@ public class User extends NonSequentialId implements Serializable, Addressable, 
         this.email = email;
         this.password = password;
 
-        this.nanoid = nanoid;
+        this.nanoId = nanoId;
 
         this.timezone = timezone;
         this.dateFormat = dateFormat;
@@ -93,9 +100,9 @@ public class User extends NonSequentialId implements Serializable, Addressable, 
                 .orElse(List.of());
     }
 
-    public User(Long id, byte[] nanoid, String name) {
+    public User(Long id, byte[] nanoId, String name) {
         this.id = id;
-        this.nanoid = nanoid;
+        this.nanoId = nanoId;
         this.name = name;
     }
 

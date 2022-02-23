@@ -1,21 +1,28 @@
 package com.github.appointmentsio.api.domain.session.entity;
 
-import com.github.appointmentsio.api.domain.user.model.SimplifiedUser;
-import com.github.appointmentsio.api.domain.user.entity.User;
-import lombok.*;
-import org.hibernate.Hibernate;
-
-import javax.persistence.*;
-import java.io.Serializable;
-import java.time.LocalDateTime;
-import java.util.Objects;
-import java.util.Optional;
-
 import static java.time.LocalDateTime.now;
 import static java.util.Optional.ofNullable;
 import static java.util.UUID.randomUUID;
 import static javax.persistence.FetchType.EAGER;
 import static javax.persistence.GenerationType.IDENTITY;
+
+import java.io.Serializable;
+import java.time.LocalDateTime;
+import java.util.Objects;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+
+import com.github.appointmentsio.api.domain.user.entity.User;
+
+import org.hibernate.Hibernate;
+
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
 @Setter

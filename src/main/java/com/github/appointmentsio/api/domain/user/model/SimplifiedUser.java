@@ -2,11 +2,13 @@ package com.github.appointmentsio.api.domain.user.model;
 
 import com.github.appointmentsio.api.domain.shared.model.Addressable;
 import com.github.appointmentsio.api.domain.user.entity.User;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 
 import java.util.List;
 
 @Getter
+@Schema(name = "User", requiredProperties = {"id", "name", "email", "roles"})
 public class SimplifiedUser implements Addressable {
     private final String id;
     private final String name;
@@ -24,7 +26,7 @@ public class SimplifiedUser implements Addressable {
     }
 
     public SimplifiedUser(User user) {
-        this.id = user.getNanoid();
+        this.id = user.getNanoId();
         this.name = user.getName();
         this.email = user.getEmail();
 

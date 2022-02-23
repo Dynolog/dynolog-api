@@ -1,26 +1,27 @@
 package com.github.appointmentsio.api.domain.session.service;
 
-import com.github.appointmentsio.api.domain.role.entity.Role;
-import com.github.appointmentsio.api.domain.session.model.Authorized;
-import com.github.appointmentsio.api.domain.user.entity.User;
-import com.github.appointmentsio.api.domain.user.model.SimplifiedUser;
-import io.jsonwebtoken.Jwts;
+import static com.github.appointmentsio.api.utils.Constants.SECURITY.ROLES_KEY_ON_JWT;
+import static io.jsonwebtoken.SignatureAlgorithm.HS256;
+import static java.lang.String.join;
+import static java.util.Arrays.stream;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Collection;
 import java.util.Date;
 
-import static com.github.appointmentsio.api.utils.Constraints.SECURITY.ROLES_KEY_ON_JWT;
-import static io.jsonwebtoken.SignatureAlgorithm.HS256;
-import static java.lang.String.join;
-import static java.util.Arrays.stream;
+import com.github.appointmentsio.api.domain.role.entity.Role;
+import com.github.appointmentsio.api.domain.session.model.Authorized;
+import com.github.appointmentsio.api.domain.user.entity.User;
+import com.github.appointmentsio.api.domain.user.model.SimplifiedUser;
+
+import io.jsonwebtoken.Jwts;
 
 public class JsonWebToken {
 
     public String encode(User user, LocalDateTime expiration, String secret) {
         var roles = user.getRoles();
-        return encode(user.getNanoid(), roles, expiration, secret);
+        return encode(user.getNanoId(), roles, expiration, secret);
     }
     
     public String encode(SimplifiedUser user, LocalDateTime expiration, String secret) {
@@ -46,7 +47,7 @@ public class JsonWebToken {
     public Authorized decode(String token, String secret) {
         var decoded = Jwts.parser().setSigningKey(secret).parseClaimsJws(token);
 
-        var id = Long.parseLong(decoded.getBody().getSubject());
+        var id = decoded.getBody().getSubject();
         
         var joinedRolesString = decoded.getBody().get(ROLES_KEY_ON_JWT).toString();
         var roles = joinedRolesString.split(",");

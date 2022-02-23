@@ -13,8 +13,8 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Objects;
 
-import static com.github.appointmentsio.api.utils.Constraints.CURRENCY.CURRENCY_SCALE;
-import static com.github.appointmentsio.api.utils.Constraints.CURRENCY.HOURS_IN_MILLISECONDS;
+import static com.github.appointmentsio.api.utils.Constants.CURRENCY.CURRENCY_SCALE;
+import static com.github.appointmentsio.api.utils.Constants.CURRENCY.HOURS_IN_MILLISECONDS;
 import static java.math.BigDecimal.valueOf;
 import static java.math.RoundingMode.HALF_EVEN;
 import static java.util.Objects.nonNull;
@@ -55,9 +55,9 @@ public class Project extends NonSequentialId implements Serializable {
         this.color = props.getColor();
     }
 
-    public Project(Long id, byte[] nanoid, String name, String color, BigDecimal hourlyRate, String currency) {
+    public Project(Long id, byte[] nanoId, String name, String color, BigDecimal hourlyRate, String currency) {
         this.id = id;
-        this.nanoid = nanoid;
+        this.nanoId = nanoId;
 
         this.color = color;
         this.name = name;
@@ -65,9 +65,9 @@ public class Project extends NonSequentialId implements Serializable {
         this.currency = currency;
     }
 
-    public Project(Long id, byte[] nanoid, String name, BigDecimal hourlyRate, Long userId, byte[] userNanoid, String userName) {
+    public Project(Long id, byte[] nanoId, String name, BigDecimal hourlyRate, Long userId, byte[] userNanoid, String userName) {
         this.id = id;
-        this.nanoid = nanoid;
+        this.nanoId = nanoId;
 
         this.name = name;
         this.hourlyRate = hourlyRate;
