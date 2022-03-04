@@ -9,9 +9,12 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 
 @Getter
-@Schema(requiredProperties = {"message", "errors"})
 public class ValidationError {
+
+    @Schema(example = "Check the 'errors' property for more details.", required = true)
     public final String message;
+
+    @Schema(required = true)
     public final Collection<FieldError> errors;
 
     public ValidationError(Collection<FieldError> errors) {

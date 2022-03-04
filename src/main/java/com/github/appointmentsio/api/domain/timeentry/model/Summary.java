@@ -13,11 +13,17 @@ import static com.github.appointmentsio.api.utils.Time.format;
 import static java.util.stream.Collectors.groupingBy;
 
 @Getter
-@Schema(requiredProperties = {"totalTime", "totalAmountByCurrency", "nonBillableHours", "projects"})
 public class Summary {
+
+    @Schema(example = "12:23:40", required = true)
     private final String totalTime;
+
+    @Schema(required = true)
     private final List<Currencies> totalAmountByCurrency = new ArrayList<>();
+
+    @Schema(required = true)
     private NonBillableHours nonBillableHours = new NonBillableHours(List.of());
+
     private final List<ProjectSummary> projects = new ArrayList<>();
 
     public Summary(List<TimeEntry> timeEntries) {

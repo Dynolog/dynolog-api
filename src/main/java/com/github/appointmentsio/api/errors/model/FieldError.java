@@ -8,9 +8,12 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 
 @Getter
-@Schema(requiredProperties = {"message"})
 public class FieldError {
+
+    @Schema(example = "username")
     private final String field;
+
+    @Schema(example = "Field username is required", required = true)
     private final String message;
 
     public FieldError(String message) {

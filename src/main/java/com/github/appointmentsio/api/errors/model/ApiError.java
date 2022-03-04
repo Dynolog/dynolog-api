@@ -6,9 +6,11 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 
 @Getter
-@Schema(requiredProperties = {"message", "status"})
 public class ApiError {
+    @Schema(example = "User not found", required = true)
     private final String message;
+
+    @Schema(example = "404", required = true)
     private final Integer status;
 
     public ApiError(String message, Integer status) {

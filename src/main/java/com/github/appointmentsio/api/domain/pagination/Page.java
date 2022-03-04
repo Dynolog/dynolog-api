@@ -9,12 +9,21 @@ import java.util.List;
 import java.util.function.Function;
 
 @Getter
-@Schema(requiredProperties = {"content", "page", "size", "totalPages", "totalElements"})
 public class Page<T> {
+
+    @Schema(required = true)
     private final Collection<? extends T> content;
+
+    @Schema(example = "5", required = true)
     private final Integer page;
+
+    @Schema(example = "10", required = true)
     private final Integer size;
+
+    @Schema(example = "27", required = true)
     private final Integer totalPages;
+
+    @Schema(example = "2328", required = true)
     private final Long totalElements;
 
     public Page(Collection<? extends T> content, Pageable pageable, Long totalElements) {

@@ -8,9 +8,12 @@ import java.util.List;
 import static com.github.appointmentsio.api.domain.timeentry.entity.TimeEntry.sum;
 import static com.github.appointmentsio.api.utils.Time.format;
 
-@Schema(requiredProperties = {"totalTime", "timeEntries"})
 public class NonBillableHours {
+
+    @Schema(example = "12:23:40", required = true)
     public final String totalTime;
+
+    @Schema(required = true)
     public final List<TimeEntrySummary> timeEntries;
 
     public NonBillableHours(List<TimeEntry> timeEntries) {

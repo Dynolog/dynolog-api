@@ -8,16 +8,27 @@ import lombok.Getter;
 import java.util.List;
 
 @Getter
-@Schema(name = "User", requiredProperties = {"id", "name", "email", "roles"})
 public class SimplifiedUser implements Addressable {
+
+    @Schema(description = "nano id", example = "V1StGXR8_Z5jdHi6B-myT", required = true)
     private final String id;
+
+    @Schema(example = "Jubileu", required = true)
     private final String name;
+
+    @Schema(example = "jubileu@email.com", required = true)
     private final String email;
 
+    @Schema(example = "UTC", required = true)
     private final String timezone;
+
+    @Schema(example = "dd/MM/yyyy", required = true)
     private final String dateFormat;
+
+    @Schema(example = "HH:mm:ss", required = true)
     private final String timeFormat;
 
+    @Schema(example = "[\"ADM\", \"USER\"]", required = true)
     private final List<String> roles;
 
     @Override

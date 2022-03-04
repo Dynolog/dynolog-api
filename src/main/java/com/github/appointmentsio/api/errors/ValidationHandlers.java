@@ -16,6 +16,10 @@ import com.github.appointmentsio.api.errors.model.FieldError;
 import com.github.appointmentsio.api.errors.model.ValidationError;
 import com.github.appointmentsio.api.utils.Response;
 
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -27,6 +31,20 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 import org.springframework.web.server.ResponseStatusException;
 
 @RestControllerAdvice
+@ApiResponses({
+    @ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = {
+        @Content(schema = @Schema(implementation = ValidationError.class))
+    }),
+    @ApiResponse(responseCode = "400", description = "Bad Request", content = {
+        @Content(schema = @Schema(implementation = ValidationError.class))
+    }),
+    @ApiResponse(responseCode = "401", description = "Unauthorized", content = {
+        @Content(schema = @Schema(implementation = ApiError.class))
+    }),
+    @ApiResponse(responseCode = "403", description = "Forbidden", content = {
+        @Content(schema = @Schema(implementation = ApiError.class))
+    })
+})
 public class ValidationHandlers {
 
     @ResponseStatus(code = UNPROCESSABLE_ENTITY)

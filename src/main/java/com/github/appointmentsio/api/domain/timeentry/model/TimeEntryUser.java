@@ -1,6 +1,19 @@
 package com.github.appointmentsio.api.domain.timeentry.model;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Getter;
 
-@Schema(name = "User", requiredProperties = {"id", "name"})
-public record TimeEntryUser(String id, String name) { }
+@Getter
+public class TimeEntryUser {
+
+    @Schema(description = "nano id", example = "V1StGXR8_Z5jdHi6B-myT", required = true)
+    private final String id;
+
+    @Schema(example = "Jubileu")
+    private final String name;
+
+    TimeEntryUser(String id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+}

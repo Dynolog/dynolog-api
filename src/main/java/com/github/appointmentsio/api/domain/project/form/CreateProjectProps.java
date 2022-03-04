@@ -1,5 +1,6 @@
 package com.github.appointmentsio.api.domain.project.form;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -13,19 +14,24 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 public class CreateProjectProps {
 
+    @Schema(example = "Fake Project")
     @NotEmpty(message = "{project.name.notempty}")
     private String name;
 
+    @Schema(example = "29.99")
     @DecimalMin(value = "0.1", inclusive = false, message = "{project.hourly-hate.decimalmin}")
     @Digits(integer = 10, fraction = 2)
     @NotNull(message = "{project.hourly-rate.notnull}")
     private BigDecimal hourlyRate;
 
+    @Schema(example = "BRL")
     @NotNull(message = "{project.currency.notnull}")
     private String currency;
 
+    @Schema(example = "#fafafa")
     private String color = "#7B70EA";
 
+    @Schema(description = "nano id", example = "V1StGXR8_Z5jdHi6B-myT")
     @NotNull(message = "{project.user-id.notnull}")
     private String userId;
 
