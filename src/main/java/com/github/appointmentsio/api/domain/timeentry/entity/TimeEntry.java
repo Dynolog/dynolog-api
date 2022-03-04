@@ -60,7 +60,7 @@ public class TimeEntry extends NonSequentialId implements Serializable {
         byte[] projectNanoId,
         String projectName,
         String color,
-        BigDecimal hourlyHate,
+        BigDecimal hourlyRate,
         String currency
     ) {
         this.id = id;
@@ -75,7 +75,7 @@ public class TimeEntry extends NonSequentialId implements Serializable {
         }
 
         if (nonNull(projectId)) {
-            this.project = new Project(projectId, projectNanoId, projectName, color, hourlyHate, currency);
+            this.project = new Project(projectId, projectNanoId, projectName, color, hourlyRate, currency);
         }
     }
 

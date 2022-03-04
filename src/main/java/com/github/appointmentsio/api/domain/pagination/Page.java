@@ -2,6 +2,7 @@ package com.github.appointmentsio.api.domain.pagination;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
+import org.springframework.data.domain.Pageable;
 
 import java.util.Collection;
 import java.util.List;
@@ -15,6 +16,14 @@ public class Page<T> {
     private final Integer size;
     private final Integer totalPages;
     private final Long totalElements;
+
+    public Page(Collection<? extends T> content, Pageable pageable, Long totalElements) {
+        this.content = content;
+        this.page = pageable.getPageNumber();
+        this.size = pageable.getPageSize();
+        this.totalPages = (int) Math.ceil((double)totalElements / this.size);
+        this.totalElements = totalElements;
+    }
 
     public Page(Collection<? extends T> content, Integer page, Integer size, Integer totalPages, Long totalElements) {
         this.content = content;

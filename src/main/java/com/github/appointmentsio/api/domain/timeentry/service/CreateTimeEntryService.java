@@ -11,6 +11,7 @@ import com.github.appointmentsio.api.domain.project.repository.ProjectRepository
 import com.github.appointmentsio.api.domain.timeentry.entity.TimeEntry;
 import com.github.appointmentsio.api.domain.timeentry.form.CreateTimeEntryProps;
 import com.github.appointmentsio.api.domain.timeentry.repository.TimeEntryRepository;
+import com.github.appointmentsio.api.domain.timeentry.repository.springdata.TimeEntrySpringDataRepository;
 import com.github.appointmentsio.api.domain.user.service.FindUserService;
 import com.github.appointmentsio.api.errors.exception.BadRequestException;
 import com.github.appointmentsio.api.errors.model.FieldError;
@@ -62,6 +63,7 @@ public class CreateTimeEntryService {
 
         var created = timeEntryRepository.save(new TimeEntry(props, user, project));
 
-        return timeEntryRepository.findByIdFetchUserAndProject(created.getId());
+        return timeEntryRepository.findByNanoId(created.getNanoId())
+                .orElseThrow();
     }
 }

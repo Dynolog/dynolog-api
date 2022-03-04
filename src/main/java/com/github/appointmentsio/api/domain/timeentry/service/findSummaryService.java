@@ -11,17 +11,18 @@ import java.util.ArrayList;
 
 import com.github.appointmentsio.api.domain.timeentry.model.Summary;
 import com.github.appointmentsio.api.domain.timeentry.repository.TimeEntryRepository;
+import com.github.appointmentsio.api.domain.timeentry.repository.springdata.TimeEntrySpringDataRepository;
 import com.github.appointmentsio.api.errors.exception.BadRequestException;
 import com.github.appointmentsio.api.errors.model.FieldError;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class findSummaryService {
 
-    public findSummaryService(
-            TimeEntryRepository timeEntryRepository
-    ) {
+    @Autowired
+    public findSummaryService(TimeEntryRepository timeEntryRepository) {
         this.timeEntryRepository = timeEntryRepository;
     }
 
@@ -43,7 +44,7 @@ public class findSummaryService {
         }
 
         var entries = timeEntryRepository
-                .findTimeEntriesByUserIdAndBetweenStartAndEndDate(start, end, userNanoid.getBytes(UTF_8));
+                .findAll(start, end, userNanoid);
 
         return new Summary(entries);
     }
