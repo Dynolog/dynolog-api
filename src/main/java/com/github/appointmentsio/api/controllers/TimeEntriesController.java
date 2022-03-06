@@ -18,6 +18,7 @@ import javax.validation.Valid;
 import com.github.appointmentsio.api.domain.pagination.Page;
 import com.github.appointmentsio.api.domain.timeentry.form.CreateTimeEntryProps;
 import com.github.appointmentsio.api.domain.timeentry.form.UpdateTimeEntryProps;
+import com.github.appointmentsio.api.domain.timeentry.model.StoppedTimeEntry;
 import com.github.appointmentsio.api.domain.timeentry.model.TimeEntryInfo;
 import com.github.appointmentsio.api.domain.timeentry.service.CreateTimeEntryService;
 import com.github.appointmentsio.api.domain.timeentry.service.FindTimeEntriesRunningService;
@@ -68,7 +69,7 @@ public class TimeEntriesController {
 
     @GetMapping
     @Operation(summary = "Returns a paginated list of time entries")
-    public ResponseEntity<Page<TimeEntryInfo>> index(
+    public ResponseEntity<Page<StoppedTimeEntry>> index(
         @RequestParam("startDate") @DateTimeFormat(iso = DATE_TIME) Optional<LocalDateTime> start,
         @RequestParam("endDate") @DateTimeFormat(iso = DATE_TIME) Optional<LocalDateTime> end,
         @RequestParam("page") Optional<Integer> page,
@@ -82,7 +83,7 @@ public class TimeEntriesController {
         }
 
         var result = findService.findAll(start, end, page, size, userNanoId);
-        return ok(result.map(TimeEntryInfo::new));
+        return ok(result.map(StoppedTimeEntry::new));
     }
 
     @GetMapping("/running")
@@ -91,7 +92,7 @@ public class TimeEntriesController {
         var authorized = authorizedOrThrow();
 
         if (!authorized.canRead(userNanoId)) {
-            throw unauthorized(message(NOT_AUTHORIZED_TO_READ, "'summaries'"));
+            throw unauthorized(message(NOT_AUTHORIZED_TO_READ, "'time-entry'"));
         }
 
         var result = findRunningService.find(userNanoId);

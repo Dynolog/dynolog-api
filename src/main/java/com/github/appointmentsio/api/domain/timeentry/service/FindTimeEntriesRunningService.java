@@ -1,5 +1,8 @@
 package com.github.appointmentsio.api.domain.timeentry.service;
 
+import static com.github.appointmentsio.api.utils.Constants.MESSAGES.NO_TIMEENTRY_RUNNING;
+import static com.github.appointmentsio.api.utils.Messages.message;
+import static com.github.appointmentsio.api.utils.Response.noContent;
 import static com.github.appointmentsio.api.utils.Response.notFound;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
@@ -21,6 +24,6 @@ public class FindTimeEntriesRunningService {
 
     public TimeEntry find(String id) {
         return repository.findRunningByUserNanoId(id)
-                .orElseThrow(() -> notFound("Time entry not found"));
+                .orElseThrow(() -> noContent(message(NO_TIMEENTRY_RUNNING)));
     }
 }

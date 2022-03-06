@@ -7,11 +7,7 @@ import static com.github.appointmentsio.api.utils.JSON.stringify;
 import static com.github.appointmentsio.api.utils.Messages.message;
 import static java.lang.String.format;
 import static java.net.URI.create;
-import static org.springframework.http.HttpStatus.CREATED;
-import static org.springframework.http.HttpStatus.FORBIDDEN;
-import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
-import static org.springframework.http.HttpStatus.NOT_FOUND;
-import static org.springframework.http.HttpStatus.UNAUTHORIZED;
+import static org.springframework.http.HttpStatus.*;
 
 import java.io.IOException;
 import java.util.logging.Level;
@@ -140,6 +136,10 @@ public class Response {
 
     public static ResponseStatusException notFound(String reason) {
         return new ResponseStatusException(NOT_FOUND, reason);
+    }
+
+    public static ResponseStatusException noContent(String reason) {
+        return new ResponseStatusException(NO_CONTENT, reason);
     }
 
     public static ResponseStatusException internalServerError(String reason) {

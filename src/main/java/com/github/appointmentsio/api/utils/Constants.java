@@ -101,6 +101,7 @@ public class Constants {
         public static final String SEARCH_DATE_INTERVAL_INVALID = "dates.interval.invalid";
 
         public static final String TIMEENTRY_DATE_INTERVAL_INVALID = "timeentry.interval.invalid";
+        public static final String NO_TIMEENTRY_RUNNING = "timeentry.running.not-found";
 
         public static final String CREATE_SESSION_ERROR_MESSAGE = "create.session.error.message";
         public static final String REFRESH_SESSION_ERROR_MESSAGE = "refresh.session.error.message";

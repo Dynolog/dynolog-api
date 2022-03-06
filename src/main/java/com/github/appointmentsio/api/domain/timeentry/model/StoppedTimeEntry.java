@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 import static com.github.appointmentsio.api.utils.Constants.PATTERNS.DATE_ISO_WITH_TIMEZONE;
 
 @Getter
-public class TimeEntryInfo {
+public class StoppedTimeEntry {
     @Schema(description = "nano id", example = "V1StGXR8_Z5jdHi6B-myT", required = true)
     private final String id;
 
@@ -27,11 +27,11 @@ public class TimeEntryInfo {
     @JsonFormat(timezone = "UTC", pattern = DATE_ISO_WITH_TIMEZONE)
     private final LocalDateTime start;
 
-    @Schema(example = "2022-02-14T00:48:00.000Z")
+    @Schema(example = "2022-02-14T00:48:00.000Z", required = true)
     @JsonFormat(timezone = "UTC", pattern = DATE_ISO_WITH_TIMEZONE)
     private final LocalDateTime stop;
 
-    public TimeEntryInfo(TimeEntry timeEntry) {
+    public StoppedTimeEntry(TimeEntry timeEntry) {
         this.id = timeEntry.getNanoId();
         this.description = timeEntry.getDescription();
         this.start = timeEntry.getStart();
@@ -47,4 +47,3 @@ public class TimeEntryInfo {
                 .orElse(null);
     }
 }
-
