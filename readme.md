@@ -5,9 +5,7 @@
 ```
 .
 ├── docker-compose.yml
-├── HELP.md
 ├── pom.xml
-├── readme.md
 ├── src
 │   ├── main
 │   │   ├── java
@@ -19,9 +17,6 @@
 │   │   │   │               ├── controllers
 │   │   │   │               ├── domain
 │   │   │   │               ├── errors
-│   │   │   │               │   ├── Error.java
-│   │   │   │               │   ├── exception
-│   │   │   │               │   └── ValidationHandlers.java
 │   │   │   │               ├── Main.java
 │   │   │   │               ├── middlewares
 │   │   │   │               └── utils
@@ -41,8 +36,6 @@
 │       │       └── github
 │       │           └── appointmentsio
 │       │               └── api
-│       │                   ├── domain
-│       │                   └── MainTests.java
 │       └── resources
 │           └── application.properties
 └── system.properties
