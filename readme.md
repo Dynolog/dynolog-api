@@ -1,4 +1,4 @@
-# appointments api
+# Dynolog api
 
 ### Project structure
 
