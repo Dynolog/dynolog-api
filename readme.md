@@ -1,4 +1,4 @@
-# appointments api
+# Dynolog api
 
 ### Project structure
 
@@ -11,7 +11,7 @@
 │   │   ├── java
 │   │   │   ├── com
 │   │   │   │   └── github
-│   │   │   │       └── appointmentsio
+│   │   │   │       └── dynolog
 │   │   │   │           └── api
 │   │   │   │               ├── configurations
 │   │   │   │               ├── controllers
@@ -34,7 +34,7 @@
 │       ├── java
 │       │   └── com
 │       │       └── github
-│       │           └── appointmentsio
+│       │           └── dynolog
 │       │               └── api
 │       └── resources
 │           └── application.properties
