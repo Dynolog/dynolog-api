@@ -5,23 +5,18 @@
 ```
 .
 ├── docker-compose.yml
-├── HELP.md
 ├── pom.xml
-├── readme.md
 ├── src
 │   ├── main
 │   │   ├── java
 │   │   │   ├── com
 │   │   │   │   └── github
-│   │   │   │       └── appointmentsio
+│   │   │   │       └── dynolog
 │   │   │   │           └── api
 │   │   │   │               ├── configurations
 │   │   │   │               ├── controllers
 │   │   │   │               ├── domain
 │   │   │   │               ├── errors
-│   │   │   │               │   ├── Error.java
-│   │   │   │               │   ├── exception
-│   │   │   │               │   └── ValidationHandlers.java
 │   │   │   │               ├── Main.java
 │   │   │   │               ├── middlewares
 │   │   │   │               └── utils
@@ -39,10 +34,8 @@
 │       ├── java
 │       │   └── com
 │       │       └── github
-│       │           └── appointmentsio
+│       │           └── dynolog
 │       │               └── api
-│       │                   ├── domain
-│       │                   └── MainTests.java
 │       └── resources
 │           └── application.properties
 └── system.properties
