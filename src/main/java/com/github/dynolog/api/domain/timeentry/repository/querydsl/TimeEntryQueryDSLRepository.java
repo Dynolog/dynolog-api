@@ -2,9 +2,9 @@ package com.github.dynolog.api.domain.timeentry.repository.querydsl;
 
 import com.github.dynolog.api.domain.pagination.Page;
 import com.github.dynolog.api.domain.timeentry.entity.TimeEntry;
-import com.github.dynolog.api.domain.project.entity.QProject;
-import com.github.dynolog.api.domain.timeentry.entity.QTimeEntry;
-import com.github.dynolog.api.domain.user.entity.QUser;
+import com.github.dynolog.api.domain.project.entity.querydsl.QProject;
+import com.github.dynolog.api.domain.timeentry.entity.querydsl.QTimeEntry;
+import com.github.dynolog.api.domain.user.entity.querydsl.QUser;
 import com.querydsl.core.Tuple;
 import com.querydsl.jpa.impl.JPAQuery;
 import org.springframework.beans.factory.annotation.Autowired;

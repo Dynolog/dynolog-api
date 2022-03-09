@@ -201,6 +201,7 @@
                 <configuration>
                     <excludes>
                         <exclude>db/migration/**/*</exclude>
+                        <exclude>**/querydsl/**</exclude>
                     </excludes>
                 </configuration>
             </plugin>
@@ -228,6 +229,9 @@
                         <configuration>
                             <outputDirectory>target/generated-sources/java</outputDirectory>
                             <processor>com.querydsl.apt.jpa.JPAAnnotationProcessor</processor>
+                            <options>
+                                <querydsl.packageSuffix>.querydsl</querydsl.packageSuffix>
+                            </options>
                         </configuration>
                     </execution>
                 </executions>
