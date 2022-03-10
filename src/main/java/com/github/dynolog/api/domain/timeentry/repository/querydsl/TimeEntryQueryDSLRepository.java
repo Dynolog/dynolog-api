@@ -89,6 +89,9 @@ public class TimeEntryQueryDSLRepository {
         }
 
         count.where(timeEntry.user.nanoId.eq(userNanoId.getBytes(UTF_8)));
+        count.where(timeEntry.stop.isNotNull());
+
+        query.where(timeEntry.user.nanoId.eq(userNanoId.getBytes(UTF_8)));
         query.where(timeEntry.stop.isNotNull());
 
         query
