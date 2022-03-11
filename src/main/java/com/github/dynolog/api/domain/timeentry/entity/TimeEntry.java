@@ -3,6 +3,7 @@ package com.github.dynolog.api.domain.timeentry.entity;
 import com.github.dynolog.api.domain.project.entity.Project;
 import com.github.dynolog.api.domain.shared.model.NonSequentialId;
 import com.github.dynolog.api.domain.timeentry.form.CreateTimeEntryProps;
+import com.github.dynolog.api.domain.timeentry.form.PartialUpdateTimeEntryProps;
 import com.github.dynolog.api.domain.timeentry.form.UpdateTimeEntryProps;
 import com.github.dynolog.api.domain.user.entity.User;
 import lombok.Getter;
@@ -92,6 +93,24 @@ public class TimeEntry extends NonSequentialId implements Serializable {
         this.stop = props.getStop();
         this.description = props.getDescription();
         this.project = project;
+    }
+
+    public void update(PartialUpdateTimeEntryProps props, Project project) {
+        props.getStart().ifPresent(start -> {
+            this.start = start;
+        });
+
+        props.getStop().ifPresent(stop -> {
+            this.stop = stop;
+        });
+
+        props.getDescription().ifPresent(description -> {
+            this.description = description;
+        });
+
+        props.getProjectId().ifPresent(id -> {
+            this.project = project;
+        });
     }
 
     public Long totalTimeInMillis() {

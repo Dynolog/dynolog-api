@@ -3,6 +3,7 @@ package com.github.dynolog.api.domain.timeentry.service;
 import com.github.dynolog.api.domain.project.entity.Project;
 import com.github.dynolog.api.domain.project.repository.ProjectRepository;
 import com.github.dynolog.api.domain.timeentry.entity.TimeEntry;
+import com.github.dynolog.api.domain.timeentry.form.PartialUpdateTimeEntryProps;
 import com.github.dynolog.api.domain.timeentry.form.UpdateTimeEntryProps;
 import com.github.dynolog.api.domain.timeentry.repository.TimeEntryRepository;
 import com.github.dynolog.api.errors.exception.BadRequestException;
@@ -36,7 +37,6 @@ public class UpdateTimeEntryService {
     }
 
     public TimeEntry update(String nanoId, UpdateTimeEntryProps props) {
-
         var exception = new BadRequestException();
 
         var start = props.getStart();
@@ -68,6 +68,44 @@ public class UpdateTimeEntryService {
             }
         });
 
+        timeEntry.update(props, project);
+
+        timeEntryRepository.save(timeEntry);
+
+        return timeEntry;
+    }
+
+    public TimeEntry update(String nanoId, PartialUpdateTimeEntryProps props) {
+        var exception = new BadRequestException();
+
+        var start = props.getStart();
+        var stop = props.getStop();
+
+        if (start.isPresent() && stop.isPresent() && (start.get().isAfter(stop.get()) || stop.get().isBefore(start.get()))) {
+            exception.add(new FieldError("start or stop", message(TIMEENTRY_DATE_INTERVAL_INVALID)));
+        }
+
+        if (exception.hasError()) {
+            throw exception;
+        }
+
+        Project project = null;
+
+        if (props.getProjectId().isPresent()) {
+            var projectNanoId = props.getProjectId();
+            project = projectRepository.findOptionalByNanoIdFetchUser(props.getProjectId().get().getBytes(UTF_8))
+                    .orElseThrow(() -> Response.notFound("project not found"));
+        }
+
+        var timeEntry = timeEntryRepository
+                .findByNanoId(nanoId)
+                .orElseThrow(() -> Response.notFound("time entry not found"));
+
+        authorized().ifPresent(authorized -> {
+            if (!authorized.canRead(timeEntry.getUser().getNanoId())) {
+                throw unauthorized(message(NOT_AUTHORIZED_TO_MODIFY, "'time entries'"));
+            }
+        });
 
         timeEntry.update(props, project);
 

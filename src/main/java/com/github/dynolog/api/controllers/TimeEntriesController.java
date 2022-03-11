@@ -17,6 +17,7 @@ import javax.validation.Valid;
 
 import com.github.dynolog.api.domain.pagination.Page;
 import com.github.dynolog.api.domain.timeentry.form.CreateTimeEntryProps;
+import com.github.dynolog.api.domain.timeentry.form.PartialUpdateTimeEntryProps;
 import com.github.dynolog.api.domain.timeentry.form.UpdateTimeEntryProps;
 import com.github.dynolog.api.domain.timeentry.model.StoppedTimeEntry;
 import com.github.dynolog.api.domain.timeentry.model.TimeEntryInfo;
@@ -29,14 +30,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -119,6 +113,16 @@ public class TimeEntriesController {
     public ResponseEntity<TimeEntryInfo> update(
         @PathVariable String id,
         @RequestBody @Valid UpdateTimeEntryProps body
+    ) {
+        var timeEntry = updateService.update(id, body);
+        return ok(new TimeEntryInfo(timeEntry));
+    }
+
+    @PatchMapping("{id}")
+    @Operation(summary = "Partial update a time entry")
+    public ResponseEntity<TimeEntryInfo> partial(
+        @PathVariable String id,
+        @RequestBody @Valid PartialUpdateTimeEntryProps body
     ) {
         var timeEntry = updateService.update(id, body);
         return ok(new TimeEntryInfo(timeEntry));

@@ -21,6 +21,6 @@ public class UpdateTimeEntryProps {
     @Schema(example = "2022-02-14T00:48:00.000Z")
     private LocalDateTime stop;
 
-    @Schema(example = "V1StGXR8_Z5jdHi6B-myT")
+    @Schema(description = "nano id", example = "V1StGXR8_Z5jdHi6B-myT")
     private String projectId;
 }
